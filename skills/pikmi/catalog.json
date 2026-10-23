@@ -355,6 +355,51 @@
       "brand_terms": [
         "muji"
       ]
+    },
+    {
+      "id": "mecha",
+      "name": "Mecha",
+      "summary": "Armored control panels in navy and military green, cut corners, hazard yellow and red, unit numbers in mono; heavier and more military than Cyberpunk Neon, with no glow.",
+      "keywords": {
+        "en": [
+          "mecha",
+          "robot",
+          "military",
+          "tactical",
+          "sci-fi",
+          "armor",
+          "hud",
+          "industrial",
+          "hangar",
+          "cockpit",
+          "gundam",
+          "evangelion"
+        ],
+        "id": [
+          "robot",
+          "militer",
+          "taktis",
+          "mesin perang",
+          "kayak gundam",
+          "industri",
+          "kokpit",
+          "baja"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "dark"
+      ],
+      "preview": "styles/mecha/preview.html",
+      "brand_terms": [
+        "gundam",
+        "evangelion"
+      ]
     }
   ]
 }
