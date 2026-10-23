@@ -469,7 +469,6 @@
           "malam",
           "premium",
           "sinematik",
-          "kayak iphone",
           "berkelas"
         ]
       },
@@ -528,8 +527,7 @@
       ],
       "preview": "styles/bento/preview.html",
       "brand_terms": [
-        "apple",
-        "iphone"
+        "apple"
       ]
     },
     {

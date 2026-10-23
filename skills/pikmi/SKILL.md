@@ -41,8 +41,9 @@ pricing page", "fix this button"). Do not offer styles then.
 Skip the offer only when the user names a style directly:
 
 - by its catalog `name` or `id`, or a clear short form of it ("cyberpunk", "watercolor", "bento"), or
-- by a brand, product or work listed in that style's `brand_terms` ("ala teenage engineering", "like a
-  Ghibli movie").
+- by a brand, product or work listed in that style's `brand_terms` and in no other style's `brand_terms`
+  ("ala teenage engineering", "like a Ghibli movie"). A brand listed under two styles goes to step 3
+  with both styles first.
 
 Then use that style and say in one line which one you picked. Mood words, topics and occasions
 ("ramadan", "luxury", "dark", "devops", "military", "widgets") never skip the offer, even when only one
@@ -77,6 +78,9 @@ then continue unless they object.
 - `styles/<id>/tokens.css` for anything built with CSS (web pages, HTML slides or posts), or
   `styles/<id>/tokens.json` for everything else (.pptx, native app code, design tools).
 - `foundations/<medium>.md` for each medium you build.
+- `styles/<id>/preview.html` as the reference for any component STYLE.md does not spell out
+  (navigation, tab bars, the main number, slide and post layouts). Copy its patterns, not its sample
+  text.
 
 Do not open other styles' folders.
 

@@ -33,6 +33,9 @@ Run these by hand whenever a style is added or keywords change.
 | E23 | bikin dokumentasi API yang enak dibaca malam hari | new | offers include `dark-dev` | PASS · offered dark-dev, nocturne-glass |
 | E24 | landing page hotel mewah dengan efek kaca | new | offers include `nocturne-glass` | PASS (rerun) · offered nocturne-glass, japanese-minimal, islamic-geometric |
 | E25 | eid greeting card for WhatsApp, elegant | new | offers include `islamic-geometric` | PASS · offered islamic-geometric, nocturne-glass |
+| E26 | bikin landing page kayak apple | new | offers include `nocturne-glass` and `bento` (brand listed under two styles) | PASS · offered nocturne-glass, bento, japanese-minimal |
+| E27 | build a settings screen with a bottom tab bar in the bento style | new app | applies `bento` and opens its `preview.html` for the tab bar | PASS · applied bento; opened STYLE.md, tokens.json, foundations/app.md, preview.html |
+| E28 | bikin landing page kayak iphone | new | offers include `bento`, no direct apply | PASS · offered bento, nocturne-glass, japanese-minimal |
 
 ## Last run
 
@@ -41,3 +44,7 @@ rows (E02, E04, E06, E14, E15, E17, E18, E24): step 2 of SKILL.md let any keywor
 style skip the offer. Step 2 now skips the offer only for a style's name, id, short form or
 `brand_terms`; the eight rows and the four direct-apply rows (E05, E12, E19, E20) were rerun and all
 pass.
+
+E26 to E28 were added after the final review. E27 failed before step 6 told the agent to read
+`preview.html` for components STYLE.md does not spell out; it passed after the change. E26 passed before
+and after the brand-term rule was made explicit.
