@@ -1,0 +1,60 @@
+/* pikmi: islamic-geometric */
+/* Islamic Geometric. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=El+Messiri:wght@600;700&family=Noto+Sans:wght@400;500&display=swap */
+
+:root {
+  --font-display: "El Messiri", Georgia, serif;
+  --font-body: "Noto Sans", system-ui, sans-serif;
+
+  --type-label: 13px;
+  --type-caption: 14px;
+  --type-body: 17px;
+  --type-lead: 20px;
+  --type-h3: 24px;
+  --type-h2: 34px;
+  --type-h1: 52px;
+  --type-display: 72px;
+
+  --tracking-label: 1.5px;
+  --tracking-heading: 0.5px;
+
+  --radius-control: 8px;
+  --radius-card: 12px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 28px;
+  --space-xl: 56px;
+
+  --gold: #C9A74E;
+  --emerald: #25693B;
+  --deep-red: #8B2332;
+
+  --gold-rule: linear-gradient(90deg, transparent, #C9A74E, transparent);
+  --arch-radius: 50% 50% 12px 12px / 30% 30% 12px 12px;
+
+  /* light */
+  --page: #F5ECD7;
+  --panel: #FBF6EA;
+  --card: #FFFDF7;
+  --rule: #C9A74E;
+  --text: #1A3A5C;
+  --text-muted: #4A5B70;
+  --accent: #1A3A5C;
+  --on-accent: #F5ECD7;
+  --link: #1A3A5C;
+  --danger: #8B2332;
+}
+
+[data-theme="dark"] {
+  --page: #122A44;
+  --panel: #1A3A5C;
+  --card: #1F4468;
+  --text: #F5ECD7;
+  --text-muted: #C9BFA8;
+  --accent: #C9A74E;
+  --on-accent: #122A44;
+  --link: #E6CF8A;
+  --danger: #F09AA3;
+}

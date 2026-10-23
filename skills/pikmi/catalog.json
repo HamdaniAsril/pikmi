@@ -229,6 +229,51 @@
         "totoro",
         "miyazaki"
       ]
+    },
+    {
+      "id": "islamic-geometric",
+      "name": "Islamic Geometric",
+      "summary": "Lapis blue, ivory and gold with eight-point star patterns used as frames and dividers, symmetrical and calm; ivory by day, deep blue by night.",
+      "keywords": {
+        "en": [
+          "islamic",
+          "geometric",
+          "arabesque",
+          "moroccan",
+          "persian",
+          "ramadan",
+          "eid",
+          "mosaic",
+          "star pattern",
+          "ornamental",
+          "symmetry",
+          "zellige"
+        ],
+        "id": [
+          "islami",
+          "geometris",
+          "ramadan",
+          "lebaran",
+          "idul fitri",
+          "idul adha",
+          "maroko",
+          "ornamen",
+          "motif bintang",
+          "nuansa timur tengah"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "preview": "styles/islamic-geometric/preview.html",
+      "brand_terms": []
     }
   ]
 }
