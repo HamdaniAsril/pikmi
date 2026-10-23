@@ -274,6 +274,43 @@
       ],
       "preview": "styles/islamic-geometric/preview.html",
       "brand_terms": []
+    },
+    {
+      "id": "ukiyo-e-print",
+      "name": "Ukiyo-e Print",
+      "summary": "Japanese woodblock print as an interface: indigo outlines on rice paper, flat color blocks, vermilion stamps, wave motifs and hard print shadows.",
+      "keywords": {
+        "en": [
+          "ukiyo-e",
+          "woodblock",
+          "japanese print",
+          "edo",
+          "great wave",
+          "hokusai",
+          "traditional japanese",
+          "wave pattern",
+          "flat print"
+        ],
+        "id": [
+          "jepang klasik",
+          "cetak kayu",
+          "ombak",
+          "tradisional jepang",
+          "kayak lukisan jepang",
+          "gaya edo"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "light"
+      ],
+      "preview": "styles/ukiyo-e-print/preview.html",
+      "brand_terms": []
     }
   ]
 }
