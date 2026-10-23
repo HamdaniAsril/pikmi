@@ -1,0 +1,46 @@
+/* pikmi: dark-dev */
+/* Dark Dev. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@600&family=Red+Hat+Text:wght@400;500;600&family=Red+Hat+Mono:wght@400;500&display=swap */
+
+:root {
+  --font-display: "Red Hat Display", system-ui, sans-serif;
+  --font-body: "Red Hat Text", system-ui, sans-serif;
+  --font-mono: "Red Hat Mono", ui-monospace, monospace;
+
+  --type-label: 12px;
+  --type-caption: 13px;
+  --type-body: 15px;
+  --type-lead: 17px;
+  --type-h3: 20px;
+  --type-h2: 28px;
+  --type-h1: 44px;
+  --type-display: 64px;
+
+  --radius-control: 8px;
+  --radius-card: 12px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+
+  --body-text: #CBD5E1;
+  --rule-hover: #64748B;
+  --success: #22C55E;
+
+  --inset-glow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+
+  /* dark */
+  --page: #0F172A;
+  --panel: #1E293B;
+  --card: #1E293B;
+  --rule: #334155;
+  --text: #F1F5F9;
+  --text-muted: #94A3B8;
+  --accent: #2563EB;
+  --on-accent: #FFFFFF;
+  --link: #60A5FA;
+  --danger: #F87171;
+}

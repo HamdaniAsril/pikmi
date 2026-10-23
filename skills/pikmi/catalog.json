@@ -531,6 +531,51 @@
         "apple",
         "iphone"
       ]
+    },
+    {
+      "id": "dark-dev",
+      "name": "Dark Dev",
+      "summary": "Calm slate dark mode for developer tools: low-contrast layers, borders that light up on hover, one blue for actions and mono only for code.",
+      "keywords": {
+        "en": [
+          "dark mode",
+          "developer",
+          "dev tool",
+          "ide",
+          "technical",
+          "docs",
+          "api",
+          "night",
+          "engineering",
+          "devops",
+          "terminal",
+          "code"
+        ],
+        "id": [
+          "mode gelap",
+          "developer",
+          "programmer",
+          "gelap",
+          "dokumentasi",
+          "alat developer",
+          "kayak vscode",
+          "koding"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "dark"
+      ],
+      "preview": "styles/dark-dev/preview.html",
+      "brand_terms": [
+        "vscode",
+        "vs code"
+      ]
     }
   ]
 }

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dark Dev · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@600&family=Red+Hat+Text:wght@400;500;600&family=Red+Hat+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--body-text); font: 400 15px/1.65 var(--font-body); }
+  a { color: var(--link); }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 40px 16px 80px; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; color: var(--text); margin: 0; line-height: 1.15; }
+  h1 { font-size: clamp(34px, 6vw, 56px); }
+  h2 { font-size: 26px; margin-bottom: 20px; }
+  h3 { font-size: 18px; }
+  section { margin-top: 64px; }
+  .muted { color: var(--text-muted); }
+  .label { font: 500 12px/1 var(--font-body); color: var(--text-muted); }
+  code, .mono { font-family: var(--font-mono); font-size: 0.92em; }
+  .btn { display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-control); background: var(--accent); color: var(--on-accent); box-shadow: var(--inset-glow);
+    font: 500 14px/1 var(--font-body); text-decoration: none; cursor: pointer; transition: background-color 200ms ease-out, box-shadow 200ms ease-out; }
+  .btn:hover { background: #1D4ED8; box-shadow: var(--inset-glow), 0 0 0 1px var(--link); }
+  .btn:active { transform: scale(0.98); box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); }
+  .btn.secondary { background: var(--panel); color: var(--text); box-shadow: inset 0 0 0 1px var(--rule); }
+  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .card { display: block; background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); padding: var(--space-lg); color: inherit; text-decoration: none;
+    transition: border-color 300ms ease-out, transform 300ms ease-out, box-shadow 300ms ease-out; }
+  a.card:hover { border-color: var(--rule-hover); transform: translateY(-2px); box-shadow: var(--card-shadow); }
+  a.card .desc { color: var(--text-muted); transition: color 200ms ease-out; margin: 6px 0 0; }
+  a.card:hover .desc { color: var(--body-text); }
+  .code { background: var(--page); border: 1px solid var(--rule); border-radius: var(--radius-control); padding: var(--space-md); font: 400 13px/1.7 var(--font-mono); color: var(--body-text); overflow-x: auto; margin: 0; }
+  .code .k { color: var(--link); } .code .s { color: var(--success); } .code .c { color: var(--text-muted); }
+  .field { min-height: 40px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--rule-hover); border-radius: var(--radius-control); background: var(--page); color: var(--text); font: 400 14px var(--font-body); }
+  label { display: block; margin-bottom: 6px; color: var(--text); font-weight: 500; font-size: 14px; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font: 500 12px/1 var(--font-body); }
+  .badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .badge.ok { color: var(--success); } .badge.bad { color: var(--danger); }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+  .hero p { font-size: 17px; max-width: 46ch; margin: 16px 0 24px; }
+  .console { display: grid; grid-template-columns: 200px 1fr; border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; }
+  .console aside { background: var(--panel); border-right: 1px solid var(--rule); padding: 16px 10px; display: flex; flex-direction: column; gap: 2px; }
+  .console aside a { padding: 8px 10px; border-radius: var(--radius-control); color: var(--text-muted); text-decoration: none; font-weight: 500; }
+  .console aside a[aria-current="page"] { background: var(--page); color: var(--text); }
+  .console main { padding: 20px; min-width: 0; }
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  .metrics .card { padding: 16px; }
+  .metrics strong { display: block; font: 600 26px/1.1 var(--font-display); color: var(--text); margin-top: 6px; }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius-card); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font-weight: 500; color: var(--text-muted); padding: 10px 14px; border-bottom: 1px solid var(--rule); background: var(--panel); }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--rule); }
+
+  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; align-items: start; }
+  #slides { grid-column: 1 / -1; max-width: 960px; }
+  .canvas { container-type: inline-size; border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; }
+  .cap { margin-top: 10px; }
+  .slide { aspect-ratio: 16 / 9; background: var(--page); position: relative; }
+  .slide h3 { position: absolute; left: 5cqw; top: 5cqw; font-size: 2.9cqw; }
+  .slide .code { position: absolute; left: 5cqw; right: 5cqw; top: 13cqw; font-size: 1.46cqw; padding: 2cqw; border-radius: 0.6cqw; line-height: 1.8; }
+  .slide .code .hl { display: block; margin: 0 -2cqw; padding: 0 2cqw; box-shadow: inset 0.3cqw 0 0 var(--accent); background: rgba(37, 99, 235, 0.12); }
+  .slide .foot { position: absolute; left: 5cqw; bottom: 4cqw; font-size: 1.2cqw; color: var(--text-muted); }
+  .post { aspect-ratio: 4 / 5; background: var(--page); padding: 7cqw; display: flex; flex-direction: column; }
+  .post .card { flex: 1; padding: 7cqw; display: flex; flex-direction: column; }
+  .post .ver { font: 500 3cqw/1 var(--font-mono); color: var(--link); }
+  .post h3 { font-size: 8cqw; margin-top: 3cqw; }
+  .post ul { margin: 5cqw 0 0; padding-left: 4cqw; font-size: 3.6cqw; line-height: 1.5; }
+  .post .foot { margin-top: auto; font-size: 3cqw; color: var(--text-muted); }
+  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; padding: 8cqw 5cqw 4cqw; gap: 4cqw; }
+  .phone h3 { font-size: 7cqw; }
+  .phone .list { border: 1px solid var(--rule); border-radius: 4cqw; overflow: hidden; }
+  .phone .li { display: flex; justify-content: space-between; align-items: center; min-height: 48px; padding: 0 4cqw; background: var(--card); border-bottom: 1px solid var(--rule); font-size: 3.8cqw; }
+  .phone .li:last-child { border-bottom: 0; }
+  .phone .spacer { flex: 1; }
+  .phone .btn { justify-content: center; min-height: 48px; }
+  .phone nav { display: flex; justify-content: space-around; border-top: 1px solid var(--rule); padding-top: 2cqw; }
+  .tab { min-height: 44px; padding: 0 3cqw; background: none; border: 0; color: var(--text-muted); font: 500 3.6cqw var(--font-body); cursor: pointer; }
+  .tab[aria-pressed="true"] { color: var(--text); }
+  @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .console { grid-template-columns: 1fr; } .console aside { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--rule); } .metrics { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .btn, .card, a.card .desc { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero" style="grid-template-columns:1fr">
+    <div>
+      <span class="label">pikmi style · dark only</span>
+      <h1 style="margin-top:12px">Dark Dev</h1>
+      <p>Calm slate layers, borders that light up on hover, one blue for actions and mono only for code.</p>
+      <div class="row"><a class="btn" href="#components">Read the docs</a><a class="btn secondary" href="#slides">See the slides</a></div>
+    </div>
+
+  </header>
+
+  <section id="components" aria-labelledby="h-components">
+    <h2 id="h-components">Components</h2>
+    <div class="grid">
+      <div class="card"><h3>Buttons</h3><div class="row" style="margin-top:14px"><a class="btn" href="#ui">Create API key</a><a class="btn secondary" href="#app">Cancel</a></div></div>
+      <div class="card"><label for="project">Project name</label><input class="field" id="project" placeholder="billing-service"><p class="muted" style="margin:8px 0 0;font-size:13px">Lowercase, dashes allowed.</p></div>
+      <a class="card" href="#ui"><h3 class="title">A card that lights up</h3><p class="desc">Hover to brighten the border and the secondary text.</p></a>
+      <div class="card" style="grid-column:1/-1"><h3>Code block</h3><p class="muted" style="margin:6px 0 12px">Real commands and output, no window chrome.</p><pre class="code"><span class="c"># deploy a preview of the current branch</span>
+<span class="k">$</span> shipline deploy --preview
+<span class="s">✓</span> built in 41s
+<span class="s">✓</span> preview ready at pr-218.preview.example.dev</pre></div>
+      <div class="card"><h3>Status</h3><div class="row" style="margin-top:12px"><span class="badge ok">Healthy</span><span class="badge bad">Failing</span></div></div>
+    </div>
+  </section>
+
+  <section id="ui" aria-labelledby="h-ui">
+    <h2 id="h-ui">UI · Deploy console</h2>
+    <div class="console">
+      <aside aria-label="Sections"><a href="#ui" aria-current="page">Deploys</a><a href="#components">Services</a><a href="#slides">Logs</a><a href="#app">Settings</a></aside>
+      <main>
+        <div class="row" style="justify-content:space-between"><h3 style="font-size:20px">billing-service</h3><a class="btn" href="#ui">Deploy main</a></div>
+        <div class="metrics">
+          <div class="card"><span class="label">Last deploy</span><strong>12 min ago</strong></div>
+          <div class="card"><span class="label">Build time</span><strong>41 s</strong></div>
+          <div class="card"><span class="label">Open previews</span><strong>3</strong></div>
+        </div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Deploy</th><th>Branch</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">d-8f21c</td><td class="mono">main</td><td><span class="badge ok">Live</span></td></tr>
+            <tr><td class="mono">d-8f1a9</td><td class="mono">fix/retry</td><td><span class="badge ok">Preview</span></td></tr>
+            <tr><td class="mono">d-8f0e2</td><td class="mono">feat/tax</td><td><span class="badge bad">Build failed</span></td></tr>
+          </tbody>
+        </table></div>
+        <p class="muted" style="font-size:13px">Sample data for the preview.</p>
+      </main>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-media">
+    <h2 id="h-media">Other media</h2>
+    <div class="canvases">
+      <div id="slides">
+        <div class="canvas"><div class="slide">
+          <h3>Retries now back off on their own</h3>
+<pre class="code">client = Shipline(api_key=KEY)
+<span class="hl">client.retries = Backoff(base=0.5, max=8)</span>
+client.deploy(service="billing", ref="main")</pre>
+          <span class="foot">Release 2.4 · SDK changes</span>
+        </div></div>
+        <p class="cap label">slides · 1920 x 1080</p>
+      </div>
+      <div id="social">
+        <div class="canvas"><div class="post"><div class="card">
+          <span class="ver">v2.4.0</span>
+          <h3>Preview deploys for every branch</h3>
+          <ul><li>Previews build on push</li><li>Links expire after 7 days</li><li>Retries back off on their own</li></ul>
+          <span class="foot">Read the changelog in the docs</span>
+        </div></div></div>
+        <p class="cap label">social · 1080 x 1350</p>
+      </div>
+      <div id="app">
+        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
+          <span class="label">billing-service</span>
+          <h3>Recent deploys</h3>
+          <div class="list">
+            <div class="li"><span class="mono">d-8f21c</span><span class="badge ok">Live</span></div>
+            <div class="li"><span class="mono">d-8f1a9</span><span class="badge ok">Preview</span></div>
+            <div class="li"><span class="mono">d-8f0e2</span><span class="badge bad">Failed</span></div>
+          </div>
+          <div class="spacer"></div>
+          <a class="btn" href="#app">Roll back to d-8f1a9</a>
+          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Deploys</button><button class="tab" type="button" aria-pressed="false">Alerts</button><button class="tab" type="button" aria-pressed="false">Keys</button></nav>
+        </div></div>
+        <p class="cap label">app · phone</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+  })));
+</script>
+</body>
+</html>
