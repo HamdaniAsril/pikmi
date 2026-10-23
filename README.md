@@ -12,11 +12,11 @@ You pick one, and the agent builds with only that style loaded.
 In Claude Code:
 
 ```
-/plugin marketplace add <owner>/<repo>
+/plugin marketplace add HamdaniAsril/pikmi
 /plugin install pikmi@pikmi
 ```
 
-Replace `<owner>/<repo>` with the GitHub repository that hosts this folder.
+The repository is private for now, so installing needs a GitHub account with access to it.
 
 ## How it works
 
