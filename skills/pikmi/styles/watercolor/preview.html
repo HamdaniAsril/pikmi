@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watercolor · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500;1,600&family=Crimson+Pro:wght@400;500&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { overflow-x: clip; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 19px/1.75 var(--font-body); }
+  a { color: var(--link); text-underline-offset: 4px; }
+  .wrap { position: relative; max-width: 1120px; margin: 0 auto; padding: 72px 16px 96px; }
+  h1, h2, h3 { font-family: var(--font-display); font-style: italic; font-weight: 600; margin: 0; line-height: 1.1; }
+  h1 { font-size: clamp(46px, 9vw, 88px); }
+  h2 { font-size: 40px; margin-bottom: 24px; }
+  h3 { font-size: 28px; }
+  section { position: relative; margin-top: 88px; }
+  .muted { color: var(--text-muted); }
+  .center { text-align: center; }
+  .wash { position: absolute; width: 420px; aspect-ratio: 1; border-radius: 50%; filter: blur(48px); background: var(--peach); opacity: var(--wash-opacity); pointer-events: none; z-index: 0; }
+  .wash.teal { background: var(--teal); }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: var(--radius-control); background: var(--accent); color: var(--on-accent);
+    font: 500 18px/1 var(--font-body); text-decoration: none; cursor: pointer; transition: box-shadow 500ms ease-in-out, transform 500ms ease-in-out; }
+  .btn:hover { box-shadow: var(--bloom-shadow); }
+  .btn:active { transform: scale(0.98); }
+  .btn.soft { background: var(--card); color: var(--text); box-shadow: inset 0 0 0 1px var(--rule); }
+  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .card { position: relative; z-index: 1; display: block; background: var(--card); border-radius: var(--radius-card); padding: var(--space-lg); border: 1px solid var(--rule); color: inherit; text-decoration: none; transition: box-shadow 500ms ease-in-out; }
+  a.card:hover { box-shadow: var(--bloom-shadow); }
+  .panel { position: relative; z-index: 1; background: var(--panel); border-radius: var(--radius-card); padding: var(--space-xl) var(--space-lg); }
+  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--text-muted); border-radius: var(--radius-control); background: var(--card); color: var(--text); font: 400 18px var(--font-body); }
+  label { display: block; margin-bottom: 6px; font-weight: 500; }
+  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
+  .z { position: relative; z-index: 1; }
+  .painted { aspect-ratio: 4 / 5; border-radius: var(--radius-card); position: relative; overflow: hidden; background: var(--card); border: 1px solid var(--rule); }
+  .painted span { position: absolute; border-radius: 50%; filter: blur(30px); }
+
+  .canvases { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; align-items: start; }
+  #slides { grid-column: 1 / -1; max-width: 920px; }
+  .canvas { container-type: inline-size; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--rule); background: var(--page); }
+  .cap { margin-top: 12px; font-size: 15px; color: var(--text-muted); }
+  .slide { aspect-ratio: 16 / 9; position: relative; overflow: hidden; }
+  .slide .w { position: absolute; border-radius: 50%; filter: blur(5cqw); opacity: 0.3; }
+  .slide h3 { position: absolute; left: 8cqw; top: 12cqw; width: 52cqw; font-size: 5cqw; }
+  .slide p { position: absolute; left: 8cqw; top: 26cqw; width: 44cqw; margin: 0; font-size: 1.9cqw; line-height: 1.6; }
+  .post { aspect-ratio: 4 / 5; position: relative; overflow: hidden; display: grid; place-items: center; text-align: center; padding: 10cqw; }
+  .post .w { position: absolute; border-radius: 50%; filter: blur(8cqw); opacity: 0.3; }
+  .post h3 { position: relative; font-size: 11cqw; line-height: 1.05; }
+  .post p { position: relative; margin: 4cqw 0 0; font-size: 4.2cqw; }
+  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; position: relative; overflow: hidden; display: flex; flex-direction: column; padding: 10cqw 6cqw 5cqw; gap: 5cqw; }
+  .phone .w { position: absolute; width: 80cqw; height: 80cqw; border-radius: 50%; filter: blur(10cqw); opacity: 0.3; background: var(--peach); top: -30cqw; right: -30cqw; }
+  .phone h3 { position: relative; font-size: 9cqw; }
+  .phone .card { padding: 5cqw; border-radius: 7cqw; }
+  .phone .card strong { display: block; font-size: 4.8cqw; font-weight: 500; }
+  .phone .card span { font-size: 4cqw; color: var(--text-muted); }
+  .phone .spacer { flex: 1; }
+  .phone .btn { justify-content: center; position: relative; }
+  .phone nav { position: relative; display: flex; justify-content: space-around; border-top: 1px solid var(--rule); padding-top: 2cqw; }
+  .tab { min-height: 48px; padding: 0 3cqw; background: none; border: 0; color: var(--text-muted); font: 400 4cqw var(--font-body); cursor: pointer; }
+  .tab[aria-pressed="true"] { color: var(--text); font-style: italic; }
+  @media (prefers-reduced-motion: reduce) { .btn, .card { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="wash" style="left:-160px;top:-120px" aria-hidden="true"></span>
+  <span class="wash teal" style="right:-180px;top:40px" aria-hidden="true"></span>
+  <header class="center z">
+    <p style="margin:0 0 12px">pikmi style</p>
+    <h1>Watercolor</h1>
+    <p style="max-width:42ch;margin:20px auto 30px">Soft washes bleeding into warm paper, blue-grey ink and italic serif headings.</p>
+    <div class="row" style="justify-content:center"><a class="btn" href="#components">See the components</a><a class="btn soft" href="#slides">See the slides</a></div>
+  </header>
+
+  <section id="components" aria-labelledby="h-components">
+    <h2 id="h-components" class="z">Components</h2>
+    <div class="grid">
+      <div class="card"><h3>Buttons</h3><div class="row" style="margin-top:16px"><a class="btn" href="#ui">Send your reply</a><a class="btn soft" href="#app">Open the app</a></div></div>
+      <div class="card"><label for="guest">Your name</label><input class="field" id="guest" placeholder="Laila and Arif"><p class="muted" style="margin:10px 0 0;font-size:16px">As it should appear on the place card.</p></div>
+      <a class="card" href="#social"><h3>A card that blooms</h3><p class="muted" style="margin:8px 0 0">Hover it to see the blue bloom instead of a lift.</p></a>
+    </div>
+  </section>
+
+  <section id="ui" aria-labelledby="h-ui">
+    <span class="wash" style="left:30%;top:-60px;width:360px" aria-hidden="true"></span>
+    <h2 id="h-ui" class="z">UI · A garden wedding</h2>
+    <div class="grid" style="align-items:center">
+      <div class="z">
+        <h3 style="font-size:40px">Laila &amp; Arif</h3>
+        <p>Saturday the fourteenth of June, in the rose garden behind the old orchard house. Lunch follows under the pergola.</p>
+        <a class="btn" href="#components">Reply by the first of May</a>
+      </div>
+      <div class="painted" aria-hidden="true">
+        <span style="width:60%;height:50%;left:8%;top:12%;background:var(--rose);opacity:.45"></span>
+        <span style="width:55%;height:45%;right:5%;bottom:14%;background:var(--teal);opacity:.4"></span>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:40px"><p style="margin:0;font: italic 500 30px/1.4 var(--font-display)">"Come as you are, and stay until the candles burn down."</p></div>
+  </section>
+
+  <section aria-labelledby="h-media">
+    <h2 id="h-media" class="z">Other media</h2>
+    <div class="canvases">
+      <div id="slides">
+        <div class="canvas"><div class="slide">
+          <span class="w" style="width:50cqw;height:50cqw;right:-12cqw;top:-14cqw;background:var(--peach)" aria-hidden="true"></span>
+          <h3>A day in the rose garden</h3>
+          <p>Ceremony at eleven, lunch under the pergola, music until the evening light goes gold.</p>
+        </div></div>
+        <p class="cap">slides · 1920 x 1080</p>
+      </div>
+      <div id="social">
+        <div class="canvas"><div class="post">
+          <span class="w" style="width:80cqw;height:80cqw;left:-20cqw;top:-10cqw;background:var(--teal)" aria-hidden="true"></span>
+          <span class="w" style="width:70cqw;height:70cqw;right:-20cqw;bottom:-10cqw;background:var(--peach)" aria-hidden="true"></span>
+          <div><h3>Save the date</h3><p>14 June · the orchard house</p></div>
+        </div></div>
+        <p class="cap">social · 1080 x 1350</p>
+      </div>
+      <div id="app">
+        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
+          <span class="w" aria-hidden="true"></span>
+          <h3>Your table</h3>
+          <div class="card"><strong>Table 4 · Lavender</strong><span>Near the pergola</span></div>
+          <div class="card"><strong>Menu</strong><span>Vegetarian, no nuts</span></div>
+          <div class="spacer"></div>
+          <a class="btn" href="#app">Update my reply</a>
+          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Table</button><button class="tab" type="button" aria-pressed="false">Day</button><button class="tab" type="button" aria-pressed="false">Map</button></nav>
+        </div></div>
+        <p class="cap">app · phone</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+  })));
+</script>
+</body>
+</html>

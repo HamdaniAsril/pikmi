@@ -400,6 +400,48 @@
         "gundam",
         "evangelion"
       ]
+    },
+    {
+      "id": "watercolor",
+      "name": "Watercolor",
+      "summary": "Soft washes of peach, teal and rose bleeding into warm paper, blue-grey ink, italic serif headings and slow, painterly motion.",
+      "keywords": {
+        "en": [
+          "watercolor",
+          "painterly",
+          "artistic",
+          "soft",
+          "dreamy",
+          "poetic",
+          "hand-painted",
+          "gentle",
+          "pastel",
+          "wedding",
+          "botanical"
+        ],
+        "id": [
+          "cat air",
+          "lukisan",
+          "lembut",
+          "artistik",
+          "puitis",
+          "kalem",
+          "estetik",
+          "undangan pernikahan",
+          "pastel"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "light"
+      ],
+      "preview": "styles/watercolor/preview.html",
+      "brand_terms": []
     }
   ]
 }
