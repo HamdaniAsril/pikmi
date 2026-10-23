@@ -1,0 +1,46 @@
+/* pikmi: pastoral-storybook */
+/* Pastoral Storybook. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap */
+
+:root {
+  --font-display: "Kaisei Decol", Georgia, serif;
+  --font-body: "Zen Maru Gothic", system-ui, sans-serif;
+
+  --type-label: 13px;
+  --type-caption: 14px;
+  --type-body: 17px;
+  --type-lead: 20px;
+  --type-h3: 24px;
+  --type-h2: 34px;
+  --type-h1: 52px;
+  --type-display: 76px;
+
+  --radius-pill: 999px;
+  --radius-card: 24px;
+  --radius-panel: 32px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 28px;
+  --space-xl: 56px;
+
+  --sky: #85CDCA;
+  --coral: #E8A87C;
+  --rose: #C38D94;
+  --bark: #2F2A22;
+
+  --soft-shadow: 0 8px 30px rgba(90, 74, 58, 0.10);
+
+  /* light */
+  --page: #F4E4BC;
+  --panel: #FBF3DE;
+  --card: #FFFAEF;
+  --rule: #E3CFA0;
+  --text: #5A4A3A;
+  --text-muted: #6B5844;
+  --accent: #7CB9A8;
+  --on-accent: #2F2A22;
+  --link: #33695A;
+  --danger: #A8473F;
+}

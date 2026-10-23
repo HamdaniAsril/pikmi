@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pastoral Storybook · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 17px/1.7 var(--font-body); }
+  a { color: var(--link); }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px 80px; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; margin: 0; line-height: 1.2; }
+  h1 { font-size: clamp(38px, 7vw, 76px); }
+  h2 { font-size: 32px; margin-bottom: 24px; }
+  h3 { font-size: 22px; }
+  section { margin-top: 72px; }
+  .muted { color: var(--text-muted); }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: var(--radius-pill);
+    background: var(--accent); color: var(--on-accent); font: 700 17px/1 var(--font-body); text-decoration: none; cursor: pointer; transition: transform 600ms ease-in-out; }
+  .btn:hover { transform: translateY(-2px) rotate(-1deg); }
+  .btn:active { transform: scale(0.98); }
+  .btn.warm { background: var(--coral); color: var(--bark); }
+  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+  .card { background: var(--card); border-radius: var(--radius-card); padding: var(--space-lg); box-shadow: var(--soft-shadow); }
+  .panel { background: var(--panel); border-radius: var(--radius-panel); padding: var(--space-lg); }
+  .tag { display: inline-block; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--sky); color: var(--bark); font: 500 13px/1.4 var(--font-body); }
+  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 2px solid var(--rule); border-radius: 16px; background: var(--card); color: var(--text); font: 400 17px var(--font-body); }
+  label { display: block; font-weight: 500; margin-bottom: 6px; }
+  .row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+
+  .scene { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--sky) 0%, var(--panel) 72%); }
+  .cloud { position: absolute; background: var(--card); border-radius: var(--radius-pill); opacity: 0.9; }
+  .cloud::before, .cloud::after { content: ""; position: absolute; background: inherit; border-radius: 50%; }
+  .cloud::before { width: 50%; height: 160%; left: 18%; bottom: 20%; }
+  .cloud::after { width: 36%; height: 130%; right: 16%; bottom: 25%; }
+  .hill { position: absolute; border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+  .hill.back { background: linear-gradient(180deg, #A7D3C5, var(--accent)); }
+  .hill.front { background: linear-gradient(180deg, var(--accent), #5E9E8C); }
+  .hero { min-height: 520px; padding: 72px 24px 200px; border-radius: 0 0 var(--radius-panel) var(--radius-panel); }
+  .hero .copy { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; text-align: center; }
+  .hero .copy p { font-size: 20px; margin: 16px auto 28px; max-width: 46ch; }
+  .hero .copy a:not(.btn) { color: var(--bark); }
+  .leaf { display: inline-block; width: 18px; height: 18px; border-radius: 0 100% 0 100%; background: var(--accent); vertical-align: -2px; margin-right: 8px; }
+
+  .story { display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; align-items: center; }
+  .story .pic { aspect-ratio: 4 / 3; border-radius: var(--radius-panel); }
+  .quote { font: 500 clamp(22px, 3.4vw, 30px)/1.5 var(--font-display); margin: 0; }
+
+  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; align-items: start; }
+  #slides { grid-column: 1 / -1; max-width: 960px; }
+  .canvas { container-type: inline-size; border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--soft-shadow); }
+  .cap { margin-top: 10px; font-size: 14px; color: var(--text-muted); }
+  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); overflow: hidden; }
+  .slide h3 { position: absolute; left: 6cqw; top: 7cqw; width: 50cqw; font-size: 3.6cqw; }
+  .slide p { position: absolute; left: 6cqw; top: 20cqw; width: 42cqw; margin: 0; font-size: 1.7cqw; line-height: 1.55; }
+  .slide p strong { color: var(--bark); background: var(--coral); padding: 0 0.5cqw; border-radius: 0.6cqw; }
+  .slide .hill.back { left: 30cqw; right: -10cqw; bottom: -6cqw; height: 18cqw; }
+  .slide .hill.front { left: -12cqw; right: 40cqw; bottom: -8cqw; height: 16cqw; }
+  .slide .cloud { right: 12cqw; top: 9cqw; width: 14cqw; height: 4cqw; }
+  .post { aspect-ratio: 4 / 5; position: relative; overflow: hidden; }
+  .post .cloud { left: 10cqw; top: 12cqw; width: 26cqw; height: 7cqw; }
+  .post .cloud.b { left: auto; right: 8cqw; top: 26cqw; width: 18cqw; height: 5cqw; }
+  .post .hill.back { left: -10cqw; right: -30cqw; bottom: 30cqw; height: 30cqw; }
+  .post .hill.front { left: -30cqw; right: -10cqw; bottom: 22cqw; height: 26cqw; }
+  .post .note { position: absolute; left: 7cqw; right: 7cqw; bottom: 7cqw; background: var(--card); border-radius: 4cqw; padding: 6cqw; }
+  .post .note h3 { font-size: 7cqw; }
+  .post .note p { margin: 2cqw 0 0; font-size: 4cqw; line-height: 1.45; }
+  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; padding: 8cqw 5cqw 4cqw; gap: 4cqw; }
+  .phone h3 { font-size: 8cqw; }
+  .phone .card { padding: 5cqw; border-radius: 6cqw; display: flex; gap: 4cqw; align-items: center; }
+  .phone .dot { width: 10cqw; height: 10cqw; border-radius: 50%; flex: none; }
+  .phone .card strong { display: block; font-size: 4.6cqw; }
+  .phone .card span { font-size: 3.8cqw; color: var(--text-muted); }
+  .phone .spacer { flex: 1; }
+  .phone .btn { justify-content: center; }
+  .phone nav { display: flex; gap: 2cqw; }
+  .tab { flex: 1; min-height: 48px; border: 0; border-radius: var(--radius-pill); background: none; color: var(--text-muted); font: 500 3.8cqw var(--font-body); cursor: pointer; }
+  .tab[aria-pressed="true"] { background: var(--card); color: var(--text); }
+
+  @media (max-width: 760px) { .story { grid-template-columns: 1fr; } .hero { padding-bottom: 170px; } }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+<header class="scene hero">
+  <span class="cloud" style="left:8%;top:70px;width:150px;height:44px" aria-hidden="true"></span>
+  <span class="cloud" style="right:10%;top:120px;width:110px;height:34px" aria-hidden="true"></span>
+  <span class="hill back" style="left:-10%;right:30%;bottom:-40px;height:190px" aria-hidden="true"></span>
+  <span class="hill front" style="left:35%;right:-15%;bottom:-60px;height:170px" aria-hidden="true"></span>
+  <div class="copy">
+    <span class="tag">pikmi style</span>
+    <h1 style="margin-top:16px">Pastoral Storybook</h1>
+    <p>Cream paper, sage fields and a wide sky. Soft shapes and small details from nature.</p>
+    <div class="row" style="justify-content:center"><a class="btn" href="#components">Take a walk</a><a href="#slides">See the slides</a></div>
+  </div>
+</header>
+<div class="wrap">
+  <section id="components" aria-labelledby="h-components">
+    <h2 id="h-components">Components</h2>
+    <div class="grid">
+      <div class="card"><h3>Buttons</h3><div class="row" style="margin-top:14px"><a class="btn" href="#ui">Book a table</a><a class="btn warm" href="#app">Open the app</a></div></div>
+      <div class="card"><label for="name">Your name</label><input class="field" id="name" placeholder="Hana"><p class="muted" style="margin:10px 0 0;font-size:15px">We will write it on your jar.</p></div>
+      <div class="panel"><h3>Tags</h3><div class="row" style="margin-top:12px"><span class="tag">seasonal</span><span class="tag" style="background:var(--coral)">fresh today</span></div><p style="margin:12px 0 0"><a href="#social">A deep sage link</a></p></div>
+    </div>
+  </section>
+
+  <section id="ui" aria-labelledby="h-ui">
+    <h2 id="h-ui">UI · A countryside bakery</h2>
+    <div class="story">
+      <div>
+        <h3 style="font-size:30px"><span class="leaf" aria-hidden="true"></span>Bread from the valley</h3>
+        <p>We bake with flour from the mill down the road and bring the loaves up the hill before eight. Come early on Saturdays; the plum buns go first.</p>
+        <a class="btn" href="#components">See this week's loaves</a>
+      </div>
+      <div class="scene pic" aria-hidden="true" style="position:relative">
+        <span class="cloud" style="left:12%;top:18%;width:30%;height:12%"></span>
+        <span class="hill back" style="left:-20%;right:20%;bottom:-10%;height:45%"></span>
+        <span class="hill front" style="left:30%;right:-30%;bottom:-14%;height:40%"></span>
+      </div>
+    </div>
+    <div class="grid" style="margin-top:32px">
+      <div class="card"><h3>Open</h3><p class="muted" style="margin:6px 0 0">Wednesday to Sunday, 7:00 to 14:00.</p></div>
+      <div class="card"><h3>Find us</h3><p class="muted" style="margin:6px 0 0">The blue door after the second bridge.</p></div>
+      <div class="panel"><p class="quote">"The best part of the walk is the smell at the top of the hill."</p><p class="muted" style="margin:10px 0 0;font-size:15px">A note from the guestbook</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-media">
+    <h2 id="h-media">Other media</h2>
+    <div class="canvases">
+      <div id="slides">
+        <div class="canvas"><div class="slide">
+          <span class="cloud" aria-hidden="true"></span>
+          <span class="hill back" aria-hidden="true"></span><span class="hill front" aria-hidden="true"></span>
+          <h3>Why we bake before sunrise</h3>
+          <p>Dough rests through the cool night, so the bread is ready <strong>by seven</strong>, while the valley is still quiet.</p>
+        </div></div>
+        <p class="cap">slides · 1920 x 1080</p>
+      </div>
+      <div id="social">
+        <div class="canvas"><div class="post scene">
+          <span class="cloud" aria-hidden="true"></span><span class="cloud b" aria-hidden="true"></span>
+          <span class="hill back" aria-hidden="true"></span><span class="hill front" aria-hidden="true"></span>
+          <div class="note"><h3>Plum buns are back</h3><p>Saturday morning, while they last. Bring a basket.</p></div>
+        </div></div>
+        <p class="cap">social · 1080 x 1350</p>
+      </div>
+      <div id="app">
+        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
+          <span class="tag" style="align-self:flex-start">Saturday</span>
+          <h3>Your basket</h3>
+          <div class="card"><span class="dot" style="background:var(--coral)"></span><div><strong>Plum buns</strong><span>4 pieces</span></div></div>
+          <div class="card"><span class="dot" style="background:var(--accent)"></span><div><strong>Valley loaf</strong><span>1 loaf</span></div></div>
+          <div class="spacer"></div>
+          <a class="btn" href="#app">Reserve for pickup</a>
+          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Basket</button><button class="tab" type="button" aria-pressed="false">Menu</button><button class="tab" type="button" aria-pressed="false">Visit</button></nav>
+        </div></div>
+        <p class="cap">app · phone</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+  })));
+</script>
+</body>
+</html>
