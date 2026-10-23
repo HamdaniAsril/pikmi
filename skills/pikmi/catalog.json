@@ -138,6 +138,48 @@
       ],
       "preview": "styles/anti-design/preview.html",
       "brand_terms": []
+    },
+    {
+      "id": "corporate-clean",
+      "name": "Corporate Clean",
+      "summary": "Trustworthy enterprise UI with an identity: ledger hairlines, tabular numbers, ink-blue headings and one confident blue for actions.",
+      "keywords": {
+        "en": [
+          "corporate",
+          "enterprise",
+          "b2b",
+          "saas",
+          "professional",
+          "clean",
+          "business",
+          "admin",
+          "trustworthy",
+          "finance",
+          "report"
+        ],
+        "id": [
+          "korporat",
+          "perusahaan",
+          "profesional",
+          "bisnis",
+          "rapi",
+          "formal",
+          "kantor",
+          "keuangan",
+          "laporan"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "light"
+      ],
+      "preview": "styles/corporate-clean/preview.html",
+      "brand_terms": []
     }
   ]
 }
