@@ -38,8 +38,15 @@ pricing page", "fix this button"). Do not offer styles then.
 
 ### 2. A named style
 
-If the user names a style by its catalog name, its id, or a keyword that points to exactly one style, use
-it without offering. Say in one line which style you picked.
+Skip the offer only when the user names a style directly:
+
+- by its catalog `name` or `id`, or a clear short form of it ("cyberpunk", "watercolor", "bento"), or
+- by a brand, product or work listed in that style's `brand_terms` ("ala teenage engineering", "like a
+  Ghibli movie").
+
+Then use that style and say in one line which one you picked. Mood words, topics and occasions
+("ramadan", "luxury", "dark", "devops", "military", "widgets") never skip the offer, even when only one
+style matches them: go to step 3 and put that style first.
 
 ### 3. Offer 2 to 4 styles
 
@@ -47,8 +54,9 @@ it without offering. Say in one line which style you picked.
   meaning, not only by exact word. Indonesian and slang count.
 - Keep only styles whose `media` include the requested medium and whose `themes` include a requested
   theme.
-- Offer 2 to 4, best first. For each give the name, one sentence on why it fits this request, its themes,
-  and the preview `styles/<id>/preview.html` (open it in a browser for the user when you can).
+- Offer 2 to 4, best first, even when one style clearly leads. For each give the name, one sentence on
+  why it fits this request, its themes, and the preview `styles/<id>/preview.html` (open it in a
+  browser for the user when you can).
 - Ask the user to pick. Do not build before they answer.
 
 ### 4. Nothing fits
