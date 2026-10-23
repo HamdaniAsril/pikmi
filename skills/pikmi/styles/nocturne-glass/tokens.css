@@ -1,0 +1,52 @@
+/* pikmi: nocturne-glass */
+/* Nocturne Glass. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Albert+Sans:wght@400;500&display=swap */
+
+:root {
+  --font-display: "Bodoni Moda", Georgia, serif;
+  --font-body: "Albert Sans", system-ui, sans-serif;
+
+  --type-label: 12px;
+  --type-caption: 13px;
+  --type-body: 16px;
+  --type-lead: 19px;
+  --type-h3: 24px;
+  --type-h2: 36px;
+  --type-h1: 56px;
+  --type-display: 88px;
+
+  --tracking-label: 2px;
+
+  --radius-control: 16px;
+  --radius-card: 24px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 28px;
+  --space-xl: 56px;
+
+  --night-deep: #060A13;
+  --moon-steel: #33517A;
+  --moonlight: #7C9CC4;
+  --champagne-bright: #F3DCA8;
+
+  --glass-fill: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-blur: 40px;
+  --glass-shadow: 0 16px 40px rgba(3, 7, 18, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -1px 0 rgba(2, 6, 16, 0.35);
+  --ease-glass: cubic-bezier(0.16, 1, 0.3, 1);
+  --grain-opacity: 0.025;
+
+  /* dark */
+  --page: #0B1322;
+  --panel: #16233A;
+  --card: #16233A;
+  --rule: #303643;
+  --text: #FFFFFF;
+  --text-muted: #A3ABB8;
+  --accent: #E4B863;
+  --on-accent: #0B1322;
+  --link: #F3DCA8;
+  --danger: #F28B82;
+}

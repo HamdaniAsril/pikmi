@@ -442,6 +442,51 @@
       ],
       "preview": "styles/watercolor/preview.html",
       "brand_terms": []
+    },
+    {
+      "id": "nocturne-glass",
+      "name": "Nocturne Glass",
+      "summary": "A deep ink night scene with soft moonlit light wells, solid night-steel surfaces and one or two pieces of colorless frosted glass, lit by a single champagne accent.",
+      "keywords": {
+        "en": [
+          "glassmorphism",
+          "frosted glass",
+          "glass",
+          "liquid glass",
+          "luxury",
+          "premium",
+          "night",
+          "cinematic",
+          "elegant",
+          "quiet luxury",
+          "apple"
+        ],
+        "id": [
+          "kaca",
+          "kaca buram",
+          "mewah",
+          "elegan",
+          "malam",
+          "premium",
+          "sinematik",
+          "kayak iphone",
+          "berkelas"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "dark"
+      ],
+      "preview": "styles/nocturne-glass/preview.html",
+      "brand_terms": [
+        "apple",
+        "liquid glass"
+      ]
     }
   ]
 }

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nocturne Glass · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Albert+Sans:wght@400;500&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { overflow-x: clip; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 16px/1.65 var(--font-body); }
+  a { color: var(--link); text-underline-offset: 4px; }
+  .scene { background:
+    radial-gradient(560px circle at 85% 10%, rgba(124, 156, 196, 0.28), transparent 65%),
+    radial-gradient(520px circle at 10% 90%, rgba(51, 81, 122, 0.35), transparent 65%),
+    radial-gradient(420px circle at 55% 60%, rgba(228, 184, 99, 0.10), transparent 60%),
+    var(--page); }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px 88px; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 500; margin: 0; line-height: 1.08; }
+  h1 { font-size: clamp(44px, 8vw, 88px); }
+  h2 { font-size: 36px; margin-bottom: 24px; }
+  h3 { font-size: 24px; }
+  section { margin-top: 80px; }
+  .muted { color: var(--text-muted); }
+  .label { font: 500 12px/1 var(--font-body); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
+  .panel { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius-card); padding: var(--space-lg); }
+  .glass { position: relative; background: var(--glass-fill); border: 1px solid var(--glass-border); border-radius: var(--radius-card);
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    box-shadow: var(--glass-shadow); padding: var(--space-lg); color: var(--text); transition: transform 500ms var(--ease-glass), border-color 500ms var(--ease-glass); }
+  .glass::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 40%); }
+  .glass:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.3); }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: var(--radius-control); background: var(--accent); color: var(--on-accent);
+    font: 500 16px/1 var(--font-body); text-decoration: none; cursor: pointer; transition: transform 500ms var(--ease-glass); }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: scale(0.97); transition-duration: 150ms; }
+  .btn.quiet { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--glass-border); }
+  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 2px solid var(--champagne-bright); outline-offset: 3px; }
+  .figure { font: 500 56px/1 var(--font-display); color: var(--accent); }
+  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--text-muted); border-radius: var(--radius-control); background: var(--panel); color: var(--text); font: 400 16px var(--font-body); }
+  label { display: block; margin-bottom: 6px; }
+  .grain { position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .hero { min-height: 640px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; padding: 96px 0 72px; }
+  .hero p { font-size: 19px; max-width: 44ch; margin: 20px 0 30px; color: var(--text); }
+  .hero .glass { padding: 32px; }
+  .hero .glass .figure { margin: 12px 0 6px; }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+  .features .n { font: 500 40px/1 var(--font-display); color: var(--accent); display: block; margin-bottom: 10px; }
+
+  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 36px; align-items: start; }
+  #slides { grid-column: 1 / -1; max-width: 960px; }
+  .canvas { container-type: inline-size; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--rule); }
+  .cap { margin-top: 12px; }
+  .slide { aspect-ratio: 16 / 9; position: relative; background:
+    radial-gradient(40cqw circle at 80% 20%, rgba(124, 156, 196, 0.3), transparent 65%),
+    radial-gradient(36cqw circle at 15% 85%, rgba(51, 81, 122, 0.35), transparent 65%), var(--page); }
+  .slide h3 { position: absolute; left: 7cqw; top: 9cqw; width: 46cqw; font-size: 4.4cqw; }
+  .slide .muted { position: absolute; left: 7cqw; top: 26cqw; width: 38cqw; margin: 0; font-size: 1.6cqw; }
+  .slide .glass { position: absolute; right: 7cqw; top: 9cqw; width: 34cqw; padding: 3cqw; border-radius: 2cqw; }
+  .slide .glass .figure { font-size: 9cqw; }
+  .slide .glass span { font-size: 1.4cqw; }
+  .post { aspect-ratio: 4 / 5; position: relative; display: grid; place-items: center; padding: 10cqw; background:
+    radial-gradient(60cqw circle at 50% 30%, rgba(124, 156, 196, 0.32), transparent 65%),
+    radial-gradient(50cqw circle at 20% 95%, rgba(51, 81, 122, 0.4), transparent 65%), var(--page); }
+  .post .glass { width: 100%; text-align: center; padding: 9cqw 6cqw; border-radius: 5cqw; }
+  .post .glass h3 { font-size: 9cqw; }
+  .post .glass p { margin: 3cqw 0 0; font-size: 4cqw; color: var(--text); }
+  .post .glass strong { color: var(--accent); font-weight: 500; }
+  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; position: relative; display: flex; flex-direction: column; padding: 9cqw 5cqw 5cqw; gap: 4cqw;
+    background: radial-gradient(70cqw circle at 80% 0%, rgba(124, 156, 196, 0.3), transparent 65%), var(--page); }
+  .phone h3 { font-size: 8cqw; }
+  .phone .panel { padding: 4cqw 5cqw; border-radius: 5cqw; }
+  .phone .panel .rowi { display: flex; justify-content: space-between; min-height: 44px; align-items: center; font-size: 4.2cqw; border-bottom: 1px solid var(--rule); }
+  .phone .panel .rowi:last-child { border-bottom: 0; }
+  .phone .spacer { flex: 1; }
+  .phone .dock { padding: 4cqw; border-radius: 6cqw; display: flex; flex-direction: column; gap: 3cqw; }
+  .phone .dock .btn { justify-content: center; }
+  .phone nav { display: flex; justify-content: space-around; }
+  .tab { min-height: 44px; padding: 0 3cqw; background: none; border: 0; color: var(--text); opacity: 0.7; font: 500 3.6cqw var(--font-body); cursor: pointer; }
+  .tab[aria-pressed="true"] { opacity: 1; color: var(--champagne-bright); }
+  @media (max-width: 760px) { .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 64px; } }
+  @media (prefers-reduced-motion: reduce) { .glass, .btn { transition: none; } }
+  @media (prefers-reduced-transparency: reduce) { .glass { background: var(--panel); backdrop-filter: none; -webkit-backdrop-filter: none; } }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="scene">
+  <div class="wrap">
+    <header class="hero">
+      <div>
+        <span class="label">pikmi style · dark only</span>
+        <h1 style="margin-top:16px">Nocturne Glass</h1>
+        <p>A deep ink night, soft wells of moonlight and one pane of colorless glass, lit by a single champagne accent.</p>
+        <div class="row"><a class="btn" href="#components">Reserve a suite</a><a class="btn quiet" href="#slides">See the slides</a></div>
+      </div>
+      <div class="glass">
+        <span class="label" style="color:var(--text)">Harbor suite · tonight</span>
+        <div class="figure">Two nights</div>
+        <p style="margin:0">Late checkout and a table at the rooftop bar. Placeholder offer for the preview.</p>
+      </div>
+    </header>
+  </div>
+</div>
+<div class="wrap">
+  <section id="components" aria-labelledby="h-components">
+    <h2 id="h-components">Components</h2>
+    <div class="grid">
+      <div class="panel"><h3>Buttons</h3><div class="row" style="margin-top:16px"><a class="btn" href="#ui">Book the suite</a><a class="btn quiet" href="#app">View the menu</a></div></div>
+      <div class="panel"><label class="muted" for="arrive">Arrival date</label><input class="field" id="arrive" placeholder="Friday, 14 November"><p class="muted" style="margin:10px 0 0;font-size:14px">Secondary text lives on solid panels.</p></div>
+      <div class="panel"><span class="label">Rate</span><div class="figure" style="margin-top:10px">[REAL DATA]</div><p style="margin:8px 0 0"><a href="#social">A champagne link</a></p></div>
+    </div>
+  </section>
+
+  <section id="ui" aria-labelledby="h-ui">
+    <h2 id="h-ui">UI · A harbor hotel</h2>
+    <div class="features">
+      <div><span class="n">01</span><h3>Rooms above the water</h3><p class="muted">Every suite faces the harbor, with blackout glass for late mornings.</p></div>
+      <div><span class="n">02</span><h3>A quiet rooftop</h3><p class="muted">Twelve tables, no music after eleven, a view of the lights across the bay.</p></div>
+      <div><span class="n">03</span><h3>Arrive late</h3><p class="muted">The front desk and the kitchen stay open through the night.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-media">
+    <h2 id="h-media">Other media</h2>
+    <div class="canvases">
+      <div id="slides">
+        <div class="canvas"><div class="slide">
+          <h3>Guests stay longer when they arrive at night</h3>
+          <p class="muted">Average stay for late arrivals, last season. Replace with real figures.</p>
+          <div class="glass"><span class="label" style="color:var(--text)">Average stay</span><div class="figure">[n]</div><span>nights</span></div>
+        </div></div>
+        <p class="cap label">slides · 1920 x 1080</p>
+      </div>
+      <div id="social">
+        <div class="canvas"><div class="post">
+          <div class="glass"><h3>The rooftop reopens</h3><p>Friday from nine, <strong>by reservation</strong>.</p></div>
+        </div></div>
+        <p class="cap label">social · 1080 x 1350</p>
+      </div>
+      <div id="app">
+        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
+          <span class="label">Your stay</span>
+          <h3>Harbor suite</h3>
+          <div class="panel">
+            <div class="rowi"><span>Check in</span><span class="muted">Fri, 22:30</span></div>
+            <div class="rowi"><span>Nights</span><span class="muted">2</span></div>
+            <div class="rowi"><span>Rooftop</span><span class="muted">Table for two</span></div>
+          </div>
+          <div class="spacer"></div>
+          <div class="glass dock">
+            <a class="btn" href="#app">Open room key</a>
+            <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Stay</button><button class="tab" type="button" aria-pressed="false">Dine</button><button class="tab" type="button" aria-pressed="false">Help</button></nav>
+          </div>
+        </div></div>
+        <p class="cap label">app · phone</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+  })));
+</script>
+</body>
+</html>
