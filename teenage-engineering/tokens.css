@@ -1,0 +1,63 @@
+/* Teenage Engineering / instrument panel UI. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=Doto:wght@700;900&family=Noto+Sans+JP:wght@200;300;400;500&display=swap */
+
+:root {
+  --font-sans: "Noto Sans JP", system-ui, sans-serif;
+  --font-dot: "Doto", ui-monospace, monospace;
+
+  --radius-key: 4px;
+  --radius-control: 6px;
+  --radius-panel: 12px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+  --label-tracking: 1.5px;
+
+  --signal-blue: #0071bb;
+  --signal-green: #006837;
+  --signal-yellow: #fab413;
+  --led: #2bd46b;
+
+  /* light: OP–1 field, EP–133 */
+  --page: #f0f0ef;
+  --panel: #e5e5e5;
+  --card: #f5f5f5;
+  --rule: #cccccc;
+  --text: #0f0e12;
+  --text-muted: #4d4d4d;
+  --accent: #f05a24;
+  --on-accent: #0f0e12;
+  --danger: #b81d13;
+  --link: #0071bb;
+  --key: #f5f5f5;
+  --key-label: #4d4d4d;
+  --key-number: #0f0e12;
+  --key-shadow: #b2b2b2;
+  --key-alt: #0f0e12;
+  --key-alt-label: #b2b2b2;
+  --key-alt-number: #f5f5f5;
+  --key-alt-shadow: #000000;
+  --key-active: #f05a24;
+  --key-active-ink: #0f0e12;
+  --key-active-shadow: #9c3612;
+  --screen: #0f0e12;
+  --on-screen: #f5f5f5;
+}
+
+/* black edition: OP–XY, TX–6 black */
+[data-theme="dark"] {
+  --page: #0f0e12;
+  --panel: #272727;
+  --card: #272727;
+  --rule: #4d4d4d;
+  --text: #f5f5f5;
+  --text-muted: #b2b2b2;
+  --danger: #ff7a6b;
+  --link: #f5f5f5;
+  --key: #3b3b3d;
+  --key-label: #b2b2b2;
+  --key-number: #f5f5f5;
+  --key-shadow: #000000;
+}
