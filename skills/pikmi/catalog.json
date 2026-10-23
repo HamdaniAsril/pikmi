@@ -97,6 +97,47 @@
         "cyberpunk 2077",
         "blade runner"
       ]
+    },
+    {
+      "id": "anti-design",
+      "name": "Anti-Design",
+      "summary": "Loud neo-brutalism: thick black borders, hard offset shadows, clashing primary colors, square corners and type sizes that collide on purpose.",
+      "keywords": {
+        "en": [
+          "anti-design",
+          "brutalism",
+          "brutalist",
+          "neo-brutalism",
+          "loud",
+          "chaotic",
+          "raw",
+          "zine",
+          "punk",
+          "bold",
+          "clashing"
+        ],
+        "id": [
+          "brutal",
+          "berantakan",
+          "nabrak",
+          "rame",
+          "nyentrik",
+          "mencolok",
+          "kayak poster punk",
+          "norak tapi keren"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "light"
+      ],
+      "preview": "styles/anti-design/preview.html",
+      "brand_terms": []
     }
   ]
 }
