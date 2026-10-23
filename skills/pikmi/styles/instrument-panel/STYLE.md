@@ -104,6 +104,9 @@ Use the role tokens, never raw colors, so switching edition never turns a dark k
 .cta { background: var(--text); color: var(--page); border-radius: var(--radius-pill); padding: 12px 26px;
   font: 300 16px var(--font-sans); }
 .link { color: var(--link); }
+.field { min-height: 44px; width: 100%; padding: 0 var(--space-sm); border: 1px solid var(--text-muted);
+  border-radius: var(--radius-key); background: var(--card); color: var(--text); font: 300 16px var(--font-sans); }
+.field:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
 [data-theme="dark"] .link { text-decoration: underline; }
 
 .sticker { width: 96px; aspect-ratio: 1; display: grid; place-items: center; rotate: -8deg;
@@ -178,6 +181,10 @@ pill-radius box at a panel corner.
 | `--link` | `--page` | light | 4.51 | Blue links pass on the light page. |
 | `--link` | `--card` | light | 4.72 | Blue links pass on light cards; not on graphite, so dark links are underlined light text. |
 | `--danger` | `--key` | dark | 4.39 | Keep dark error text on panels and cards, not on keys. |
+| `--text` | `--page` | light | 16.87 | Focus ring on the light page. |
+| `--text` | `--page` | dark | 17.64 | Focus ring on the black page. |
+| `--text-muted` | `--card` | light | 7.75 | Field border on light cards. |
+| `--text-muted` | `--card` | dark | 7.05 | Field border on graphite cards. |
 
 ## Pitfalls
 

@@ -38,12 +38,24 @@ HEX_RE = re.compile(r"^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$", re.I)
 RGB_RE = re.compile(r"^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:[\s,/]+([\d.]+%?))?\s*\)$", re.I)
 
 
+NON_TEXT_ROWS = ("Focus ring", "Field border")
+NON_TEXT_MINIMUM = 3.0
+TAP_TARGET_MINIMUM = 44
+TAP_TARGET_HINTS = (".btn", ".field", ".tab", ".key", ".seg", "button")
+SCALED_CANVAS_HINTS = (".slide", ".post", ".corner")
+CSS_FENCE_RE = re.compile(r"```css\n(.*?)```", re.S)
+STYLE_TAG_RE = re.compile(r"<style[^>]*>(.*?)</style>", re.S | re.I)
+MIN_HEIGHT_RE = re.compile(r"min-height\s*:\s*(\d+(?:\.\d+)?)px")
+
+
 @dataclass
 class ContrastRow:
     text: str
     on: str
     theme: str
-    ratio: float
+    ratio: float | None
+    raw: str = ""
+    rule: str = ""
 
 
 def norm(value: str) -> str:
@@ -150,13 +162,14 @@ def parse_contrast_table(style_md: str) -> list[ContrastRow]:
         if not line.strip().startswith("|"):
             continue
         cells = [cell.strip().strip("`").strip() for cell in line.strip().strip("|").split("|")]
-        if len(cells) < 4:
+        if len(cells) < 4 or cells[3].lower() == "ratio" or set(cells[3]) <= set("-: "):
             continue
         try:
-            ratio = float(cells[3])
+            ratio: float | None = float(cells[3])
         except ValueError:
-            continue
-        rows.append(ContrastRow(text=cells[0], on=cells[1], theme=cells[2], ratio=ratio))
+            ratio = None
+        rule = cells[4] if len(cells) > 4 else ""
+        rows.append(ContrastRow(text=cells[0], on=cells[1], theme=cells[2], ratio=ratio, raw=cells[3], rule=rule))
     return rows
 
 
@@ -247,7 +260,15 @@ def _resolve(cell: str, theme: str, tokens: dict) -> str | None:
 
 def _check_contrast(sid: str, style: Path, tokens: dict, themes: list[str]) -> list[str]:
     errors = []
-    for row in parse_contrast_table((style / "STYLE.md").read_text()):
+    rows = parse_contrast_table((style / "STYLE.md").read_text())
+    for kind in NON_TEXT_ROWS:
+        for theme in themes:
+            if not any(r.theme == theme and r.rule.startswith(kind) for r in rows):
+                errors.append(f"{sid}: contrast table needs a '{kind}' row for theme '{theme}'")
+    for row in rows:
+        if row.ratio is None:
+            errors.append(f"{sid}: contrast ratio '{row.raw}' is not a number")
+            continue
         if row.theme not in themes:
             errors.append(f"{sid}: contrast row uses theme '{row.theme}' not listed in catalog")
             continue
@@ -266,6 +287,29 @@ def _check_contrast(sid: str, style: Path, tokens: dict, themes: list[str]) -> l
             errors.append(
                 f"{sid}: contrast {row.text} on {row.on} ({row.theme}) is {actual:.2f}, STYLE.md says {row.ratio:.2f}"
             )
+        kind = next((k for k in NON_TEXT_ROWS if row.rule.startswith(k)), None)
+        if kind and actual < NON_TEXT_MINIMUM:
+            errors.append(
+                f"{sid}: {kind} row {row.text} on {row.on} ({row.theme}) is {actual:.2f}, below {NON_TEXT_MINIMUM}"
+            )
+    return errors
+
+
+def _check_tap_targets(sid: str, style: Path) -> list[str]:
+    sources = {
+        "STYLE.md": "\n".join(CSS_FENCE_RE.findall((style / "STYLE.md").read_text())),
+        "preview.html": "\n".join(STYLE_TAG_RE.findall((style / "preview.html").read_text())),
+    }
+    errors = []
+    for name, css in sources.items():
+        for selector, body in BLOCK_RE.findall(COMMENT_RE.sub("", css)):
+            selector = " ".join(selector.split())
+            if not any(h in selector for h in TAP_TARGET_HINTS) or any(h in selector for h in SCALED_CANVAS_HINTS):
+                continue
+            for value in MIN_HEIGHT_RE.findall(body):
+                height = float(value)
+                if 0 < height < TAP_TARGET_MINIMUM:
+                    errors.append(f"{sid}: {selector} min-height {value}px is below {TAP_TARGET_MINIMUM}px in {name}")
     return errors
 
 
@@ -355,6 +399,7 @@ def check_style(root: Path, entry: dict) -> list[str]:
         + _check_style_md(sid, style, media)
         + _check_preview(sid, style, media)
         + _check_copy(sid, style, entry.get("brand_terms") or [])
+        + _check_tap_targets(sid, style)
     )
 
 

@@ -87,7 +87,7 @@ Dial: ENERGY 3 / RHYTHM 2 / MOTION 2
 .readout .value { font-size: 64px; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
 .readout .unit { color: var(--accent); }
 
-.field { min-height: 44px; width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--rule);
+.field { min-height: 44px; width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--text-muted);
   border-radius: var(--radius-key); padding: 0 var(--space-md); font: 400 16px var(--font-mono); }
 .field:focus { border-color: var(--accent); }
 
@@ -157,6 +157,8 @@ Dial: ENERGY 3 / RHYTHM 2 / MOTION 2
 | `--neon-magenta` | `--page` | dark | 6.18 | Magenta text passes on the page. |
 | `--neon-yellow` | `--page` | dark | 12.90 | Warnings. |
 | `--danger` | `--card` | dark | 6.12 | Error text on cards. |
+| `--neon-magenta` | `--page` | dark | 6.18 | Focus ring (magenta outline). |
+| `--text-muted` | `--card` | dark | 7.08 | Field border at rest; it turns cyan on focus. |
 
 ## Pitfalls
 

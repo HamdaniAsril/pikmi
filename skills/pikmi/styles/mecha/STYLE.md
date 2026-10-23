@@ -141,6 +141,8 @@ Field borders use `--text-muted` because the green rule is too faint to mark an 
 | `--danger` | `--card` | dark | 4.93 | Error text. |
 | `--hazard-red` | `--page` | dark | 4.42 | Hazard red only as a fill or large text. |
 | `--text` | `--armor-green` | dark | 5.99 | Text on green plates. |
+| `--text` | `--page` | dark | 13.67 | Focus ring (3px light outline). |
+| `--text-muted` | `--card` | dark | 6.45 | Field border (2px). |
 
 ## Pitfalls
 

@@ -69,6 +69,7 @@ Dial: ENERGY 3 / RHYTHM 3 / MOTION 1
 .btn:active { box-shadow: none; transform: translate(4px, 4px); }
 .btn:focus-visible, .field:focus-visible { outline: var(--border-focus); outline-offset: 2px; }
 .btn.blue { background: var(--clash-blue); color: #FFFFFF; }
+.block.blue :focus-visible { outline-color: var(--clash-yellow); }
 
 .field { min-height: 48px; width: 100%; border: var(--border-heavy); border-radius: 0; padding: 0 var(--space-md);
   background: var(--card); color: var(--text); font: 700 18px var(--font-body); }
@@ -137,6 +138,9 @@ and never move on hover, so the cursor and the keyboard focus always find them w
 | `#000000` | `--clash-magenta` | light | 6.70 | Black on magenta. |
 | `#000000` | `--clash-cyan` | light | 16.75 | Black on cyan. |
 | `#000000` | `--clash-green` | light | 15.30 | Black on green. |
+| `--clash-blue` | `--page` | light | 8.59 | Focus ring (8px blue) on white and yellow. |
+| `--clash-yellow` | `--clash-blue` | light | 8.00 | Focus ring on blue bands switches to yellow. |
+| `--rule` | `--card` | light | 21.00 | Field border (6px black). |
 
 ## Pitfalls
 

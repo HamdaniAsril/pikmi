@@ -77,7 +77,9 @@ a.tile:hover .icon { background: var(--accent); }
 .btn { min-height: 44px; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-control);
   background: var(--accent); color: var(--on-accent); font: 500 15px/1 var(--font-body); }
 .btn:active { transform: scale(0.98); }
-.btn:focus-visible, a.tile:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.btn:focus-visible, a.tile:focus-visible, .field:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.field { min-height: 44px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--text-muted);
+  border-radius: var(--radius-control); background: var(--card); color: var(--text); font: 400 16px var(--font-body); }
 @media (prefers-reduced-motion: reduce) { a.tile, .tile .icon { transition: none; } }
 ```
 
@@ -135,6 +137,10 @@ a.tile:hover .icon { background: var(--accent); }
 | `--on-accent` | `--accent` | dark | 6.54 | Dark text on the dark-theme tangerine. |
 | `--link` | `--panel` | dark | 8.48 | Links in dark. |
 | `--danger` | `--card` | dark | 5.90 | Error text in dark. |
+| `--text` | `--page` | light | 16.12 | Focus ring (2px, offset 2px). |
+| `--text` | `--page` | dark | 17.42 | Focus ring in dark. |
+| `--text-muted` | `--card` | light | 7.73 | Field border on cards. |
+| `--text-muted` | `--card` | dark | 6.41 | Field border on dark cards. |
 
 ## Pitfalls
 

@@ -70,7 +70,7 @@ Dial: ENERGY 2 / RHYTHM 2 / MOTION 2
   color: var(--bark); font: 500 var(--type-label)/1.4 var(--font-body); }
 
 h1, h2, h3 { font-family: var(--font-display); font-weight: 700; color: var(--text); }
-.field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 2px solid var(--rule);
+.field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 2px solid var(--text-muted);
   border-radius: 16px; background: var(--card); color: var(--text); font: 400 17px var(--font-body); }
 
 .hill { background: linear-gradient(180deg, var(--accent), #5E9E8C); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
@@ -132,6 +132,8 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 700; color: var(--te
 | `--bark` | `--sky` | light | 7.85 | Text and links on sky. |
 | `--text` | `--sky` | light | 4.68 | Brown ink passes even on the darkest stop of the sky. |
 | `--link` | `--sky` | light | 3.50 | Sage links fail on the sky; use `--bark` there. |
+| `--link` | `--page` | light | 5.04 | Focus ring (3px deep sage). |
+| `--text-muted` | `--card` | light | 6.50 | Field border on cards. |
 
 ## Pitfalls
 

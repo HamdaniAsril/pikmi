@@ -122,6 +122,10 @@ Nothing special.
 | Text | On | Theme | Ratio | Rule |
 | --- | --- | --- | --- | --- |
 | `--text` | `--page` | light | 21.00 | Body text. |
+| `--text` | `--page` | light | 21.00 | Focus ring on the page. |
+| `--text` | `--page` | dark | 21.00 | Focus ring on the dark page. |
+| `--text-muted` | `--card` | light | 9.74 | Field border on cards. |
+| `--text-muted` | `--card` | dark | 9.74 | Field border on dark cards. |
 
 ## Pitfalls
 
@@ -282,6 +286,32 @@ class CheckRepoTest(unittest.TestCase):
     def test_description_too_long(self) -> None:
         (self.skill / "SKILL.md").write_text(ROUTER.replace("Pick a visual style.", "x" * 1025))
         self.assertError("description is 1025 characters (limit 1024)")
+
+    def test_ratio_cell_not_a_number(self) -> None:
+        edit(self.style / "STYLE.md", "| light | 21.00 | Body text. |", "| light | 21:1 | Body text. |")
+        self.assertError("demo: contrast ratio '21:1' is not a number")
+
+    def test_focus_row_required(self) -> None:
+        edit(self.style / "STYLE.md", "| `--text` | `--page` | light | 21.00 | Focus ring on the page. |\n", "")
+        self.assertError("demo: contrast table needs a 'Focus ring' row for theme 'light'")
+
+    def test_focus_row_below_three(self) -> None:
+        edit(self.style / "STYLE.md", "| `--text` | `--page` | light | 21.00 | Focus ring on the page. |",
+             "| `--rule` | `--card` | light | 1.61 | Focus ring on the page. |")
+        self.assertError("demo: Focus ring row --rule on --card (light) is 1.61, below 3.0")
+
+    def test_field_border_row_required(self) -> None:
+        edit(self.style / "STYLE.md", "| `--text-muted` | `--card` | dark | 9.74 | Field border on dark cards. |\n", "")
+        self.assertError("demo: contrast table needs a 'Field border' row for theme 'dark'")
+
+    def test_tap_target_too_small(self) -> None:
+        edit(self.style / "preview.html", "</head>", "<style>.btn { min-height: 40px; }</style>\n</head>")
+        self.assertError("demo: .btn min-height 40px is below 44px in preview.html")
+
+    def test_tap_target_ignores_scaled_canvas(self) -> None:
+        edit(self.style / "preview.html", "</head>",
+             "<style>.slide .key { min-height: 0; } .post .btn { min-height: 20px; }</style>\n</head>")
+        self.assertFalse(any("min-height" in e for e in check.check_repo(self.root)))
 
     def test_cli_ok(self) -> None:
         result = subprocess.run(

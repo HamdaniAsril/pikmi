@@ -63,7 +63,7 @@ Dial: ENERGY 2 / RHYTHM 1 / MOTION 1
 .btn:hover { box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 35%, transparent); }
 .btn:active { transform: scale(0.98); }
 .btn.quiet { background: transparent; color: var(--text); }
-.btn:focus-visible, .field:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.btn:focus-visible, .field:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
 
 .frame { position: relative; background: var(--card); border: 2px solid var(--rule); border-radius: var(--radius-card);
   padding: var(--space-xl) var(--space-lg); text-align: center; }
@@ -78,7 +78,7 @@ Dial: ENERGY 2 / RHYTHM 1 / MOTION 1
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='%23C9A74E' opacity='0.08'%3E%3Crect x='15' y='15' width='18' height='18'/%3E%3Crect x='15' y='15' width='18' height='18' transform='rotate(45 24 24)'/%3E%3C/g%3E%3C/svg%3E"); }
 
 h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: var(--tracking-heading); color: var(--text); }
-.field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--rule); border-radius: var(--radius-control);
+.field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--text-muted); border-radius: var(--radius-control);
   background: var(--card); color: var(--text); font: 400 17px var(--font-body); }
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
 ```
@@ -141,6 +141,10 @@ so the overlap does not darken, repeating every 48px.
 | `--on-accent` | `--accent` | dark | 6.33 | Deep blue on gold buttons. |
 | `--link` | `--page` | dark | 9.48 | Light gold links. |
 | `--danger` | `--card` | dark | 4.73 | Error text on dark cards. |
+| `--link` | `--page` | light | 9.90 | Focus ring in lapis by day; gold would be 1.96. |
+| `--link` | `--page` | dark | 9.48 | Focus ring in light gold by night. |
+| `--text-muted` | `--card` | light | 6.83 | Field border on ivory cards. |
+| `--text-muted` | `--card` | dark | 5.52 | Field border on deep blue cards. |
 
 ## Pitfalls
 
@@ -161,4 +165,4 @@ so the overlap does not darken, repeating every 48px.
 - [ ] No gold text on ivory.
 - [ ] No sacred text, verses or mosque imagery used as decoration.
 - [ ] Both themes are complete and pass the contrast table.
-- [ ] Focus shows a gold outline; transitions are slow and symmetric.
+- [ ] Focus shows an outline in `--link` (lapis by day, light gold by night); transitions are slow and symmetric.

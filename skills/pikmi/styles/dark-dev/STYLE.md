@@ -54,7 +54,7 @@ Dial: ENERGY 1 / RHYTHM 2 / MOTION 1
 ## Components
 
 ```css
-.btn { min-height: 40px; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-control);
+.btn { min-height: 44px; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-control);
   background: var(--accent); color: var(--on-accent); box-shadow: var(--inset-glow);
   font: 500 14px/1 var(--font-body); transition: background-color 200ms ease-out, box-shadow 200ms ease-out; }
 .btn:hover { background: #1D4ED8; box-shadow: var(--inset-glow), 0 0 0 1px var(--link); }
@@ -71,7 +71,7 @@ a.card:hover .desc { color: var(--body-text); }
 code, .mono { font-family: var(--font-mono); font-size: 0.92em; }
 .code { background: var(--page); border: 1px solid var(--rule); border-radius: var(--radius-control); padding: var(--space-md);
   font: 400 13px/1.7 var(--font-mono); color: var(--body-text); overflow-x: auto; }
-.field { min-height: 40px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--rule-hover); border-radius: var(--radius-control);
+.field { min-height: 44px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--rule-hover); border-radius: var(--radius-control);
   background: var(--page); color: var(--text); font: 400 14px var(--font-body); }
 .badge { display: inline-flex; align-items: center; gap: 6px; font: 500 12px/1 var(--font-body); }
 .badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
@@ -132,7 +132,8 @@ Inputs use `--rule-hover` as their border (3.75:1) so the field edge stays visib
 | `--link` | `--panel` | dark | 5.75 | Links. |
 | `--success` | `--panel` | dark | 6.42 | Success badges. |
 | `--danger` | `--panel` | dark | 5.29 | Errors. |
-| `--rule-hover` | `--page` | dark | 3.75 | Input borders pass the 3:1 non-text minimum. |
+| `--rule-hover` | `--page` | dark | 3.75 | Field border: input borders pass the 3:1 non-text minimum. |
+| `--link` | `--page` | dark | 7.02 | Focus ring (2px light blue, offset 2px). |
 
 ## Pitfalls
 

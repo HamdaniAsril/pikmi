@@ -78,8 +78,9 @@ a.card:hover { box-shadow: var(--bloom-shadow); }
 @media (prefers-reduced-motion: reduce) { .btn, .card { transition: none; } }
 ```
 
-Washes stay at 30% opacity or less wherever text crosses them; at that strength body ink still passes
-4.5:1 on every wash color. Secondary text never sits over a wash.
+Washes stay at 30% opacity or less wherever text crosses them, and never overlap behind text; at that
+strength a single wash keeps body ink above 4.5:1, while two overlapping washes drop it to 4.09. Secondary
+text never sits over a wash.
 
 ## Recipes
 
@@ -132,10 +133,14 @@ Washes stay at 30% opacity or less wherever text crosses them; at that strength 
 | `--text` | `rgba(195, 141, 148, 0.35)` | light | 4.50 | Rose is the limit; keep washes at 30% behind text. |
 | `--text-muted` | `rgba(232, 168, 124, 0.35)` | light | 4.15 | Secondary text fails over washes; keep it on plain paper. |
 | `--danger` | `--page` | light | 5.49 | Error text. |
+| `--text` | `#E6C7BE` | light | 4.09 | Peach and rose washes overlapping behind text fail; keep washes apart. |
+| `--accent` | `--page` | light | 4.82 | Focus ring (2px blue-grey). |
+| `--text-muted` | `--card` | light | 5.47 | Field border on cards. |
 
 ## Pitfalls
 
-- Washes stronger than 30% behind text, or more than two washes in a view.
+- Washes stronger than 30% behind text, more than two washes in a view, or two washes overlapping
+  behind text.
 - All-italic body text; italic is for headings and short emphasis.
 - Hard borders, sharp corners, black backgrounds or hard offset shadows.
 - Saturated, fully opaque color blocks; color is always translucent here.
@@ -146,7 +151,7 @@ Washes stay at 30% opacity or less wherever text crosses them; at that strength 
 ## Checklist
 
 - [ ] Paper background; ink is blue-grey.
-- [ ] Two washes at most per view, at 30% or less behind text.
+- [ ] Two washes at most per view, at 30% or less behind text, never overlapping behind text.
 - [ ] Headings are Cormorant italic; body is Crimson Pro upright at 19px.
 - [ ] Controls 16px radius, cards 28px, no pills.
 - [ ] Hover shows the blue bloom; nothing else casts shadows.

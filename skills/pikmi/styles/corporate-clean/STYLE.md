@@ -51,6 +51,7 @@ Dial: ENERGY 1 / RHYTHM 2 / MOTION 1
 | `--text`, `--text-muted` | body and secondary text |
 | `--ink` | headings and key figures |
 | `--accent`, `--on-accent`, `--link`, `--focus` | actions, links and focus rings |
+| `--field-border` | input borders (3:1 or more on cards) |
 | `--success`, `--warning`, `--danger` | status text and badges only |
 | `--shadow-rest`, `--shadow-raised` | elevation levels |
 
@@ -78,7 +79,7 @@ a.card:hover { transform: translateY(-2px); box-shadow: var(--shadow-raised); }
 .ledger td { padding: 12px; border-bottom: 1px solid var(--rule); }
 .ledger td.num, .ledger th.num { text-align: right; }
 
-.field { min-height: 44px; width: 100%; padding: 0 12px; border: 1px solid var(--rule); border-radius: var(--radius-control);
+.field { min-height: 44px; width: 100%; padding: 0 12px; border: 1px solid var(--field-border); border-radius: var(--radius-control);
   background: var(--card); color: var(--text); font: 400 16px var(--font-body); }
 .badge { display: inline-flex; align-items: center; gap: 6px; font: 500 13px/1 var(--font-body); }
 .badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
@@ -138,6 +139,8 @@ a.card:hover { transform: translateY(-2px); box-shadow: var(--shadow-raised); }
 | `--danger` | `--card` | light | 4.83 | Error text. |
 | `--success` | `--card` | light | 5.02 | Success text. |
 | `--warning` | `--card` | light | 5.02 | Warning text. |
+| `--focus` | `--page` | light | 3.52 | Focus ring (2px, offset 2px). |
+| `--field-border` | `--card` | light | 4.83 | Field border on cards. |
 
 ## Pitfalls
 

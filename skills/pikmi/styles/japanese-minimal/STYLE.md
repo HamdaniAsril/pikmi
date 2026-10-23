@@ -48,7 +48,7 @@ Dial: ENERGY 1 / RHYTHM 2 / MOTION 1
 | `--page`, `--panel`, `--card` | rice white, quiet bands, white cards |
 | `--rule`, `--hairline` | 1px section dividers |
 | `--text`, `--text-muted` | slate text and secondary text (also input lines) |
-| `--accent`, `--on-accent` | the sky pastel for focus, fills and lines; dark text on its fills |
+| `--accent`, `--on-accent` | the sky pastel for fills and lines; dark text on its fills |
 | `--mint`, `--sakura`, `--powder` | alternative pastels, one per page |
 | `--link`, `--danger` | links and errors |
 | `--space-section` | the 128px gap between sections |
@@ -65,7 +65,7 @@ h1, h2, h3 { font-weight: 200; letter-spacing: var(--tracking-heading); color: v
 .btn:hover { background: var(--panel); transform: translateY(-1px); }
 .btn:active { opacity: 0.8; }
 .btn.fill { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.btn:focus-visible, .line-field input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn:focus-visible, .line-field input:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
 .section { padding-block: var(--space-section); border-top: var(--hairline); }
 .card { background: var(--card); border: var(--hairline); border-radius: var(--radius-card); padding: var(--space-lg); }
@@ -108,7 +108,7 @@ The floating label stays visible above the field at all times; it never disappea
 
 - White screens, hairline-separated rows, 48pt rows with generous side padding.
 - One outline primary button; filled sky only for the single most important action.
-- Bottom-line inputs with visible labels; focus shows the sky outline.
+- Bottom-line inputs with visible labels; focus shows the `--link` outline.
 
 ## Outside CSS
 
@@ -131,6 +131,8 @@ The floating label stays visible above the field at all times; it never disappea
 | `--danger` | `--page` | light | 4.97 | Error text. |
 | `--accent` | `--page` | light | 2.12 | The sky pastel never carries text on the page. |
 | `--text` | `--powder` | light | 4.86 | Slate text can sit on a powder field if it must. |
+| `--link` | `--page` | light | 5.07 | Focus ring; the sky pastel would be only 2.12. |
+| `--text-muted` | `--page` | light | 4.97 | Field border (the bottom line of inputs). |
 
 ## Pitfalls
 
@@ -139,7 +141,7 @@ The floating label stays visible above the field at all times; it never disappea
 - More than one pastel on a page, or pastel text.
 - Hairline input lines in `--rule`; they fail non-text contrast. Use `--text-muted`.
 - Thin text below 16px; weight 300 at small sizes turns grey and faint.
-- Focus shown only by a faint line color change; use the visible sky outline.
+- Focus shown only by a faint line color change, or by the sky pastel (2.12:1); use the `--link` outline.
 - A perfectly centered, symmetrical template layout with no branch or asymmetry; it reads as sterile.
 
 ## Checklist
@@ -149,6 +151,6 @@ The floating label stays visible above the field at all times; it never disappea
 - [ ] Only hairlines divide content; there are no shadows.
 - [ ] Exactly one pastel appears, and never as text.
 - [ ] Inputs show a bottom line in `--text-muted` and a label that stays visible.
-- [ ] Focus is a 2px sky outline.
+- [ ] Focus is a 2px outline in `--link`.
 - [ ] One branch or leaf drawing per section, off-center.
 - [ ] Motion is 500ms and at most 1px of movement, off under reduced motion.

@@ -138,6 +138,8 @@ The seal's white text on bright vermilion is 4.07:1, so seal text must be 22px o
 | `--gold-leaf` | `--indigo` | light | 5.43 | Gold only ever on indigo. |
 | `--page` | `--indigo` | light | 11.54 | Paper text on indigo blocks. |
 | `--danger` | `--page` | light | 6.57 | Error text. |
+| `--vermilion` | `--page` | light | 3.57 | Focus ring (3px vermilion). |
+| `--rule` | `--card` | light | 12.37 | Field border (2px indigo). |
 
 ## Pitfalls
 

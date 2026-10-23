@@ -149,6 +149,8 @@ light well, glass drops secondary text below 4.5:1.
 | `--text-muted` | `rgba(124, 156, 196, 0.32)` | dark | 4.62 | Keep moonlight wells at 32% or less so secondary text on the bare scene passes. |
 | `--text` | `#3C495D` | dark | 9.12 | White on glass over the brightest light well. |
 | `--text-muted` | `#3C495D` | dark | 3.94 | Secondary text fails on glass over a light well; keep it on panels. |
+| `--champagne-bright` | `--page` | dark | 13.81 | Focus ring (2px champagne bright). |
+| `--text-muted` | `--panel` | dark | 6.79 | Field border on panels. |
 
 ## Pitfalls
 
