@@ -1,0 +1,9 @@
+{
+  "name": "pikmi",
+  "version": "0.1.0",
+  "description": "Pick a visual style for web UI, slides, social posts and apps. Not like other UIs.",
+  "author": {
+    "name": "HamdaniAsril"
+  },
+  "keywords": ["design", "style", "ui", "slides", "social-media", "design-tokens"]
+}

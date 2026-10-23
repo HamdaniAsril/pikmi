@@ -1,0 +1,15 @@
+{
+  "name": "pikmi",
+  "owner": {
+    "name": "HamdaniAsril"
+  },
+  "plugins": [
+    {
+      "name": "pikmi",
+      "source": "./",
+      "description": "Pick a visual style for web UI, slides, social posts and apps. Not like other UIs.",
+      "version": "0.1.0",
+      "category": "design"
+    }
+  ]
+}
