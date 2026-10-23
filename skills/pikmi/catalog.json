@@ -54,6 +54,49 @@
         "k.o. ii",
         "pocket operator"
       ]
+    },
+    {
+      "id": "cyberpunk-neon",
+      "name": "Cyberpunk Neon",
+      "summary": "Near-black night surfaces, cyan and magenta neon, hard thin strokes and HUD readouts; louder and more electric than Mecha.",
+      "keywords": {
+        "en": [
+          "cyberpunk",
+          "neon",
+          "futuristic",
+          "sci-fi",
+          "hud",
+          "gaming",
+          "night city",
+          "hacker",
+          "synthwave",
+          "cyberpunk 2077",
+          "blade runner"
+        ],
+        "id": [
+          "neon",
+          "futuristik",
+          "masa depan",
+          "game",
+          "kota malam",
+          "hacker",
+          "kayak game cyberpunk"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "dark"
+      ],
+      "preview": "styles/cyberpunk-neon/preview.html",
+      "brand_terms": [
+        "cyberpunk 2077",
+        "blade runner"
+      ]
     }
   ]
 }

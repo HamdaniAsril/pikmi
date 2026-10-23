@@ -1,0 +1,47 @@
+/* pikmi: cyberpunk-neon */
+/* Cyberpunk Neon. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Share+Tech+Mono&display=swap */
+
+:root {
+  --font-display: "Chakra Petch", system-ui, sans-serif;
+  --font-mono: "Share Tech Mono", ui-monospace, monospace;
+
+  --type-label: 12px;
+  --type-caption: 13px;
+  --type-body: 16px;
+  --type-lead: 18px;
+  --type-h3: 24px;
+  --type-h2: 36px;
+  --type-h1: 56px;
+  --type-display: 96px;
+
+  --tracking-label: 2px;
+  --tracking-display: 1px;
+
+  --radius-key: 2px;
+  --radius-panel: 4px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+
+  --neon-magenta: #FF2BD6;
+  --neon-yellow: #FACC15;
+
+  --glow: 0 0 20px rgba(0, 240, 255, 0.5);
+  --scanline: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 3px);
+
+  /* dark */
+  --page: #0A0A0F;
+  --panel: #111118;
+  --card: #16161F;
+  --rule: #075457;
+  --text: #F2F7FA;
+  --text-muted: #9CA3AF;
+  --accent: #00F0FF;
+  --on-accent: #0A0A0F;
+  --link: #00F0FF;
+  --danger: #FF5C8A;
+}

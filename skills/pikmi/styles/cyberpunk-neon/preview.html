@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyberpunk Neon · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Share+Tech+Mono&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 16px/1.55 var(--font-display); }
+  a { color: var(--link); text-underline-offset: 3px; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 72px; }
+  .mono { font-family: var(--font-mono); }
+  .label { font: 400 var(--type-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--accent); }
+  h1, h2, h3 { font-weight: 700; text-transform: uppercase; letter-spacing: var(--tracking-display); line-height: 1.02; margin: 0; }
+  h1 { font-size: clamp(40px, 9vw, 96px); }
+  h1 .hi { color: var(--accent); }
+  h2 { font-size: 28px; margin-bottom: 20px; }
+  section { margin-top: 64px; }
+  .muted { color: var(--text-muted); }
+
+  .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-lg); border: 1px solid var(--accent); border-radius: var(--radius-key);
+    background: transparent; color: var(--accent); font: 600 14px/1 var(--font-display); letter-spacing: var(--tracking-label); text-transform: uppercase;
+    text-decoration: none; cursor: pointer; transition: background-color 120ms ease-out, color 120ms ease-out; }
+  .btn:hover { background: var(--accent); color: var(--on-accent); }
+  .btn:active { transform: translate(2px, -1px); color: var(--neon-magenta); border-color: var(--neon-magenta); }
+  .btn.primary { background: var(--accent); color: var(--on-accent); box-shadow: var(--glow); }
+  .btn:focus-visible, .field:focus-visible, .seg button:focus-visible { outline: 2px solid var(--neon-magenta); outline-offset: 2px; }
+  .frame { position: relative; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius-panel); padding: var(--space-lg); transition: border-color 120ms ease-out; }
+  .frame:hover { border-color: var(--accent); }
+  .frame .corner { position: absolute; top: -0.6em; left: var(--space-md); padding: 0 var(--space-xs); background: var(--page);
+    font: 400 var(--type-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--accent); }
+  .readout { background: var(--card); background-image: var(--scanline); border: 1px solid var(--rule); border-radius: var(--radius-panel); padding: var(--space-lg); font-family: var(--font-mono); }
+  .readout .value { font-size: 64px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .readout .unit { color: var(--accent); font-size: 18px; }
+  .field { min-height: 44px; width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--rule); border-radius: var(--radius-key); padding: 0 var(--space-md); font: 400 16px var(--font-mono); }
+  .field:focus { border-color: var(--accent); }
+  .live { display: inline-flex; align-items: center; gap: var(--space-sm); font: 400 var(--type-label)/1 var(--font-mono); text-transform: uppercase; letter-spacing: var(--tracking-label); }
+  .live::before { content: ""; width: 8px; height: 8px; background: var(--accent); box-shadow: var(--glow); }
+  @media (prefers-reduced-motion: no-preference) { .live::before { animation: pulse 2.4s ease-in-out infinite; } }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  .tag { display: inline-block; padding: 2px var(--space-sm); border: 1px solid var(--neon-magenta); color: var(--neon-magenta); font: 400 var(--type-label)/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: 1px; }
+  .warn { color: var(--neon-yellow); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .grid .frame { display: flex; flex-direction: column; gap: 14px; }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  label { display: block; font: 400 var(--type-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: var(--radius-key); }
+  .seg button { min-height: 44px; padding: 0 14px; background: none; border: 0; color: var(--text-muted); font: 400 13px var(--font-mono); text-transform: uppercase; cursor: pointer; }
+  .seg button[aria-pressed="true"] { color: var(--neon-magenta); box-shadow: inset 0 -2px 0 var(--neon-magenta); }
+
+  /* ui */
+  .hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: end; }
+  .hero p { max-width: 52ch; margin: 18px 0 24px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; font-family: var(--font-mono); font-size: 14px; }
+  th { text-align: left; font-weight: 400; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; padding: 10px 8px; border-bottom: 1px solid var(--rule); }
+  td { padding: 12px 8px; border-bottom: 1px solid var(--rule); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.sel td { color: var(--neon-magenta); }
+
+  /* canvases */
+  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; align-items: start; }
+  #slides { grid-column: 1 / -1; max-width: 960px; }
+  .canvas { container-type: inline-size; border: 1px solid var(--rule); border-radius: var(--radius-panel); overflow: hidden; }
+  .cap { margin-top: 10px; color: var(--text-muted); }
+  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); }
+  .slide .inset { position: absolute; inset: 5cqw; border: 0.1cqw solid var(--accent); border-radius: 0.2cqw; }
+  .slide .inset .corner { position: absolute; top: -0.7cqw; left: 2cqw; padding: 0 0.6cqw; background: var(--page); font: 400 1.1cqw/1 var(--font-mono); letter-spacing: 0.1cqw; color: var(--accent); text-transform: uppercase; }
+  .slide h3 { position: absolute; left: 9cqw; top: 11cqw; width: 44cqw; font-size: 3.8cqw; }
+  .slide h3 .mg { color: var(--neon-magenta); }
+  .slide .big { position: absolute; right: 9cqw; bottom: 9cqw; font: 400 10.5cqw/0.9 var(--font-mono); font-variant-numeric: tabular-nums; }
+  .slide .big small { font-size: 2.2cqw; color: var(--accent); }
+  .slide .foot { position: absolute; left: 9cqw; bottom: 9cqw; width: 34cqw; font-size: 1.5cqw; color: var(--text-muted); margin: 0; }
+  .post { aspect-ratio: 4 / 5; position: relative; background: var(--page); }
+  .post .crop { position: absolute; width: 6cqw; height: 6cqw; border-color: var(--accent); border-style: solid; border-width: 0; }
+  .post .c1 { top: 5cqw; left: 5cqw; border-top-width: 0.3cqw; border-left-width: 0.3cqw; }
+  .post .c2 { top: 5cqw; right: 5cqw; border-top-width: 0.3cqw; border-right-width: 0.3cqw; }
+  .post .c3 { bottom: 5cqw; left: 5cqw; border-bottom-width: 0.3cqw; border-left-width: 0.3cqw; }
+  .post .c4 { bottom: 5cqw; right: 5cqw; border-bottom-width: 0.3cqw; border-right-width: 0.3cqw; }
+  .post .lab { position: absolute; top: 8cqw; left: 8cqw; font: 400 2.6cqw/1 var(--font-mono); letter-spacing: 0.25cqw; color: var(--accent); text-transform: uppercase; }
+  .post .word { position: absolute; left: 8cqw; right: 8cqw; top: 30cqw; font: 700 13cqw/0.92 var(--font-display); text-transform: uppercase; }
+  .post .word .glow { color: var(--accent); text-shadow: 0 0 3cqw rgba(0, 240, 255, 0.55); }
+  .post p { position: absolute; left: 8cqw; right: 8cqw; bottom: 12cqw; margin: 0; font-size: 4.4cqw; color: var(--text-muted); }
+  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--panel); display: flex; flex-direction: column; padding: 7cqw 5cqw 4cqw; gap: 4cqw; }
+  .phone .ttl { font: 700 7.5cqw/1 var(--font-display); text-transform: uppercase; }
+  .phone .readout { padding: 5cqw; }
+  .phone .readout .value { font-size: 15cqw; }
+  .phone ul { list-style: none; margin: 0; padding: 0; }
+  .phone li { display: flex; justify-content: space-between; padding: 3.5cqw 0; border-bottom: 1px solid var(--rule); font-size: 4.6cqw; }
+  .phone li span:last-child { font-family: var(--font-mono); color: var(--text-muted); }
+  .phone .spacer { flex: 1; }
+  .phone .btn { justify-content: center; width: 100%; }
+  .phone .tabs { display: flex; justify-content: space-around; border-top: 1px solid var(--rule); padding-top: 3cqw; font: 400 3.6cqw var(--font-mono); text-transform: uppercase; color: var(--text-muted); }
+  .phone .tabs span { padding: 2cqw 1cqw; min-height: 44px; display: flex; align-items: center; }
+  .phone .tabs .on { color: var(--text); box-shadow: inset 0 -2px 0 var(--neon-magenta); }
+
+  @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="label">pikmi style · dark only</span>
+    <h1 style="margin-top:14px">cyberpunk <span class="hi">neon</span></h1>
+    <p class="muted" style="max-width:56ch">Near-black surfaces, thin cyan strokes, a magenta second voice and readouts in a narrow mono.</p>
+  </header>
+
+  <section id="components" aria-labelledby="h-components">
+    <h2 id="h-components">Components</h2>
+    <div class="grid">
+      <div class="frame"><span class="corner">sys.01 buttons</span>
+        <div class="row"><a class="btn primary" href="#ui">Join the run</a><a class="btn" href="#slides">See slides</a></div>
+        <a href="#social">A cyan link, underlined</a>
+      </div>
+      <div class="frame"><span class="corner">sys.02 readout</span>
+        <div class="readout"><span class="value">72</span> <span class="unit">ms ping</span></div>
+      </div>
+      <div class="frame"><span class="corner">sys.03 input</span>
+        <div><label for="handle">Handle</label><input class="field" id="handle" placeholder="your callsign"></div>
+        <div class="seg" role="group" aria-label="Region">
+          <button type="button" aria-pressed="true">EU</button><button type="button" aria-pressed="false">ASIA</button><button type="button" aria-pressed="false">US</button>
+        </div>
+      </div>
+      <div class="frame"><span class="corner">sys.04 status</span>
+        <span class="live">server live</span>
+        <div class="row"><span class="tag">selected</span><span class="warn mono">Warning: queue full</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ui" aria-labelledby="h-ui">
+    <h2 id="h-ui">UI · Landing and dashboard</h2>
+    <div class="frame"><span class="corner">night run · season 03</span>
+      <div class="hero">
+        <div>
+          <h3 style="font-size:clamp(32px,6vw,64px)">Race the city <span style="color:var(--accent)">after dark</span></h3>
+          <p class="muted">A late-night street racing league. Sign up, pick a district and start in the next open heat.</p>
+          <div class="row"><a class="btn primary" href="#components">Join the next heat</a><a class="btn" href="#app">Get the app</a></div>
+        </div>
+        <div class="readout"><span class="label" style="display:block;margin-bottom:10px">next heat in</span><span class="value">04:12</span> <span class="unit">min</span></div>
+      </div>
+      <table>
+        <thead><tr><th>District</th><th>Track</th><th class="num">Laps</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Harbor</td><td>Dockline</td><td class="num">5</td><td><span class="live">open</span></td></tr>
+          <tr class="sel"><td>Old town</td><td>Arcade loop</td><td class="num">3</td><td>selected</td></tr>
+          <tr><td>Ridge</td><td>Switchback</td><td class="num">7</td><td class="muted">closed</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-media">
+    <h2 id="h-media">Other media</h2>
+    <div class="canvases">
+      <div id="slides">
+        <div class="canvas"><div class="slide">
+          <div class="inset"><span class="corner">sys.04 / latency</span></div>
+          <h3>Heats start <span class="mg">twice as fast</span> after the patch</h3>
+          <p class="foot">Median wait from sign-up to start, test week. [REAL DATA]</p>
+          <div class="big">06<small> sec</small></div>
+        </div></div>
+        <p class="cap label">slides · 1920 x 1080</p>
+      </div>
+      <div id="social">
+        <div class="canvas"><div class="post">
+          <span class="crop c1"></span><span class="crop c2"></span><span class="crop c3"></span><span class="crop c4"></span>
+          <span class="lab">season 03 · 01/04</span>
+          <div class="word">night <span class="glow">run</span> opens friday</div>
+          <p>Five districts. One map. Sign up in the app.</p>
+        </div></div>
+        <p class="cap label">social · 1080 x 1350</p>
+      </div>
+      <div id="app">
+        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
+          <span class="label">heat 07</span>
+          <span class="ttl">Dockline</span>
+          <div class="readout"><span class="value">02:41</span> <span class="unit">best</span></div>
+          <ul>
+            <li><span>Lap 1</span><span>00:53</span></li>
+            <li><span>Lap 2</span><span>00:51</span></li>
+            <li><span>Lap 3</span><span>00:57</span></li>
+          </ul>
+          <div class="spacer"></div>
+          <a class="btn primary" href="#app">Start heat</a>
+          <nav class="tabs" aria-label="App sections"><span class="on">race</span><span>map</span><span>crew</span></nav>
+        </div></div>
+        <p class="cap label">app · phone</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('.seg').forEach(seg => seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  })));
+</script>
+</body>
+</html>
