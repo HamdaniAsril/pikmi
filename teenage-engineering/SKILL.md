@@ -23,7 +23,7 @@ colors, so switching theme never turns a dark key white.
   large and only on `--card`.
 - **Details.** Model numbers with an en dash (TP–01), numbered sections and keys (01, 02), registration crosses
   and small technical labels in corners, one starburst sticker rotated about -8 degrees.
-- **Depth.** A hard 2px key-travel shadow (`0 2px 0`) and flat tones. No soft shadows, gloss, gradients or
+- **Depth.** A hard 2px key-travel shadow (`--key-travel`, `0 2px 0`) and flat tones. No soft shadows, gloss, gradients or
   textures.
 
 ## Hardware to UI
@@ -45,31 +45,31 @@ colors, so switching theme never turns a dark key white.
 .key {
   display: flex; flex-direction: column; justify-content: space-between;
   padding: 6px 8px; border-radius: var(--radius-key);
-  background: var(--key); box-shadow: 0 2px 0 var(--key-shadow);
+  background: var(--key); box-shadow: var(--key-travel) var(--key-shadow);
 }
-.key .label { align-self: flex-end; font: 500 11px/1 var(--font-sans);
+.key .label { align-self: flex-end; font: 500 var(--type-label)/1 var(--font-sans);
   letter-spacing: var(--label-tracking); text-transform: uppercase; color: var(--key-label); }
 .key .number { font: 300 16px/1 var(--font-sans); color: var(--key-number); }
-.key[aria-pressed="true"] { background: var(--key-active); box-shadow: 0 2px 0 var(--key-active-shadow); }
+.key[aria-pressed="true"] { background: var(--key-active); box-shadow: var(--key-travel) var(--key-active-shadow); }
 .key[aria-pressed="true"] * { color: var(--key-active-ink); }
-.key.alt { background: var(--key-alt); box-shadow: 0 2px 0 var(--key-alt-shadow); }
+.key.alt { background: var(--key-alt); box-shadow: var(--key-travel) var(--key-alt-shadow); }
 .key.alt .label { color: var(--key-alt-label); } .key.alt .number { color: var(--key-alt-number); }
 
 .panel { background: var(--panel); border-radius: var(--radius-panel); padding: var(--space-sm); }
 
 .screen {
   background: var(--screen); color: var(--on-screen); border-radius: var(--radius-key);
-  box-shadow: inset 0 0 0 2px #1c1b20;
+  box-shadow: inset 0 0 0 2px var(--screen-bezel);
 }
 .screen .value { font: 900 64px/1 var(--font-dot); }
 .screen .unit { font: 700 20px/1 var(--font-dot); color: var(--accent); }
 
 .encoder { width: 40px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center;
-  background: repeating-conic-gradient(#d4d4d4 0 5deg, #bfbfbf 5deg 10deg); }
+  background: repeating-conic-gradient(var(--encoder-ring) 0 5deg, var(--encoder-groove) 5deg 10deg); }
 .encoder::after { content: ""; width: 24px; aspect-ratio: 1; border-radius: 50%;
-  background: var(--cap, var(--signal-blue)); box-shadow: inset 0 -2px 3px #0003; }
+  background: var(--cap, var(--signal-blue)); box-shadow: inset 0 -2px 3px var(--encoder-cap-shade); }
 
-.cta { background: var(--text); color: var(--page); border-radius: 999px; padding: 12px 26px;
+.cta { background: var(--text); color: var(--page); border-radius: var(--radius-pill); padding: 12px 26px;
   font: 300 16px var(--font-sans); }
 .link { color: var(--link); }
 [data-theme="dark"] .link { text-decoration: underline; }
@@ -90,7 +90,8 @@ panel corner.
 
 The dark direction (OP–XY, TX–6 black): set `data-theme="dark"` on the root. Roles: page `#0F0E12`, body and
 panels `#272727`, keys `#3B3B3D` with a `#000000` key shadow, active key orange, screens `#0F0E12` with `#F5F5F5`
-numbers. Use it when the request asks for dark or black, and for social posts by default. Links in dark are
+numbers. Cards share the panel tone, so a card sitting on a panel takes a 1px `--rule` border instead of a
+lighter fill. Use it when the request asks for dark or black, and for social posts by default. Links in dark are
 underlined light text (blue fails on graphite). If one file holds both light and dark designs, scope the theme
 to each design's root instead of the whole document.
 

@@ -8,17 +8,34 @@
   --radius-key: 4px;
   --radius-control: 6px;
   --radius-panel: 12px;
+  --radius-pill: 999px;
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 12px;
   --space-lg: 24px;
   --space-xl: 48px;
   --label-tracking: 1.5px;
+  --key-travel: 0 2px 0;
+
+  --type-label: 11px;
+  --type-caption: 12px;
+  --type-body: 15px;
+  --type-lead: 18px;
+  --type-h3: 22px;
+  --type-h2: 32px;
+  --type-h1: 48px;
+  --type-display: 88px;
 
   --signal-blue: #0071bb;
   --signal-green: #006837;
   --signal-yellow: #fab413;
   --led: #2bd46b;
+
+  /* hardware: the same in both editions */
+  --screen-bezel: #1c1b20;
+  --encoder-ring: #d4d4d4;
+  --encoder-groove: #bfbfbf;
+  --encoder-cap-shade: #00000033;
 
   /* light: OP–1 field, EP–133 */
   --page: #f0f0ef;
