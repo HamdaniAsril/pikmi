@@ -1,0 +1,59 @@
+/* pikmi: bento */
+/* Bento. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&display=swap */
+
+:root {
+  --font-body: "Schibsted Grotesk", system-ui, sans-serif;
+
+  --type-label: 12px;
+  --type-caption: 13px;
+  --type-body: 16px;
+  --type-lead: 18px;
+  --type-h3: 22px;
+  --type-h2: 32px;
+  --type-h1: 52px;
+  --type-display: 80px;
+
+  --radius-card: 20px;
+  --radius-control: 12px;
+  --radius-inner: 12px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+
+  --card-lift: 0 8px 30px rgba(0, 0, 0, 0.08);
+
+  /* light */
+  --page: #F4F4F5;
+  --panel: #FFFFFF;
+  --card: #FFFFFF;
+  --rule: #E4E4E7;
+  --text: #18181B;
+  --text-muted: #52525B;
+  --accent: #E4572E;
+  --on-accent: #18181B;
+  --link: #1D4ED8;
+  --danger: #B42318;
+  --tint-orange: #FFF1E6;
+  --tint-green: #E9F7EF;
+  --tint-blue: #EAF2FF;
+}
+
+[data-theme="dark"] {
+  --page: #0F0F11;
+  --panel: #18181B;
+  --card: #1F1F23;
+  --rule: #2E2E33;
+  --text: #F4F4F5;
+  --text-muted: #A1A1AA;
+  --accent: #F0714D;
+  --on-accent: #0F0F11;
+  --link: #8AB4FF;
+  --danger: #F97066;
+  --tint-orange: #2A1A12;
+  --tint-green: #12241A;
+  --tint-blue: #121C2B;
+}

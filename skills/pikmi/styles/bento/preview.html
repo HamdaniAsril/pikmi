@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bento · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 16px/1.6 var(--font-body); }
+  a { color: var(--link); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 16px 80px; }
+  h1, h2, h3 { margin: 0; font-weight: 700; line-height: 1.1; }
+  h1 { font-size: clamp(40px, 7vw, 80px); letter-spacing: -1px; }
+  h2 { font-size: 32px; margin-bottom: 20px; }
+  h3 { font-size: 20px; }
+  section { margin-top: 72px; }
+  .muted { color: var(--text-muted); }
+  .label { font: 500 12px/1 var(--font-body); color: var(--text-muted); }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .toggle { min-height: 44px; padding: 0 16px; border: 1px solid var(--rule); border-radius: var(--radius-control); background: var(--card); color: var(--text); font: 500 14px var(--font-body); cursor: pointer; }
+  .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-control); background: var(--accent); color: var(--on-accent); font: 500 15px/1 var(--font-body); text-decoration: none; cursor: pointer; }
+  .btn.plain { background: var(--card); color: var(--text); box-shadow: inset 0 0 0 1px var(--rule); }
+  .btn:active { transform: scale(0.98); }
+  .btn:focus-visible, a.tile:focus-visible, .toggle:focus-visible, .seg button:focus-visible, .tab:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+  .bento { display: grid; gap: 16px; grid-template-columns: 1fr; grid-auto-flow: dense; }
+  @media (min-width: 640px) { .bento { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .bento { grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(160px, auto); } }
+  .tile { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); padding: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-sm); min-width: 0; }
+  @media (min-width: 640px) { .tile.wide { grid-column: span 2; } }
+  @media (min-width: 1024px) { .tile.big { grid-column: span 2; grid-row: span 2; } .tile.tall { grid-row: span 2; } }
+  .tile.orange { background: var(--tint-orange); } .tile.green { background: var(--tint-green); } .tile.blue { background: var(--tint-blue); }
+  a.tile { color: inherit; text-decoration: none; transition: transform 250ms ease-out, box-shadow 250ms ease-out; }
+  a.tile:hover { transform: translateY(-2px) scale(1.01); box-shadow: var(--card-lift); }
+  .tile .num { font: 700 48px/1 var(--font-body); font-variant-numeric: tabular-nums; }
+  .tile .icon { width: 40px; height: 40px; border-radius: var(--radius-inner); display: grid; place-items: center; background: var(--page); transition: background-color 200ms ease-out; }
+  .tile .icon svg { width: 20px; height: 20px; stroke: var(--text); fill: none; stroke-width: 1.8; }
+  a.tile:hover .icon { background: var(--accent); }
+  .agenda { list-style: none; margin: 8px 0 0; padding: 0; background: var(--page); border: 1px solid var(--rule); border-radius: var(--radius-inner); }
+  .agenda li { display: flex; gap: 14px; padding: 12px 14px; border-bottom: 1px solid var(--rule); }
+  .agenda li:last-child { border-bottom: 0; }
+  .agenda span { width: 36px; flex: none; color: var(--text-muted); font-weight: 500; }
+  .agenda li.hl { font-weight: 700; }
+  .agenda li.hl span { color: var(--text); }
+  .tile .spacer { flex: 1; }
+  .seg { display: inline-flex; gap: 4px; padding: 4px; border-radius: var(--radius-control); background: var(--page); border: 1px solid var(--rule); }
+  .seg button { min-height: 36px; padding: 0 12px; border: 0; border-radius: 8px; background: none; color: var(--text-muted); font: 500 14px var(--font-body); cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--card); color: var(--text); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .hero p { max-width: 50ch; font-size: 18px; margin: 16px 0 24px; }
+  .plainsec { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+
+  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; align-items: start; }
+  #slides { grid-column: 1 / -1; max-width: 960px; }
+  .canvas { container-type: inline-size; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--rule); background: var(--page); }
+  .cap { margin-top: 10px; }
+  .slide { aspect-ratio: 16 / 9; padding: 4cqw; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto 1fr 1fr; gap: 1.25cqw; }
+  .slide h3 { grid-column: 1 / -1; font-size: 3cqw; }
+  .slide .c { background: var(--card); border: 1px solid var(--rule); border-radius: 1.2cqw; padding: 1.6cqw; display: flex; flex-direction: column; justify-content: space-between; font-size: 1.1cqw; }
+  .slide .c.b { grid-column: span 2; grid-row: span 2; background: var(--tint-orange); }
+  .slide .c strong { font-size: 3.4cqw; line-height: 1; }
+  .slide .c.b strong { font-size: 7cqw; }
+  .post { aspect-ratio: 4 / 5; padding: 6cqw; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1.4fr 1fr 1fr; gap: 3cqw; }
+  .post .c { background: var(--card); border: 1px solid var(--rule); border-radius: 4cqw; padding: 4.5cqw; display: flex; flex-direction: column; justify-content: space-between; font-size: 3.2cqw; color: var(--text-muted); }
+  .post .c.b { grid-column: span 2; background: var(--tint-blue); color: var(--text); }
+  .post .c.b h3 { font-size: 8cqw; }
+  .post .c strong { font-size: 9cqw; color: var(--text); line-height: 1; }
+  .post .c.acc { background: var(--accent); color: var(--on-accent); }
+  .post .c.acc strong { color: var(--on-accent); }
+  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; padding: 8cqw 4.5cqw 4cqw; gap: 3.5cqw; }
+  .phone h3 { font-size: 7.5cqw; }
+  .phone .g { display: grid; grid-template-columns: 1fr 1fr; gap: 3cqw; }
+  .phone .w { background: var(--card); border: 1px solid var(--rule); border-radius: 5cqw; padding: 4cqw; font-size: 3.6cqw; color: var(--text-muted); display: flex; flex-direction: column; gap: 1.5cqw; min-height: 24cqw; }
+  .phone .w strong { font-size: 7cqw; color: var(--text); line-height: 1; }
+  .phone .w.full { grid-column: span 2; background: var(--tint-green); min-height: 34cqw; }
+  .phone .spacer { flex: 1; }
+  .phone nav { display: flex; justify-content: space-around; border-top: 1px solid var(--rule); padding-top: 2cqw; }
+  .tab { min-height: 44px; padding: 0 3cqw; background: none; border: 0; color: var(--text-muted); font: 500 3.6cqw var(--font-body); cursor: pointer; }
+  .tab[aria-pressed="true"] { color: var(--text); }
+  @media (max-width: 760px) { .plainsec { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { a.tile, .tile .icon { transition: none; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6-6.2-6-11a6 6 0 0 1 12 0c0 4.8-6 11-6 11z"/><circle cx="12" cy="10" r="2"/></symbol>
+</svg>
+<div class="wrap">
+  <header class="top">
+    <span class="label">pikmi style · light and dark</span>
+    <button class="toggle" type="button" id="theme-toggle" aria-pressed="false">Dark theme</button>
+  </header>
+  <div class="hero" style="margin-top:32px">
+    <h1>Bento</h1>
+    <p class="muted">A modular grid of widget-like cards, sized by importance, on neutral surfaces with soft tints and one tangerine accent.</p>
+    <div class="row"><a class="btn" href="#ui">See the grid</a><a class="btn plain" href="#slides">See the slides</a></div>
+  </div>
+
+  <section id="components" aria-labelledby="h-components">
+    <h2 id="h-components">Components</h2>
+    <div class="plainsec">
+      <div>
+        <p class="muted">Controls stay simple. The grid below is the one place where size carries meaning.</p>
+        <div class="row"><a class="btn" href="#ui">Start a plan</a><a class="btn plain" href="#app">Open the app</a></div>
+        <div class="seg" role="group" aria-label="Range" style="margin-top:16px"><button type="button" aria-pressed="true">Week</button><button type="button" aria-pressed="false">Month</button><button type="button" aria-pressed="false">Year</button></div>
+      </div>
+      <a class="tile orange" href="#ui"><span class="icon"><svg><use href="#i-bolt"/></svg></span><h3>An interactive tile</h3><p class="muted" style="margin:0">Hover to lift 2px; the icon picks up the accent.</p></a>
+    </div>
+  </section>
+
+  <section id="ui" aria-labelledby="h-ui">
+    <h2 id="h-ui">UI · A personal studio dashboard</h2>
+    <div class="bento">
+      <a class="tile big" href="#ui"><span class="label">This week</span><h3 style="font-size:28px">Three client reviews and one launch</h3><ul class="agenda"><li><span>Mon</span>Kiln Studio, brand review</li><li><span>Wed</span>Harbor Logistics, site review</li><li><span>Thu</span>Northwind Paper, packaging review</li><li class="hl"><span>Fri</span>Launch: Kiln Studio site</li></ul></a>
+      <div class="tile green"><span class="label">Hours booked</span><span class="num">26</span><span class="muted">of 32 available</span></div>
+      <div class="tile"><span class="label">Invoices sent</span><span class="num">4</span></div>
+      <a class="tile tall blue" href="#app"><span class="icon"><svg><use href="#i-cal"/></svg></span><h3>Next up</h3><p class="muted" style="margin:0">Thursday 10:00 · brand review with Kiln Studio</p><span class="spacer"></span><span class="btn" style="align-self:flex-start">Open the brief</span></a>
+      <div class="tile"><span class="label">Open tasks</span><span class="num">11</span></div>
+      <a class="tile wide orange" href="#social"><span class="icon"><svg><use href="#i-pin"/></svg></span><h3>Studio day in Lisbon</h3><p class="muted" style="margin:0">Sample widget content for the preview.</p></a>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-media">
+    <h2 id="h-media">Other media</h2>
+    <div class="canvases">
+      <div id="slides">
+        <div class="canvas"><div class="slide">
+          <h3>The quarter in one view</h3>
+          <div class="c b"><span>Launches shipped</span><strong>[n]</strong></div>
+          <div class="c"><span>Clients</span><strong>[n]</strong></div>
+          <div class="c"><span>Hours</span><strong>[n]</strong></div>
+          <div class="c"><span>Invoices</span><strong>[n]</strong></div>
+          <div class="c"><span>Reviews</span><strong>[n]</strong></div>
+        </div></div>
+        <p class="cap label">slides · 1920 x 1080 · placeholder figures</p>
+      </div>
+      <div id="social">
+        <div class="canvas"><div class="post">
+          <div class="c b"><span class="label">Year in review</span><h3>Twelve months in the studio</h3></div>
+          <div class="c"><span>Projects</span><strong>[n]</strong></div>
+          <div class="c acc"><span>New clients</span><strong>[n]</strong></div>
+          <div class="c"><span>Cities</span><strong>[n]</strong></div>
+          <div class="c"><span>Coffees</span><strong>[n]</strong></div>
+        </div></div>
+        <p class="cap label">social · 1080 x 1350</p>
+      </div>
+      <div id="app">
+        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
+          <span class="label">Thursday</span>
+          <h3>Good morning</h3>
+          <div class="g">
+            <div class="w full"><span>Next meeting</span><strong>10:00</strong><span>Brand review</span></div>
+            <div class="w"><span>Tasks</span><strong>11</strong></div>
+            <div class="w"><span>Hours</span><strong>26</strong></div>
+          </div>
+          <div class="spacer"></div>
+          <a class="btn" href="#app" style="justify-content:center">Start focus session</a>
+          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Home</button><button class="tab" type="button" aria-pressed="false">Clients</button><button class="tab" type="button" aria-pressed="false">Time</button></nav>
+        </div></div>
+        <p class="cap label">app · phone</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  const html = document.documentElement, toggle = document.getElementById('theme-toggle');
+  toggle.addEventListener('click', () => {
+    const dark = html.dataset.theme !== 'dark';
+    if (dark) html.dataset.theme = 'dark'; else delete html.dataset.theme;
+    toggle.setAttribute('aria-pressed', String(dark));
+    toggle.textContent = dark ? 'Light theme' : 'Dark theme';
+  });
+  document.querySelectorAll('[role="group"]').forEach(g => g.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    g.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  })));
+</script>
+</body>
+</html>

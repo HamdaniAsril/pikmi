@@ -487,6 +487,50 @@
         "apple",
         "liquid glass"
       ]
+    },
+    {
+      "id": "bento",
+      "name": "Bento",
+      "summary": "A modular grid of widget-like cards in different sizes, sized by importance, on neutral zinc surfaces with soft tints and one tangerine accent.",
+      "keywords": {
+        "en": [
+          "bento",
+          "bento grid",
+          "widgets",
+          "modular",
+          "cards",
+          "portfolio",
+          "product showcase",
+          "dashboard tiles",
+          "feature grid",
+          "tiles"
+        ],
+        "id": [
+          "kotak-kotak",
+          "kartu",
+          "widget",
+          "modular",
+          "portofolio",
+          "etalase produk",
+          "kayak widget iphone",
+          "grid"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "preview": "styles/bento/preview.html",
+      "brand_terms": [
+        "apple",
+        "iphone"
+      ]
     }
   ]
 }
