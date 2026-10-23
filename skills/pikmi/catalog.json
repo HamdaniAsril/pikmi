@@ -311,6 +311,50 @@
       ],
       "preview": "styles/ukiyo-e-print/preview.html",
       "brand_terms": []
+    },
+    {
+      "id": "japanese-minimal",
+      "name": "Japanese Minimal",
+      "summary": "Extreme whitespace, hairline rules, light-weight type and a single soft pastel: quiet, airy and unhurried, built on the idea of ma.",
+      "keywords": {
+        "en": [
+          "japanese minimal",
+          "minimalist",
+          "zen",
+          "wabi-sabi",
+          "ma",
+          "airy",
+          "calm",
+          "whitespace",
+          "serene",
+          "quiet",
+          "muji"
+        ],
+        "id": [
+          "minimalis jepang",
+          "minimalis",
+          "tenang",
+          "lega",
+          "bersih",
+          "adem",
+          "kalem",
+          "kayak muji",
+          "sederhana"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "light"
+      ],
+      "preview": "styles/japanese-minimal/preview.html",
+      "brand_terms": [
+        "muji"
+      ]
     }
   ]
 }

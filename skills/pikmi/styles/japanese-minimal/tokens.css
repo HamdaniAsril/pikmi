@@ -1,0 +1,47 @@
+/* pikmi: japanese-minimal */
+/* Japanese Minimal. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@200;300;400&display=swap */
+
+:root {
+  --font-body: "M PLUS 1", system-ui, sans-serif;
+
+  --type-label: 13px;
+  --type-caption: 14px;
+  --type-body: 17px;
+  --type-lead: 20px;
+  --type-h3: 22px;
+  --type-h2: 30px;
+  --type-h1: 44px;
+  --type-display: 64px;
+
+  --tracking-label: 1px;
+  --tracking-heading: 0.5px;
+
+  --radius-control: 6px;
+  --radius-card: 8px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 32px;
+  --space-xl: 64px;
+  --space-section: 128px;
+
+  --mint: #98D8C8;
+  --sakura: #FFB7C5;
+  --powder: #B8D4E3;
+
+  --hairline: 1px solid #D4D4CF;
+
+  /* light */
+  --page: #FAFAF8;
+  --panel: #F4F4F1;
+  --card: #FFFFFF;
+  --rule: #D4D4CF;
+  --text: #4A5568;
+  --text-muted: #5F6E82;
+  --accent: #64B5F6;
+  --on-accent: #1F2A37;
+  --link: #2F6FA8;
+  --danger: #B5485A;
+}

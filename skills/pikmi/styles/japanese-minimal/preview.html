@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Japanese Minimal · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@200;300;400&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 300 17px/1.9 var(--font-body); }
+  a { color: var(--link); text-underline-offset: 4px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 72px 24px 96px; }
+  h1, h2, h3 { font-weight: 200; letter-spacing: var(--tracking-heading); margin: 0; line-height: 1.35; }
+  h1 { font-size: clamp(34px, 6vw, 64px); max-width: 16ch; }
+  h2 { font-size: 30px; }
+  h3 { font-size: 22px; }
+  .muted { color: var(--text-muted); }
+  .small { font-size: 14px; font-weight: 400; color: var(--text-muted); letter-spacing: var(--tracking-label); }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: 1px solid var(--text-muted); border-radius: var(--radius-control);
+    background: transparent; color: var(--text); font: 400 16px/1 var(--font-body); text-decoration: none; cursor: pointer; transition: background-color 500ms ease-in-out, transform 500ms ease-in-out; }
+  .btn:hover { background: var(--panel); transform: translateY(-1px); }
+  .btn:active { opacity: 0.8; }
+  .btn.fill { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .btn:focus-visible, .line-field input:focus-visible, a:focus-visible, .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .section { padding-block: var(--space-section); border-top: var(--hairline); }
+  .card { background: var(--card); border: var(--hairline); border-radius: var(--radius-card); padding: var(--space-lg); }
+  .line-field { position: relative; padding-top: 22px; max-width: 360px; }
+  .line-field input { width: 100%; min-height: 44px; border: 0; border-bottom: 1px solid var(--text-muted); background: transparent; color: var(--text); font: 300 17px var(--font-body); }
+  .line-field label { position: absolute; top: 0; left: 0; font: 400 13px/1 var(--font-body); color: var(--text-muted); }
+  .branch { width: 140px; height: 90px; stroke: var(--text-muted); stroke-width: 1; fill: none; }
+  .row { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
+  .offset { margin-left: 8%; }
+  .item-img { aspect-ratio: 4 / 5; background: var(--panel); border-radius: var(--radius-card); position: relative; overflow: hidden; }
+  .item-img .disc { position: absolute; width: 44%; aspect-ratio: 1; border-radius: 50%; background: var(--accent); opacity: 0.35; right: 14%; top: 16%; }
+
+  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 48px; align-items: start; }
+  #slides { grid-column: 1 / -1; max-width: 900px; }
+  .canvas { container-type: inline-size; border: var(--hairline); border-radius: var(--radius-card); overflow: hidden; background: var(--page); }
+  .cap { margin-top: 12px; }
+  .slide { aspect-ratio: 16 / 9; position: relative; }
+  .slide p.line { position: absolute; left: 10cqw; top: 22cqw; width: 52cqw; margin: 0; font: 200 3.4cqw/1.45 var(--font-body); }
+  .slide .rule { position: absolute; left: 10cqw; top: 36cqw; width: 18cqw; height: 0; border-top: var(--hairline); }
+  .slide .branch { position: absolute; right: 10cqw; top: 9cqw; width: 20cqw; height: 13cqw; stroke-width: 0.6; }
+  .slide .small { position: absolute; left: 10cqw; bottom: 7cqw; font-size: 1.1cqw; }
+  .post { aspect-ratio: 4 / 5; position: relative; }
+  .post p.line { position: absolute; left: 9cqw; top: 14cqw; width: 70cqw; margin: 0; font: 200 6.4cqw/1.4 var(--font-body); }
+  .post .field { position: absolute; left: 42cqw; bottom: 22cqw; width: 34cqw; aspect-ratio: 1; border-radius: 50%; background: var(--accent); opacity: 0.3; }
+  .post .branch { position: absolute; left: 34cqw; bottom: 18cqw; width: 46cqw; height: 30cqw; stroke-width: 0.6; }
+  .post .small { position: absolute; left: 9cqw; bottom: 8cqw; font-size: 2.6cqw; }
+  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; padding: 12cqw 7cqw 5cqw; gap: 6cqw; }
+  .phone h3 { font-size: 7cqw; }
+  .phone ul { list-style: none; margin: 0; padding: 0; }
+  .phone li { display: flex; justify-content: space-between; align-items: center; min-height: 48px; border-top: var(--hairline); font-size: 4.2cqw; }
+  .phone li:last-child { border-bottom: var(--hairline); }
+  .phone .spacer { flex: 1; }
+  .phone .btn { justify-content: center; }
+  .phone nav { display: flex; justify-content: space-around; }
+  .tab { min-height: 48px; padding: 0 3cqw; background: none; border: 0; color: var(--text-muted); font: 400 3.6cqw var(--font-body); cursor: pointer; }
+  .tab[aria-pressed="true"] { color: var(--text); text-decoration: underline; text-underline-offset: 6px; text-decoration-color: var(--accent); }
+  @media (max-width: 640px) { .offset { margin-left: 0; } .section { padding-block: 88px; } }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="branch" viewBox="0 0 140 90"><path d="M4 86 C 40 70, 70 46, 136 6"/><path d="M48 64 c 4 -14, 16 -20, 26 -20 c -2 10, -12 20, -26 20z"/><path d="M78 44 c 2 -12, 12 -18, 22 -18 c -2 9, -10 17, -22 18z"/><path d="M102 26 c -10 -6, -14 -14, -12 -22 c 8 2, 13 10, 12 22z"/></symbol>
+</svg>
+<div class="wrap">
+  <header>
+    <p class="small" style="margin:0 0 24px">pikmi style</p>
+    <h1 class="offset">Japanese Minimal</h1>
+    <p class="muted offset" style="max-width:46ch;margin:24px 0 36px 8%">Wide whitespace, hairline rules, light type and one soft pastel per page.</p>
+    <div class="row offset"><a class="btn" href="#components">Begin</a><a href="#slides">See the slides</a></div>
+  </header>
+
+  <section id="components" class="section" aria-labelledby="h-components">
+    <div class="row" style="justify-content:space-between;align-items:flex-start">
+      <h2 id="h-components">Components</h2>
+      <svg class="branch"><use href="#branch"/></svg>
+    </div>
+    <div class="grid" style="margin-top:48px">
+      <div><p class="small">Buttons</p><div class="row"><a class="btn" href="#ui">View the collection</a><a class="btn fill" href="#app">Reserve</a></div></div>
+      <div><div class="line-field"><label for="mail">Email for the newsletter</label><input id="mail" type="email" placeholder="you@example.jp"></div></div>
+      <div class="card"><h3>A card</h3><p class="muted" style="margin:8px 0 0">Hairline border, no shadow, white surface.</p></div>
+    </div>
+  </section>
+
+  <section id="ui" class="section" aria-labelledby="h-ui">
+    <h2 id="h-ui">UI · A small tea shop</h2>
+    <div class="grid" style="margin-top:56px">
+      <div><div class="item-img" aria-hidden="true"><span class="disc"></span></div><h3 style="margin-top:20px">Spring sencha</h3><p class="muted" style="margin:4px 0 0">Shizuoka · 50 g</p></div>
+      <div style="margin-top:64px"><div class="item-img" aria-hidden="true"></div><h3 style="margin-top:20px">Roasted hojicha</h3><p class="muted" style="margin:4px 0 0">Kyoto · 80 g</p></div>
+      <div><div class="item-img" aria-hidden="true"></div><h3 style="margin-top:20px">Stone-ground matcha</h3><p class="muted" style="margin:4px 0 0">Uji · 30 g</p></div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-media">
+    <h2 id="h-media">Other media</h2>
+    <div class="canvases" style="margin-top:56px">
+      <div id="slides">
+        <div class="canvas"><div class="slide">
+          <svg class="branch"><use href="#branch"/></svg>
+          <p class="line">We steam the leaves for thirty seconds, no longer.</p>
+          <span class="rule"></span>
+          <span class="small">Process · 02</span>
+        </div></div>
+        <p class="cap small">slides · 1920 x 1080</p>
+      </div>
+      <div id="social">
+        <div class="canvas"><div class="post">
+          <p class="line">The first spring harvest has arrived.</p>
+          <span class="field" aria-hidden="true"></span>
+          <svg class="branch"><use href="#branch"/></svg>
+          <span class="small">In the shop from Saturday</span>
+        </div></div>
+        <p class="cap small">social · 1080 x 1350</p>
+      </div>
+      <div id="app">
+        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
+          <p class="small" style="margin:0">Your order</p>
+          <h3>Two teas</h3>
+          <ul><li><span>Spring sencha</span><span class="muted">1</span></li><li><span>Roasted hojicha</span><span class="muted">1</span></li></ul>
+          <div class="spacer"></div>
+          <a class="btn fill" href="#app">Place order</a>
+          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Order</button><button class="tab" type="button" aria-pressed="false">Teas</button><button class="tab" type="button" aria-pressed="false">Visit</button></nav>
+        </div></div>
+        <p class="cap small">app · phone</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+  })));
+</script>
+</body>
+</html>
