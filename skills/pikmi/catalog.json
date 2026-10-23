@@ -1,4 +1,59 @@
 {
   "version": 1,
-  "styles": []
+  "styles": [
+    {
+      "id": "instrument-panel",
+      "name": "Instrument Panel",
+      "summary": "Grey hardware panels, numbered keys, a small black screen and one signal orange: a pocket synthesizer turned into an interface.",
+      "keywords": {
+        "en": [
+          "industrial",
+          "hardware",
+          "synth",
+          "synthesizer",
+          "instrument",
+          "device",
+          "minimal",
+          "playful",
+          "retro tech",
+          "teenage engineering",
+          "op-1",
+          "pocket operator"
+        ],
+        "id": [
+          "industri",
+          "mesin",
+          "alat musik",
+          "synthesizer",
+          "perangkat",
+          "kayak op-1",
+          "ala teenage engineering"
+        ]
+      },
+      "media": [
+        "ui",
+        "slides",
+        "social",
+        "app"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "preview": "styles/instrument-panel/preview.html",
+      "brand_terms": [
+        "teenage engineering",
+        "teenage.engineering",
+        "op-1",
+        "op-z",
+        "op-xy",
+        "op–xy",
+        "ep-133",
+        "tx-6",
+        "tx–6",
+        "k.o. ii",
+        "pocket operator"
+      ]
+    }
+  ]
 }

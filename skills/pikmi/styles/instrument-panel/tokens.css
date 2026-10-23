@@ -1,4 +1,5 @@
-/* Teenage Engineering / instrument panel UI. Same values as tokens.json.
+/* pikmi: instrument-panel */
+/* Instrument Panel. Same values as tokens.json.
    Fonts: https://fonts.googleapis.com/css2?family=Doto:wght@700;900&family=Noto+Sans+JP:wght@200;300;400;500&display=swap */
 
 :root {
@@ -14,7 +15,7 @@
   --space-md: 12px;
   --space-lg: 24px;
   --space-xl: 48px;
-  --label-tracking: 1.5px;
+  --tracking-label: 1.5px;
   --key-travel: 0 2px 0;
 
   --type-label: 11px;
@@ -37,7 +38,7 @@
   --encoder-groove: #bfbfbf;
   --encoder-cap-shade: #00000033;
 
-  /* light: OP–1 field, EP–133 */
+  /* light edition */
   --page: #f0f0ef;
   --panel: #e5e5e5;
   --card: #f5f5f5;
@@ -63,7 +64,7 @@
   --on-screen: #f5f5f5;
 }
 
-/* black edition: OP–XY, TX–6 black */
+/* black edition */
 [data-theme="dark"] {
   --page: #0f0e12;
   --panel: #272727;
