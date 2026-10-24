@@ -69,6 +69,7 @@ Dial: ENERGY 3 / RHYTHM 3 / MOTION 1
 .btn:active { box-shadow: none; transform: translate(4px, 4px); }
 .btn:focus-visible, .field:focus-visible { outline: var(--border-focus); outline-offset: 2px; }
 .btn.blue { background: var(--clash-blue); color: #FFFFFF; }
+.btn.blue:hover { color: var(--text); }
 .block.blue :focus-visible { outline-color: var(--clash-yellow); }
 
 .field { min-height: 48px; width: 100%; border: var(--border-heavy); border-radius: 0; padding: 0 var(--space-md);
@@ -134,6 +135,7 @@ and never move on hover, so the cursor and the keyboard focus always find them w
 | `#FFFFFF` | `--clash-blue` | light | 8.59 | Blue is the only color that takes white text. |
 | `--link` | `--page` | light | 8.59 | Blue links on white. |
 | `--text` | `--panel` | light | 19.56 | Black on yellow. |
+| `#FFFFFF` | `--clash-yellow` | light | 1.07 | White on yellow fails; a blue button switches to black text on hover. |
 | `--danger` | `--panel` | light | 5.48 | Error text holds even on yellow. |
 | `#000000` | `--clash-magenta` | light | 6.70 | Black on magenta. |
 | `#000000` | `--clash-cyan` | light | 16.75 | Black on cyan. |

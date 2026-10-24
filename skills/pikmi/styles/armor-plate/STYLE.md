@@ -82,11 +82,12 @@ Dial: ENERGY 3 / RHYTHM 2 / MOTION 1
 .status.ok { color: var(--text); } .status.warn { color: var(--hazard-yellow); } .status.bad { color: var(--danger); }
 
 .hazard { height: 12px; background: var(--hazard-stripes); }
-.grid-surface { background: var(--card); background-image: var(--tech-grid); }
+.grid-surface { background: var(--tech-grid), var(--card); }
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
 ```
 
-Field borders use `--text-muted` because the green rule is too faint to mark an input.
+Field borders use `--text-muted` because the green rule is too faint to mark an input. `--tech-grid` carries
+its own position and size, so it goes in the `background` shorthand; `background-image` rejects it.
 
 ## Recipes
 

@@ -69,8 +69,8 @@ Dial: ENERGY 3 / RHYTHM 2 / MOTION 2
   transition: background-color 120ms ease-out, color 120ms ease-out;
 }
 .btn:hover { background: var(--accent); color: var(--on-accent); }
-.btn:active { transform: translate(2px, -1px); color: var(--neon-magenta); border-color: var(--neon-magenta); }
 .btn.primary { background: var(--accent); color: var(--on-accent); box-shadow: var(--glow); }
+.btn:active { transform: translate(2px, -1px); background: var(--neon-magenta); color: var(--on-accent); border-color: var(--neon-magenta); }
 .btn:focus-visible, .field:focus-visible { outline: 2px solid var(--neon-magenta); outline-offset: 2px; }
 
 .frame {
@@ -155,6 +155,7 @@ Dial: ENERGY 3 / RHYTHM 2 / MOTION 2
 | `--on-accent` | `--accent` | dark | 14.02 | Cyan fills always carry near-black text, never white. |
 | `--accent` | `--card` | dark | 12.76 | Cyan text and links on cards. |
 | `--neon-magenta` | `--page` | dark | 6.18 | Magenta text passes on the page. |
+| `--on-accent` | `--neon-magenta` | dark | 6.18 | The press flash is a magenta fill with near-black text; magenta text on a cyan fill is only 2.27. |
 | `--neon-yellow` | `--page` | dark | 12.90 | Warnings. |
 | `--danger` | `--card` | dark | 6.12 | Error text on cards. |
 | `--neon-magenta` | `--page` | dark | 6.18 | Focus ring (magenta outline). |
