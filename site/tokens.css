@@ -1,0 +1,81 @@
+/* pikmi: instrument-panel */
+/* Instrument Panel. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=Doto:wght@700;900&family=Noto+Sans+JP:wght@200;300;400;500&display=swap */
+
+:root {
+  --font-sans: "Noto Sans JP", system-ui, sans-serif;
+  --font-dot: "Doto", ui-monospace, monospace;
+
+  --radius-key: 4px;
+  --radius-control: 6px;
+  --radius-panel: 12px;
+  --radius-pill: 999px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+  --tracking-label: 1.5px;
+  --key-travel: 0 2px 0;
+
+  --type-label: 11px;
+  --type-caption: 12px;
+  --type-body: 15px;
+  --type-lead: 18px;
+  --type-h3: 22px;
+  --type-h2: 32px;
+  --type-h1: 48px;
+  --type-display: 88px;
+
+  --signal-blue: #0071bb;
+  --signal-green: #006837;
+  --signal-yellow: #fab413;
+  --led: #2bd46b;
+
+  /* hardware: the same in both editions */
+  --screen-bezel: #1c1b20;
+  --encoder-ring: #d4d4d4;
+  --encoder-groove: #bfbfbf;
+  --encoder-cap-shade: #00000033;
+
+  /* light edition */
+  --page: #f0f0ef;
+  --panel: #e5e5e5;
+  --card: #f5f5f5;
+  --rule: #cccccc;
+  --text: #0f0e12;
+  --text-muted: #4d4d4d;
+  --accent: #f05a24;
+  --on-accent: #0f0e12;
+  --danger: #b81d13;
+  --link: #0071bb;
+  --key: #f5f5f5;
+  --key-label: #4d4d4d;
+  --key-number: #0f0e12;
+  --key-shadow: #b2b2b2;
+  --key-alt: #0f0e12;
+  --key-alt-label: #b2b2b2;
+  --key-alt-number: #f5f5f5;
+  --key-alt-shadow: #000000;
+  --key-active: #f05a24;
+  --key-active-ink: #0f0e12;
+  --key-active-shadow: #9c3612;
+  --screen: #0f0e12;
+  --on-screen: #f5f5f5;
+}
+
+/* black edition */
+[data-theme="dark"] {
+  --page: #0f0e12;
+  --panel: #272727;
+  --card: #272727;
+  --rule: #4d4d4d;
+  --text: #f5f5f5;
+  --text-muted: #b2b2b2;
+  --danger: #ff7a6b;
+  --link: #f5f5f5;
+  --key: #3b3b3d;
+  --key-label: #b2b2b2;
+  --key-number: #f5f5f5;
+  --key-shadow: #000000;
+}
