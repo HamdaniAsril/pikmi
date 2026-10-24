@@ -4,8 +4,8 @@
 
 pikmi (read it as "pick me") is an agent skill that picks and applies a visual design style for web UI,
 slides, social media posts and apps. Tell your agent the mood you want ("make it modern industrial",
-"bikin kayak poster punk", "calm and airy"), and pikmi offers two to four matching styles with previews.
-You pick one, and the agent builds with only that style loaded.
+"bikin kayak poster punk", "calm and airy"), and pikmi offers up to three matching styles with previews.
+You pick one and the agent builds with only that style loaded, or you carry on without pikmi.
 
 ## Install
 
@@ -22,8 +22,10 @@ The repository is private for now, so installing needs a GitHub account with acc
 
 1. You ask for a new design, or ask to change how something looks.
 2. pikmi reads its catalog and matches your mood words, in English or Indonesian.
-3. It offers two to four styles, each with a one-line reason and a preview page.
-4. You pick one (or say "terserah" and it recommends one).
+3. It opens the preview pages and asks one question: up to three styles, each with a one-line reason
+   and a card of its palette and fonts, plus "Continue without pikmi".
+4. You pick one (or say "terserah" and it recommends one). If you continue without pikmi, it stays quiet
+   for the rest of the conversation unless you name a style.
 5. The agent loads that style's rules and tokens plus the rules for your medium, builds, and checks the
    result against the style's checklist.
 

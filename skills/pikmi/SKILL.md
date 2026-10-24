@@ -1,6 +1,6 @@
 ---
 name: pikmi
-description: Pick and apply a visual design style for web UI, slides, social media posts and apps. Use when the user starts a new design or asks to change how something looks, names a mood or aesthetic (industrial, cyberpunk, brutalist, glassmorphism, watercolor, Japanese minimal, bento, dark developer, corporate, Islamic geometric, ukiyo-e, mecha), asks to "make it look like ...", or says it in Indonesian ("ganti tampilan", "bikin desain", "ala ...", "kayak ..."). Offers 2 to 4 matching styles with previews and lets the user choose; continues a style already marked in the project. Not for small edits to a project that already has its own look.
+description: Pick and apply a visual design style for web UI, slides, social media posts and apps. Use when the user starts a new design or asks to change how something looks, names a mood or aesthetic (industrial, cyberpunk, brutalist, glassmorphism, watercolor, Japanese minimal, bento, dark developer, corporate, Islamic geometric, ukiyo-e, mecha), asks to "make it look like ...", or says it in Indonesian ("ganti tampilan", "bikin desain", "ala ...", "kayak ..."). Offers up to 3 matching styles with previews, or to continue without pikmi, and lets the user choose; continues a style already marked in the project. Not for small edits to a project that already has its own look.
 ---
 
 # pikmi
@@ -17,6 +17,9 @@ Offer styles only when the user starts a new design or asks to change how someth
 
 Stay quiet when the project already has a look and the request only adds or edits a part of it ("add a
 pricing page", "fix this button"). Do not offer styles then.
+
+Once the user picks "Continue without pikmi", stay quiet for the rest of the conversation. Come back only
+when they name a style (step 2) or ask for pikmi again.
 
 ## Flow
 
@@ -49,20 +52,36 @@ Then use that style and say in one line which one you picked. Mood words, topics
 ("ramadan", "luxury", "dark", "devops", "military", "widgets") never skip the offer, even when only one
 style matches them: go to step 3 and put that style first.
 
-### 3. Offer 2 to 4 styles
+### 3. Offer up to 3 styles, or none
 
 - Read `catalog.json`. Match the mood words against `keywords.en`, `keywords.id` and `summary` by
   meaning, not only by exact word. Indonesian and slang count.
 - Keep only styles whose `media` include the requested medium and whose `themes` include a requested
   theme.
-- Offer 2 to 4, best first, even when one style clearly leads. For each give the name, one sentence on
-  why it fits this request, its themes, and the preview `styles/<id>/preview.html` (open it in a
-  browser for the user when you can).
-- Ask the user to pick. Do not build before they answer.
+- Pick 2 or 3, best first, even when one style clearly leads.
+- Before you ask, open each one's `styles/<id>/preview.html` in a browser for the user when you can;
+  otherwise give the paths.
+- Ask one question, with the harness's question tool when it has one. The options are the picked styles,
+  then "Continue without pikmi" last, in the user's language. For each style give the name and one
+  sentence on why it fits this request, plus this card as the option's preview (or under the option
+  when previews are not shown), filled from its `tokens.json`, using the requested theme or else the
+  first one:
+
+  ```
+  <name> · <themes>
+  Palette  <page> page · <text> text · <accent> accent
+  Fonts    <each family in its fonts, once, joined with " / ">
+  ```
+
+  At this step, read only `tokens.json` from the offered styles' folders.
+- Do not build before they answer. If they pick "Continue without pikmi", build without pikmi: load no
+  style files and add no marker. When that restyles a marked project, delete its `/* pikmi: <id> */`
+  line so later sessions do not continue the old style.
 
 ### 4. Nothing fits
 
-Say plainly that no style matches exactly, then offer the closest 2 or 3 and say what each one misses.
+Say plainly that no style matches exactly, then offer the closest 2 or 3 as in step 3 and say what each
+one misses.
 
 If the user wants a theme a style does not have, such as a dark version of a light-only style, say that
 style has no such theme and offer styles that do.
