@@ -10,163 +10,612 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
+  html { color-scheme: dark; scroll-behavior: smooth; scroll-padding-top: 80px; }
   html, body { overflow-x: clip; }
-  body { margin: 0; background: var(--page); color: var(--text); font: 400 16px/1.65 var(--font-body); }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 var(--type-body)/1.65 var(--font-body); }
   a { color: var(--link); text-underline-offset: 4px; }
-  .scene { background:
-    radial-gradient(560px circle at 85% 10%, rgba(124, 156, 196, 0.28), transparent 65%),
-    radial-gradient(520px circle at 10% 90%, rgba(51, 81, 122, 0.35), transparent 65%),
-    radial-gradient(420px circle at 55% 60%, rgba(228, 184, 99, 0.10), transparent 60%),
-    var(--page); }
-  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px 88px; }
+  p { margin: 0; }
+  figure { margin: 0; }
   h1, h2, h3 { font-family: var(--font-display); font-weight: 500; margin: 0; line-height: 1.08; }
-  h1 { font-size: clamp(44px, 8vw, 88px); }
-  h2 { font-size: 36px; margin-bottom: 24px; }
-  h3 { font-size: 24px; }
-  section { margin-top: 80px; }
+  .wrap { max-width: 1160px; margin-inline: auto; padding-inline: 16px; }
+  section { margin-top: 120px; }
   .muted { color: var(--text-muted); }
-  .label { font: 500 12px/1 var(--font-body); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
+  .label { font: 500 var(--type-label)/1.3 var(--font-body); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
+  .on-glass { color: var(--text); }
+  :focus-visible { outline: 2px solid var(--champagne-bright); outline-offset: 3px; }
+  .sec-head { max-width: 640px; margin-bottom: 40px; }
+  .sec-head h2 { font-size: clamp(32px, 6vw, 44px); margin-top: 12px; }
+  .sec-head p:not(.label) { margin-top: 14px; font-size: var(--type-lead); }
+
+  /* components (from STYLE.md) */
+  .scene { background:
+    radial-gradient(560px circle at 85% 10%, color-mix(in srgb, var(--moonlight) 28%, transparent), transparent 65%),
+    radial-gradient(520px circle at 10% 90%, color-mix(in srgb, var(--moon-steel) 35%, transparent), transparent 65%),
+    var(--page); }
+
   .panel { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius-card); padding: var(--space-lg); }
+
   .glass { position: relative; background: var(--glass-fill); border: 1px solid var(--glass-border); border-radius: var(--radius-card);
     backdrop-filter: blur(var(--glass-blur)) saturate(180%); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-    box-shadow: var(--glass-shadow); padding: var(--space-lg); color: var(--text); transition: transform 500ms var(--ease-glass), border-color 500ms var(--ease-glass); }
-  .glass::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 40%); }
-  .glass:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.3); }
-  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: var(--radius-control); background: var(--accent); color: var(--on-accent);
-    font: 500 16px/1 var(--font-body); text-decoration: none; cursor: pointer; transition: transform 500ms var(--ease-glass); }
+    box-shadow: var(--glass-shadow); padding: var(--space-lg); color: var(--text);
+    transition: transform 500ms var(--ease-glass), border-color 500ms var(--ease-glass); }
+  .glass::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--text) 12%, transparent), transparent 40%); }
+  .glass:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--text) 30%, transparent); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; cursor: pointer;
+    min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: var(--radius-control);
+    background: var(--accent); color: var(--on-accent); font: 500 16px/1 var(--font-body);
+    transition: transform 500ms var(--ease-glass); }
   .btn:hover { transform: translateY(-2px); }
   .btn:active { transform: scale(0.97); transition-duration: 150ms; }
   .btn.quiet { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--glass-border); }
-  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 2px solid var(--champagne-bright); outline-offset: 3px; }
-  .figure { font: 500 56px/1 var(--font-display); color: var(--accent); }
-  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--text-muted); border-radius: var(--radius-control); background: var(--panel); color: var(--text); font: 400 16px var(--font-body); }
-  label { display: block; margin-bottom: 6px; }
-  .grain { position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: var(--grain-opacity);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
-  .hero { min-height: 640px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; padding: 96px 0 72px; }
-  .hero p { font-size: 19px; max-width: 44ch; margin: 20px 0 30px; color: var(--text); }
-  .hero .glass { padding: 32px; }
-  .hero .glass .figure { margin: 12px 0 6px; }
-  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
-  .features .n { font: 500 40px/1 var(--font-display); color: var(--accent); display: block; margin-bottom: 10px; }
+  .btn:focus-visible, .field:focus-visible { outline: 2px solid var(--champagne-bright); outline-offset: 3px; }
 
-  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 36px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 960px; }
-  .canvas { container-type: inline-size; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--rule); }
-  .cap { margin-top: 12px; }
-  .slide { aspect-ratio: 16 / 9; position: relative; background:
-    radial-gradient(40cqw circle at 80% 20%, rgba(124, 156, 196, 0.3), transparent 65%),
-    radial-gradient(36cqw circle at 15% 85%, rgba(51, 81, 122, 0.35), transparent 65%), var(--page); }
-  .slide h3 { position: absolute; left: 7cqw; top: 9cqw; width: 46cqw; font-size: 4.4cqw; }
-  .slide .muted { position: absolute; left: 7cqw; top: 26cqw; width: 38cqw; margin: 0; font-size: 1.6cqw; }
-  .slide .glass { position: absolute; right: 7cqw; top: 9cqw; width: 34cqw; padding: 3cqw; border-radius: 2cqw; }
-  .slide .glass .figure { font-size: 9cqw; }
-  .slide .glass span { font-size: 1.4cqw; }
-  .post { aspect-ratio: 4 / 5; position: relative; display: grid; place-items: center; padding: 10cqw; background:
-    radial-gradient(60cqw circle at 50% 30%, rgba(124, 156, 196, 0.32), transparent 65%),
-    radial-gradient(50cqw circle at 20% 95%, rgba(51, 81, 122, 0.4), transparent 65%), var(--page); }
-  .post .glass { width: 100%; text-align: center; padding: 9cqw 6cqw; border-radius: 5cqw; }
-  .post .glass h3 { font-size: 9cqw; }
-  .post .glass p { margin: 3cqw 0 0; font-size: 4cqw; color: var(--text); }
-  .post .glass strong { color: var(--accent); font-weight: 500; }
-  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; position: relative; display: flex; flex-direction: column; padding: 9cqw 5cqw 5cqw; gap: 4cqw;
-    background: radial-gradient(70cqw circle at 80% 0%, rgba(124, 156, 196, 0.3), transparent 65%), var(--page); }
-  .phone h3 { font-size: 8cqw; }
-  .phone .panel { padding: 4cqw 5cqw; border-radius: 5cqw; }
-  .phone .panel .rowi { display: flex; justify-content: space-between; min-height: 44px; align-items: center; font-size: 4.2cqw; border-bottom: 1px solid var(--rule); }
-  .phone .panel .rowi:last-child { border-bottom: 0; }
-  .phone .spacer { flex: 1; }
-  .phone .dock { padding: 4cqw; border-radius: 6cqw; display: flex; flex-direction: column; gap: 3cqw; }
-  .phone .dock .btn { justify-content: center; }
-  .phone nav { display: flex; justify-content: space-around; }
-  .tab { min-height: 44px; padding: 0 3cqw; background: none; border: 0; color: var(--text); opacity: 0.7; font: 500 3.6cqw var(--font-body); cursor: pointer; }
-  .tab[aria-pressed="true"] { opacity: 1; color: var(--champagne-bright); }
-  @media (max-width: 760px) { .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 64px; } }
+  .figure { font: 500 var(--type-h1)/1 var(--font-display); color: var(--accent); }
+  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--text-muted); border-radius: var(--radius-control);
+    background: var(--panel); color: var(--text); font: 400 16px var(--font-body); }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: var(--grain-opacity); z-index: 50;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
   @media (prefers-reduced-motion: reduce) { .glass, .btn { transition: none; } }
-  @media (prefers-reduced-transparency: reduce) { .glass { background: var(--panel); backdrop-filter: none; -webkit-backdrop-filter: none; } }
+
+  /* nav: clear over the night scene, solid night once the page scrolls (never glass) */
+  .nav { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid transparent;
+    transition: background-color 500ms var(--ease-glass), border-color 500ms var(--ease-glass); }
+  .nav.scrolled { background: var(--page); border-bottom-color: var(--rule); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
+  .brand { font: 500 22px/1 var(--font-display); color: var(--text); text-decoration: none; letter-spacing: 0.01em; }
+  .nav-links { display: none; gap: 4px; }
+  .nav-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; color: var(--text); text-decoration: none; font-size: 15px; }
+  .nav-links a:hover { text-decoration: underline; }
+  .nav .btn { padding: 0 22px; }
+
+  /* hero */
+  .hero { position: relative; margin-top: -73px; padding: 121px 0 48px; }
+  .hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 240px; pointer-events: none;
+    background: linear-gradient(180deg, transparent, var(--page)); }
+  .hero-grid { position: relative; z-index: 1; }
+  .hero-grid { display: grid; gap: 48px; align-items: center; }
+  .hero h1 { font-size: clamp(44px, 11vw, 80px); line-height: 1.04; margin: 18px 0 20px; }
+  .hero .lede { font-size: var(--type-lead); max-width: 40ch; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .offer { position: relative; }
+  .offer::before { content: ""; position: absolute; inset: -35% -25%; pointer-events: none;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--moonlight) 30%, transparent), transparent); }
+  .offer .glass { padding: 32px 28px; }
+  .offer .figure { margin: 18px 0 6px; }
+  .offer .per { font-size: 17px; }
+  .offer .dates { display: flex; justify-content: space-between; gap: 12px; margin: 24px 0 0; padding-top: 18px; border-top: 1px solid var(--glass-border); }
+  .offer .dates dt { font: 500 var(--type-label)/1.3 var(--font-body); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+  .offer .dates dd { margin: 6px 0 0; font-size: 17px; }
+  .offer .btn { width: 100%; margin-top: 24px; }
+
+  /* the hotel: features + image strip */
+  .features { display: grid; gap: 40px; }
+  .features .n { display: block; font: 500 40px/1 var(--font-display); color: var(--accent); margin-bottom: 16px; }
+  .features h3 { font-size: var(--type-h3); }
+  .features p { margin-top: 10px; max-width: 34ch; }
+  .strip { display: grid; grid-auto-flow: column; grid-auto-columns: 84%; gap: 16px; margin-top: 56px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+  .strip figure { scroll-snap-align: start; }
+  .strip figcaption { margin-top: 12px; }
+  .view { position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--rule); background: var(--night-deep); --h: 42%; --mx: 75%; }
+  .view .sky { position: absolute; inset: 0 0 var(--h) 0;
+    background: radial-gradient(80% 110% at var(--mx) 0%, color-mix(in srgb, var(--moonlight) 30%, transparent), transparent 70%), var(--page); }
+  .view .shore { position: absolute; left: 0; right: 0; bottom: var(--h); height: 6px; transform: translateY(50%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--text) 80%, transparent) 0 1.2px, transparent 2px) 0 50% / 14px 6px repeat-x; }
+  .view .water { position: absolute; left: 0; right: 0; bottom: 0; height: var(--h); filter: blur(1px);
+    background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--moonlight) 34%, transparent) 0 1.5px, transparent 1.5px 14px);
+    -webkit-mask-image: linear-gradient(180deg, #000, transparent 85%); mask-image: linear-gradient(180deg, #000, transparent 85%); }
+  .view .rail { position: absolute; left: 0; right: 0; bottom: 0; height: 30%; border-top: 2px solid var(--rule);
+    background: repeating-linear-gradient(90deg, var(--rule) 0 2px, transparent 2px 48px), var(--night-deep); }
+  .view .lamp { position: absolute; left: 24%; top: 22%; width: 52%; aspect-ratio: 1; transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--text) 55%, transparent), color-mix(in srgb, var(--moonlight) 18%, transparent) 35%, transparent); }
+  .view .post-line { position: absolute; left: calc(24% - 1px); top: 22%; bottom: 42%; width: 2px; background: var(--rule); }
+  .view .streak { position: absolute; left: calc(24% - 6px); bottom: 4%; width: 12px; height: 34%; filter: blur(4px);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--text) 40%, transparent), transparent); }
+
+  /* rooms */
+  .rooms { display: grid; gap: 16px; }
+  .room { display: flex; flex-direction: column; gap: 12px; }
+  .room h3 { font-size: var(--type-h3); margin-top: 4px; }
+  .room .facts { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 4px 0 0; }
+  .room .facts div { display: flex; gap: 6px; }
+  .room .facts dt { color: var(--text-muted); }
+  .room .facts dd { margin: 0; }
+  .room .price { display: flex; align-items: baseline; gap: 8px; margin-top: auto; padding-top: 20px; border-top: 1px solid var(--rule); }
+  .room .figure { font-size: 40px; }
+  .room .choose { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+
+  /* booking */
+  .band { position: relative; margin-top: 24px; padding: 96px 0;
+    background:
+      linear-gradient(180deg, var(--page), transparent 12%, transparent 85%, var(--page)),
+      radial-gradient(520px circle at 50% 96%, color-mix(in srgb, var(--moonlight) 30%, transparent), transparent 65%),
+      radial-gradient(480px circle at 0% 10%, color-mix(in srgb, var(--moon-steel) 35%, transparent), transparent 65%),
+      var(--page); }
+  .book { display: grid; gap: 16px; align-items: start; }
+  .book-main { display: grid; gap: 16px; min-width: 0; }
+  .book fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .book .panel { min-width: 0; }
+  .book legend { padding: 0; margin-bottom: 16px; font: 500 var(--type-h3)/1.1 var(--font-display); }
+  .flabel { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 15px; }
+  .date-row { display: grid; gap: 16px; }
+  .stepper { display: flex; align-items: center; gap: 8px; }
+  .stepper .btn { width: 48px; padding: 0; font-size: 22px; }
+  .stepper .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .stepper output { min-width: 4ch; text-align: center; font: 500 22px/1 var(--font-display); }
+  .opts { display: grid; gap: 8px; }
+  .opt { display: flex; align-items: center; gap: 14px; min-height: 60px; padding: 12px 16px; border: 1px solid var(--rule); border-radius: var(--radius-control);
+    background: var(--page); cursor: pointer; margin: 0; color: var(--text); font-size: 16px; transition: border-color 500ms var(--ease-glass); }
+  .opt:has(input:checked) { border-color: var(--text-muted); }
+  .opt input { width: 20px; height: 20px; margin: 0; flex: none; accent-color: var(--text); }
+  .opt .name { flex: 1; }
+  .opt .name small { display: block; color: var(--text-muted); font-size: 14px; }
+  .opt .cost { color: var(--accent); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .error { margin-top: 12px; color: var(--danger); font-size: 15px; }
+  .error:empty { display: none; }
+  .dock { display: flex; flex-direction: column; gap: 6px; }
+  .dock h3 { font-size: var(--type-h3); margin-top: 10px; }
+  .dock .lines { margin: 18px 0 0; padding: 14px 0; border-block: 1px solid var(--glass-border); display: grid; gap: 8px; }
+  .dock .lines div { display: flex; justify-content: space-between; gap: 12px; }
+  .dock .lines dd { margin: 0; font-variant-numeric: tabular-nums; }
+  .dock .total { display: flex; justify-content: space-between; align-items: baseline; margin-top: 12px; }
+  .dock .total .figure { font-size: 48px; }
+  .dock .btn { margin-top: 16px; width: 100%; }
+  .dock .fine { margin-top: 10px; }
+  .dock .live:empty { display: none; }
+
+  /* rooftop launch kit */
+  .kit { display: grid; gap: 28px; align-items: end; }
+  .frame { container-type: inline-size; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--rule); }
+  .frame .glass:hover { transform: none; }
+  figcaption { margin-top: 12px; }
+  .slide { aspect-ratio: 16 / 9; position: relative;
+    background: radial-gradient(44cqw circle at 76% 40%, color-mix(in srgb, var(--moonlight) 30%, transparent), transparent 65%),
+      radial-gradient(36cqw circle at 10% 100%, color-mix(in srgb, var(--moon-steel) 35%, transparent), transparent 65%), var(--page); }
+  .slide .s-label { position: absolute; left: 5cqw; top: 5cqw; font-size: 1.1cqw; letter-spacing: 0.12cqw; color: var(--text); }
+  .slide h3 { position: absolute; left: 5cqw; top: 11cqw; width: 46cqw; font-size: 3.9cqw; line-height: 1.1; }
+  .slide .s-body { position: absolute; left: 5cqw; bottom: 5cqw; width: 38cqw; font-size: 1.46cqw; line-height: 1.5; }
+  .slide .glass { position: absolute; right: 5cqw; top: 12cqw; bottom: 12cqw; width: 34cqw; padding: 3cqw; border-radius: 1.6cqw;
+    display: flex; flex-direction: column; justify-content: center; gap: 1cqw; }
+  .slide .glass .label { font-size: 1.1cqw; letter-spacing: 0.12cqw; }
+  .slide .glass .figure { font-size: 8.4cqw; }
+  .slide .glass p { font-size: 1.46cqw; }
+  .post { aspect-ratio: 4 / 5; position: relative; display: grid; place-items: center; padding: 6cqw;
+    background: radial-gradient(64cqw circle at 50% 46%, color-mix(in srgb, var(--moonlight) 32%, transparent), transparent 65%),
+      radial-gradient(50cqw circle at 12% 98%, color-mix(in srgb, var(--moon-steel) 40%, transparent), transparent 65%), var(--page); }
+  .post .p-brand { position: absolute; left: 6cqw; top: 6cqw; font-size: 2.6cqw; letter-spacing: 0.3cqw; color: var(--text); }
+  .post .glass { width: 100%; padding: 10cqw 6cqw; border-radius: 3cqw; text-align: center; }
+  .post .glass h3 { font-size: 9.6cqw; line-height: 1.05; }
+  .post .glass .detail { margin-top: 5cqw; font: 500 4.6cqw/1.2 var(--font-body); color: var(--accent); }
+  .post .glass p:last-child { margin-top: 2cqw; font-size: 3.4cqw; }
+  .phone { aspect-ratio: 9 / 19.5; position: relative; display: flex; flex-direction: column; gap: 4cqw; padding: 9cqw 5cqw 4cqw;
+    background: radial-gradient(70cqw circle at 90% 0%, color-mix(in srgb, var(--moonlight) 26%, transparent), transparent 65%),
+      radial-gradient(80cqw circle at 40% 100%, color-mix(in srgb, var(--moonlight) 30%, transparent), transparent 65%), var(--page); }
+  .phone .label { font-size: 3.4cqw; letter-spacing: 0.4cqw; }
+  .phone .p-title { font: 500 9cqw/1.05 var(--font-display); }
+  .phone .panel { padding: 1cqw 5cqw; border-radius: 6cqw; }
+  .phone .rowi { display: flex; justify-content: space-between; align-items: center; gap: 2cqw; min-height: 44px; font-size: 4.2cqw; border-bottom: 1px solid var(--rule); }
+  .phone .rowi:last-child { border-bottom: 0; }
+  .phone .spacer { flex: 1; }
+  .phone .btn { width: 100%; padding: 0; font-size: 4.4cqw; }
+  .phone .tabbar { display: flex; padding: 1.5cqw; border-radius: 6cqw; }
+  .phone .tabbar button { flex: 1; min-height: 44px; border: 0; border-radius: 4.5cqw; background: none; color: var(--text); font: 500 4cqw/1 var(--font-body); cursor: pointer; }
+  .phone .tabbar button[aria-pressed="true"] { background: color-mix(in srgb, var(--text) 14%, transparent); }
+  .phone-fig { max-width: 300px; width: 100%; justify-self: center; }
+
+  /* enquiry + footer */
+  .enquire { display: grid; gap: 28px; }
+  .enquire h2 { font-size: clamp(32px, 6vw, 48px); margin-top: 12px; }
+  .enquire .copy p { margin-top: 14px; max-width: 44ch; }
+  .enquire form { display: grid; gap: 16px; }
+  .enquire label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 15px; }
+  .form-row { display: grid; gap: 16px; }
+  .enquire .btn { width: 100%; }
+  select.field { appearance: none; padding-right: 44px; background-repeat: no-repeat; background-size: 6px 6px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--text) 50%), linear-gradient(135deg, var(--text) 50%, transparent 50%);
+    background-position: calc(100% - 22px) 50%, calc(100% - 16px) 50%; }
+  .note { color: var(--text); }
+  .note:empty { display: none; }
+  .site-foot { margin-top: 96px; background: var(--night-deep); border-top: 1px solid var(--rule); }
+  .site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 24px; padding-bottom: 36px; }
+
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 24px; }
+    .features { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .strip { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); overflow: visible; }
+    .rooms { grid-template-columns: repeat(2, 1fr); }
+    .rooms .room:last-child { grid-column: 1 / -1; }
+    .date-row { grid-template-columns: 1.4fr 1fr 1fr; align-items: end; }
+    .kit { grid-template-columns: 1.2fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
+    .form-row { grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .hero { padding: 145px 0 72px; }
+    .hero-grid { grid-template-columns: 1.15fr 0.85fr; gap: 64px; min-height: 520px; }
+    .rooms { grid-template-columns: repeat(3, 1fr); }
+    .rooms .room:last-child { grid-column: auto; }
+    .band { background:
+      linear-gradient(180deg, var(--page), transparent 12%, transparent 85%, var(--page)),
+      radial-gradient(560px circle at 84% 34%, color-mix(in srgb, var(--moonlight) 30%, transparent), transparent 65%),
+      radial-gradient(480px circle at 0% 90%, color-mix(in srgb, var(--moon-steel) 35%, transparent), transparent 65%),
+      var(--page); }
+    .book { grid-template-columns: 1fr 380px; gap: 24px; }
+    .dock { position: sticky; top: 96px; }
+    .kit { grid-template-columns: 2fr 1fr 0.72fr; }
+    .kit .slide-fig { grid-column: auto; }
+    .enquire { grid-template-columns: 1fr 1fr; align-items: center; gap: 56px; padding: 48px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .nav, .opt { transition: none; }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .glass { background: var(--panel); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  }
 </style>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
-<div class="scene">
+<header class="nav">
   <div class="wrap">
-    <header class="hero">
-      <div>
-        <span class="label">pikmi style · dark only</span>
-        <h1 style="margin-top:16px">Nocturne Glass</h1>
-        <p>A deep ink night, soft wells of moonlight and one pane of colorless glass, lit by a single champagne accent.</p>
-        <div class="row"><a class="btn" href="#components">Reserve a suite</a><a class="btn quiet" href="#slides">See the slides</a></div>
-      </div>
-      <div class="glass">
-        <span class="label" style="color:var(--text)">Harbor suite · tonight</span>
-        <div class="figure">Two nights</div>
-        <p style="margin:0">Late checkout and a table at the rooftop bar. Placeholder offer for the preview.</p>
-      </div>
-    </header>
+    <a class="brand" href="#top">Lantern Quay</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#hotel">The hotel</a><a href="#rooms">Rooms</a><a href="#book">Your stay</a><a href="#rooftop">Rooftop</a>
+    </nav>
+    <a class="btn" href="#book">Book</a>
   </div>
-</div>
-<div class="wrap">
-  <section id="components" aria-labelledby="h-components">
-    <h2 id="h-components">Components</h2>
-    <div class="grid">
-      <div class="panel"><h3>Buttons</h3><div class="row" style="margin-top:16px"><a class="btn" href="#ui">Book the suite</a><a class="btn quiet" href="#app">View the menu</a></div></div>
-      <div class="panel"><label class="muted" for="arrive">Arrival date</label><input class="field" id="arrive" placeholder="Friday, 14 November"><p class="muted" style="margin:10px 0 0;font-size:14px">Secondary text lives on solid panels.</p></div>
-      <div class="panel"><span class="label">Rate</span><div class="figure" style="margin-top:10px">[REAL DATA]</div><p style="margin:8px 0 0"><a href="#social">A champagne link</a></p></div>
+</header>
+
+<main id="top">
+  <section class="hero scene" aria-labelledby="h-hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="label">Lantern Quay · Halvard Bay</p>
+        <h1 id="h-hero">Rooms above the harbor, awake all night</h1>
+        <p class="lede">A small hotel on the old harbor wall, where the front desk and the kitchen never close.</p>
+        <div class="actions">
+          <a class="btn" href="#book">Book a room</a>
+          <a class="btn quiet" href="#rooms">See the rooms</a>
+        </div>
+      </div>
+      <div class="offer">
+        <div class="glass">
+          <p class="label on-glass">Harbor suite · this weekend</p>
+          <p class="figure">€420</p>
+          <p class="per">a night for two, with late checkout and a table on the roof</p>
+          <dl class="dates">
+            <div><dt>Arrive</dt><dd>Fri 20 Nov</dd></div>
+            <div><dt>Leave</dt><dd>Sun 22 Nov</dd></div>
+          </dl>
+          <a class="btn quiet" href="#book" data-room="suite">Hold these dates</a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="ui" aria-labelledby="h-ui">
-    <h2 id="h-ui">UI · A harbor hotel</h2>
+  <section id="hotel" class="wrap" aria-labelledby="h-hotel">
+    <div class="sec-head">
+      <p class="label">The hotel</p>
+      <h2 id="h-hotel">Made for people who arrive after dark</h2>
+    </div>
     <div class="features">
-      <div><span class="n">01</span><h3>Rooms above the water</h3><p class="muted">Every suite faces the harbor, with blackout glass for late mornings.</p></div>
-      <div><span class="n">02</span><h3>A quiet rooftop</h3><p class="muted">Twelve tables, no music after eleven, a view of the lights across the bay.</p></div>
-      <div><span class="n">03</span><h3>Arrive late</h3><p class="muted">The front desk and the kitchen stay open through the night.</p></div>
+      <div><span class="n">01</span><h3>Rooms above the water</h3><p class="muted">Every room faces the harbor, with blackout glass for late mornings.</p></div>
+      <div><span class="n">02</span><h3>A quiet rooftop</h3><p class="muted">Twelve tables, no music after eleven, and the lights of the far shore.</p></div>
+      <div><span class="n">03</span><h3>Arrive at any hour</h3><p class="muted">The front desk and the kitchen stay open through the night.</p></div>
+    </div>
+    <div class="strip" role="region" aria-label="Views from the hotel">
+      <figure>
+        <div class="view" role="img" aria-label="Illustration: the harbor at night from a third-floor window, lights on the far shore reflected in the water">
+          <span class="sky"></span><span class="shore"></span><span class="water"></span>
+        </div>
+        <figcaption class="label">The harbor from room 12</figcaption>
+      </figure>
+      <figure>
+        <div class="view" style="--h: 30%; --mx: 30%" role="img" aria-label="Illustration: the rooftop railing at night, with the far shore behind it">
+          <span class="sky"></span><span class="shore" style="bottom: 46%"></span><span class="rail"></span>
+        </div>
+        <figcaption class="label">The roof at eleven</figcaption>
+      </figure>
+      <figure>
+        <div class="view" style="--h: 46%; --mx: 90%" role="img" aria-label="Illustration: a single lamp on the quay at night and its reflection">
+          <span class="sky"></span><span class="shore"></span><span class="water"></span><span class="post-line"></span><span class="lamp"></span><span class="streak"></span>
+        </div>
+        <figcaption class="label">The quay at two in the morning</figcaption>
+      </figure>
     </div>
   </section>
 
-  <section aria-labelledby="h-media">
-    <h2 id="h-media">Other media</h2>
-    <div class="canvases">
-      <div id="slides">
-        <div class="canvas"><div class="slide">
-          <h3>Guests stay longer when they arrive at night</h3>
-          <p class="muted">Average stay for late arrivals, last season. Replace with real figures.</p>
-          <div class="glass"><span class="label" style="color:var(--text)">Average stay</span><div class="figure">[n]</div><span>nights</span></div>
-        </div></div>
-        <p class="cap label">slides · 1920 x 1080</p>
+  <section id="rooms" class="wrap" aria-labelledby="h-rooms">
+    <div class="sec-head">
+      <p class="label">Rooms</p>
+      <h2 id="h-rooms">Three rooms, every one on the water</h2>
+      <p class="muted">Prices are per night for two, breakfast not included.</p>
+    </div>
+    <div class="rooms">
+      <article class="panel room">
+        <p class="label">First and second floor</p>
+        <h3>Harbor room</h3>
+        <p class="muted">A queen bed under the window and a deep sill to sit on with the lights of the bay.</p>
+        <dl class="facts"><div><dt>Sleeps</dt><dd>2</dd></div><div><dt>Size</dt><dd>24 m²</dd></div></dl>
+        <div class="price"><span class="figure">€260</span><span class="muted">a night</span></div>
+        <a class="choose" href="#book" data-room="harbor">Choose the harbor room</a>
+      </article>
+      <article class="panel room">
+        <p class="label">Corner of every floor</p>
+        <h3>Corner room</h3>
+        <p class="muted">Two walls of glass: one onto the harbor, one onto the old lighthouse.</p>
+        <dl class="facts"><div><dt>Sleeps</dt><dd>3</dd></div><div><dt>Size</dt><dd>32 m²</dd></div></dl>
+        <div class="price"><span class="figure">€340</span><span class="muted">a night</span></div>
+        <a class="choose" href="#book" data-room="corner">Choose the corner room</a>
+      </article>
+      <article class="panel room">
+        <p class="label">Top floor</p>
+        <h3>Harbor suite</h3>
+        <p class="muted">A sitting room, a bath by the window and a small balcony over the water.</p>
+        <dl class="facts"><div><dt>Sleeps</dt><dd>3</dd></div><div><dt>Size</dt><dd>48 m²</dd></div></dl>
+        <div class="price"><span class="figure">€420</span><span class="muted">a night</span></div>
+        <a class="choose" href="#book" data-room="suite">Choose the suite</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="book" class="band" aria-labelledby="h-book">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Your stay</p>
+        <h2 id="h-book">Plan the nights, see the total</h2>
+        <p class="muted">Pick a date and a room. The total updates as you go, and you pay at the hotel.</p>
       </div>
-      <div id="social">
-        <div class="canvas"><div class="post">
-          <div class="glass"><h3>The rooftop reopens</h3><p>Friday from nine, <strong>by reservation</strong>.</p></div>
+      <form class="book" id="booking" novalidate>
+        <div class="book-main">
+          <div class="panel"><fieldset>
+            <legend>When</legend>
+            <div class="date-row">
+              <div>
+                <label class="flabel" for="arrive">Arrival</label>
+                <input class="field" id="arrive" type="date" value="2026-11-20" min="2026-10-26">
+              </div>
+              <div>
+                <span class="flabel" id="nights-label">Nights</span>
+                <div class="stepper" role="group" aria-labelledby="nights-label">
+                  <button class="btn quiet" type="button" id="nights-down" aria-label="One night fewer">−</button>
+                  <output id="nights" aria-live="polite">2</output>
+                  <button class="btn quiet" type="button" id="nights-up" aria-label="One night more">+</button>
+                </div>
+              </div>
+              <div>
+                <label class="flabel" for="guests">Guests</label>
+                <select class="field" id="guests">
+                  <option value="1">1 guest</option>
+                  <option value="2" selected>2 guests</option>
+                  <option value="3">3 guests</option>
+                </select>
+              </div>
+            </div>
+          </fieldset></div>
+          <div class="panel"><fieldset>
+            <legend>Room</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="room" value="harbor"><span class="name">Harbor room<small>Sleeps 2 · queen bed</small></span><span class="cost">€260</span></label>
+              <label class="opt"><input type="radio" name="room" value="corner"><span class="name">Corner room<small>Sleeps 3 · two walls of glass</small></span><span class="cost">€340</span></label>
+              <label class="opt"><input type="radio" name="room" value="suite" checked><span class="name">Harbor suite<small>Sleeps 3 · balcony over the water</small></span><span class="cost">€420</span></label>
+            </div>
+            <p class="error" id="room-error" aria-live="polite"></p>
+          </fieldset></div>
+          <div class="panel"><fieldset>
+            <legend>Extras</legend>
+            <div class="opts">
+              <label class="opt"><input type="checkbox" name="extra" value="late" checked><span class="name">Late checkout<small>Keep the room until 16:00</small></span><span class="cost">€40</span></label>
+              <label class="opt"><input type="checkbox" name="extra" value="roof" checked><span class="name">A table on the roof<small>One evening, from nine</small></span><span class="cost">free</span></label>
+              <label class="opt"><input type="checkbox" name="extra" value="breakfast"><span class="name">Breakfast on the terrace<small>Per guest, per morning</small></span><span class="cost">€24</span></label>
+            </div>
+          </fieldset></div>
+        </div>
+        <aside class="glass dock" aria-labelledby="dock-room">
+          <p class="label on-glass">Your stay</p>
+          <h3 id="dock-room">Harbor suite</h3>
+          <p id="dock-dates">Fri 20 Nov to Sun 22 Nov</p>
+          <dl class="lines" id="dock-lines"></dl>
+          <div class="total"><span>Total</span><span class="figure" id="dock-total">€880</span></div>
+          <button class="btn" type="submit">Reserve</button>
+          <p class="fine">Pay at the hotel. Free to cancel until 18:00 on the day.</p>
+          <p class="live" id="book-note" aria-live="polite"></p>
+        </aside>
+      </form>
+    </div>
+  </section>
+
+  <section id="rooftop" class="wrap" aria-labelledby="h-kit">
+    <div class="sec-head">
+      <p class="label">Rooftop</p>
+      <h2 id="h-kit">The roof reopens on Friday</h2>
+      <p class="muted">One announcement, cut for the lobby screen, the feed and the guest app.</p>
+    </div>
+    <div class="kit">
+      <figure class="slide-fig">
+        <div class="frame"><div class="slide">
+          <p class="label s-label">Lantern Quay · winter season</p>
+          <h3>The kitchen stays open until four in the morning</h3>
+          <p class="s-body">When the bar closes, the late kitchen opens. Order from your room or come up to the roof.</p>
+          <div class="glass">
+            <p class="label on-glass">Last order</p>
+            <p class="figure">04:00</p>
+            <p>every night, all winter</p>
+          </div>
         </div></div>
-        <p class="cap label">social · 1080 x 1350</p>
-      </div>
-      <div id="app">
-        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
-          <span class="label">Your stay</span>
-          <h3>Harbor suite</h3>
+        <figcaption class="label">Lobby screen slide · 1920 x 1080</figcaption>
+      </figure>
+      <figure>
+        <div class="frame"><div class="post">
+          <p class="label p-brand">Lantern Quay</p>
+          <div class="glass">
+            <h3>The roof reopens</h3>
+            <p class="detail">Friday, from nine</p>
+            <p>Book a table at the front desk</p>
+          </div>
+        </div></div>
+        <figcaption class="label">Feed post · 1080 x 1350</figcaption>
+      </figure>
+      <figure class="phone-fig">
+        <div class="frame"><div class="phone">
+          <p class="label">Your stay · Room 12</p>
+          <p class="p-title">Harbor suite</p>
           <div class="panel">
             <div class="rowi"><span>Check in</span><span class="muted">Fri, 22:30</span></div>
             <div class="rowi"><span>Nights</span><span class="muted">2</span></div>
-            <div class="rowi"><span>Rooftop</span><span class="muted">Table for two</span></div>
+            <div class="rowi"><span>Roof</span><span class="muted">Table for two, 23:00</span></div>
           </div>
           <div class="spacer"></div>
-          <div class="glass dock">
-            <a class="btn" href="#app">Open room key</a>
-            <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Stay</button><button class="tab" type="button" aria-pressed="false">Dine</button><button class="tab" type="button" aria-pressed="false">Help</button></nav>
-          </div>
+          <a class="btn" href="#book">Open room key</a>
+          <nav class="glass tabbar" aria-label="Guest app sections" data-pressed-group>
+            <button type="button" aria-pressed="true">Stay</button>
+            <button type="button" aria-pressed="false">Dine</button>
+            <button type="button" aria-pressed="false">Help</button>
+          </nav>
         </div></div>
-        <p class="cap label">app · phone</p>
-      </div>
+        <figcaption class="label">Guest app · phone</figcaption>
+      </figure>
     </div>
   </section>
-</div>
+
+  <section id="enquire" class="wrap" aria-labelledby="h-enquire">
+    <div class="panel enquire">
+      <div class="copy">
+        <p class="label">Front desk</p>
+        <h2 id="h-enquire">Arriving late? Tell us when.</h2>
+        <p class="muted">Leave your arrival time and we will keep the kitchen and the lift ready. Someone answers at every hour.</p>
+      </div>
+      <form id="enquiry-form" novalidate>
+        <div>
+          <label for="email">Email</label>
+          <input class="field" id="email" type="email" autocomplete="email" aria-describedby="email-error">
+          <p class="error" id="email-error"></p>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="e-date">Arrival date</label>
+            <input class="field" id="e-date" type="date" value="2026-11-20" min="2026-10-26">
+          </div>
+          <div>
+            <label for="e-time">Arrival time</label>
+            <select class="field" id="e-time">
+              <option>Before midnight</option>
+              <option selected>Midnight to 2:00</option>
+              <option>After 2:00</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn" type="submit">Send to the front desk</button>
+        <p class="note" id="enquiry-note" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span class="label">Lantern Quay is a fictional hotel, made for this preview</span>
+    <span class="label">pikmi style · Nocturne Glass</span>
+  </div>
+</footer>
+
 <script>
-  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
-  })));
+  // the nav turns solid once the hero scrolls away
+  const nav = document.querySelector('.nav');
+  const solidNav = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+  solidNav();
+  window.addEventListener('scroll', solidNav, { passive: true });
+
+  // booking: fictional prices, total updates live
+  const ROOMS = {
+    harbor: { name: 'Harbor room', price: 260, sleeps: 2 },
+    corner: { name: 'Corner room', price: 340, sleeps: 3 },
+    suite: { name: 'Harbor suite', price: 420, sleeps: 3 }
+  };
+  const form = document.getElementById('booking');
+  const arrive = document.getElementById('arrive');
+  const guests = document.getElementById('guests');
+  const nightsOut = document.getElementById('nights');
+  const down = document.getElementById('nights-down');
+  const up = document.getElementById('nights-up');
+  const roomError = document.getElementById('room-error');
+  let nights = 2;
+  const euro = n => '€' + n.toLocaleString('en-GB');
+  const day = d => d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+
+  function update() {
+    const room = ROOMS[form.room.value];
+    const people = Number(guests.value);
+    const extras = [...form.querySelectorAll('[name="extra"]:checked')].map(x => x.value);
+    const lines = [[`${room.name}, ${nights} ${nights === 1 ? 'night' : 'nights'}`, room.price * nights]];
+    if (extras.includes('breakfast')) lines.push([`Breakfast, ${people} × ${nights}`, 24 * people * nights]);
+    if (extras.includes('late')) lines.push(['Late checkout', 40]);
+    if (extras.includes('roof')) lines.push(['Table on the roof', 0]);
+    const total = lines.reduce((sum, l) => sum + l[1], 0);
+
+    document.getElementById('dock-room').textContent = room.name;
+    const lineList = document.getElementById('dock-lines');
+    lineList.replaceChildren(...lines.map(([what, cost]) => {
+      const row = document.createElement('div');
+      const dt = document.createElement('dt'); dt.textContent = what;
+      const dd = document.createElement('dd'); dd.textContent = cost ? euro(cost) : 'free';
+      row.append(dt, dd);
+      return row;
+    }));
+    document.getElementById('dock-total').textContent = euro(total);
+
+    const start = new Date(arrive.value + 'T00:00:00Z');
+    if (!isNaN(start)) {
+      const end = new Date(start); end.setUTCDate(end.getUTCDate() + nights);
+      document.getElementById('dock-dates').textContent = `${day(start)} to ${day(end)}`;
+    }
+    nightsOut.textContent = nights;
+    down.disabled = nights <= 1;
+    up.disabled = nights >= 14;
+    roomError.textContent = people > room.sleeps
+      ? `The ${room.name.toLowerCase()} sleeps ${room.sleeps}. Choose the corner room or the suite for ${people}.`
+      : '';
+    document.getElementById('book-note').textContent = '';
+  }
+  down.addEventListener('click', () => { nights = Math.max(1, nights - 1); update(); });
+  up.addEventListener('click', () => { nights = Math.min(14, nights + 1); update(); });
+  form.addEventListener('change', update);
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (roomError.textContent) { form.querySelector('[name="room"]:checked').focus(); return; }
+    document.getElementById('book-note').textContent = 'This is a preview: nothing was sent.';
+  });
+  // "choose this room" links preselect the room in the booking form
+  document.querySelectorAll('a[data-room]').forEach(a => a.addEventListener('click', () => {
+    form.querySelector(`[name="room"][value="${a.dataset.room}"]`).checked = true;
+    update();
+  }));
+  update();
+
+  // one pressed button per group
+  document.querySelectorAll('[data-pressed-group]').forEach(group => {
+    const buttons = group.querySelectorAll('button[aria-pressed]');
+    buttons.forEach(b => b.addEventListener('click', () => buttons.forEach(x => x.setAttribute('aria-pressed', String(x === b)))));
+  });
+
+  // front desk enquiry
+  const email = document.getElementById('email');
+  const emailError = document.getElementById('email-error');
+  document.getElementById('enquiry-form').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!email.value.trim() || !email.checkValidity()) {
+      emailError.textContent = 'Add an email address so the desk can reply.';
+      email.setAttribute('aria-invalid', 'true');
+      email.focus();
+      return;
+    }
+    emailError.textContent = '';
+    email.removeAttribute('aria-invalid');
+    document.getElementById('enquiry-note').textContent = 'This is a preview: nothing was sent.';
+  });
 </script>
 </body>
 </html>

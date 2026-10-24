@@ -10,162 +10,544 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--page); color: var(--text); font: 400 17px/1.7 var(--font-body); }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 var(--type-body)/1.7 var(--font-body); }
   a { color: var(--link); }
-  .wrap { max-width: 1160px; margin: 0 auto; padding: 32px 16px 80px; }
-  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: var(--tracking-heading); margin: 0; line-height: 1.2; }
-  h1 { font-size: clamp(36px, 6vw, 64px); }
-  h2 { font-size: 32px; text-align: center; }
-  h3 { font-size: 22px; }
-  section { margin-top: 72px; }
+  .wrap { max-width: 1160px; margin-inline: auto; padding-inline: 16px; }
+  section { margin-top: 112px; }
+  h1, h2, h3, h4 { margin: 0; line-height: 1.2; }
+  .label { font: 500 var(--type-label)/1.3 var(--font-body); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
   .muted { color: var(--text-muted); }
-  .center { text-align: center; }
-  .label { font: 500 13px/1 var(--font-body); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
-  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: 2px solid var(--rule); border-radius: var(--radius-control);
-    background: var(--accent); color: var(--on-accent); font: 600 16px/1 var(--font-display); letter-spacing: var(--tracking-heading); text-decoration: none; cursor: pointer; transition: box-shadow 450ms ease-out; }
+  .row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  h1, h2, h3 { text-wrap: balance; }
+  .caption { font-size: var(--type-caption); color: var(--text-muted); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+  .star { display: inline-block; width: 18px; height: 18px; flex: none; background: var(--gold);
+    clip-path: polygon(50% 0, 61% 25%, 85% 15%, 75% 39%, 100% 50%, 75% 61%, 85% 85%, 61% 75%, 50% 100%, 39% 75%, 15% 85%, 25% 61%, 0 50%, 25% 39%, 15% 15%, 39% 25%); }
+  .sec-head { text-align: center; max-width: 720px; margin: 0 auto 48px; }
+  .sec-head h2 { font-size: clamp(30px, 5vw, var(--type-h1)); margin-top: 12px; line-height: 1.15; }
+  .sec-head .divider { margin: 22px auto; }
+  .sec-head p { margin: 0 auto; max-width: 56ch; color: var(--text-muted); }
+
+  /* components (from STYLE.md) */
+  .btn { min-height: 48px; padding: 0 var(--space-lg); border: 2px solid var(--rule); border-radius: var(--radius-control);
+    background: var(--accent); color: var(--on-accent); font: 600 16px/1 var(--font-display);
+    letter-spacing: var(--tracking-heading); transition: box-shadow 450ms ease-out; }
   .btn:hover { box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 35%, transparent); }
   .btn:active { transform: scale(0.98); }
   .btn.quiet { background: transparent; color: var(--text); }
-  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
-  .frame { position: relative; background: var(--card); border: 2px solid var(--rule); border-radius: var(--radius-card); padding: var(--space-xl) var(--space-lg); text-align: center; }
-  .frame::before, .frame::after { content: ""; position: absolute; width: 28px; height: 28px; background: var(--gold); left: 50%; translate: -50% 0;
+  .btn:focus-visible, .field:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+
+  .frame { position: relative; background: var(--card); border: 2px solid var(--rule); border-radius: var(--radius-card);
+    padding: var(--space-xl) var(--space-lg); text-align: center; }
+  .frame::before, .frame::after { content: ""; position: absolute; width: 28px; height: 28px; background: var(--gold);
     clip-path: polygon(50% 0, 61% 25%, 85% 15%, 75% 39%, 100% 50%, 75% 61%, 85% 85%, 61% 75%, 50% 100%, 39% 75%, 15% 85%, 25% 61%, 0 50%, 25% 39%, 15% 15%, 39% 25%); }
-  .frame::before { top: -15px; } .frame::after { bottom: -15px; }
+  .frame::before { top: -15px; left: 50%; translate: -50% 0; }
+  .frame::after { bottom: -15px; left: 50%; translate: -50% 0; }
+
   .divider { height: 2px; border: 0; background: var(--gold-rule); margin: var(--space-xl) auto; width: min(480px, 80%); }
   .arch { border-radius: var(--arch-radius); overflow: hidden; border: 2px solid var(--rule); }
   .pattern { background-color: var(--panel); background-size: 48px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='%23C9A74E' opacity='0.08'%3E%3Crect x='15' y='15' width='18' height='18'/%3E%3Crect x='15' y='15' width='18' height='18' transform='rotate(45 24 24)'/%3E%3C/g%3E%3C/svg%3E"); }
-  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--text-muted); border-radius: var(--radius-control); background: var(--card); color: var(--text); font: 400 17px var(--font-body); }
-  label { display: block; font-weight: 500; margin-bottom: 6px; }
-  .row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: center; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
+
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: var(--tracking-heading); color: var(--text); }
+  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--text-muted); border-radius: var(--radius-control);
+    background: var(--card); color: var(--text); font: 400 17px var(--font-body); }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+
+  /* additions the page needs around the components */
+  .btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; cursor: pointer; white-space: nowrap; }
+  .btn.small { min-height: 44px; padding: 0 16px; font-size: 15px; }
+  h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: var(--tracking-heading); }
+  /* from the earlier preview: card, status line, tabs, pattern band */
   .card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); padding: var(--space-lg); text-align: center; }
   .status { font-weight: 500; color: var(--emerald); }
   [data-theme="dark"] .status { color: var(--link); }
-  .toggle { min-height: 44px; padding: 0 18px; border: 2px solid var(--rule); border-radius: var(--radius-control); background: var(--card); color: var(--text); font: 600 15px var(--font-display); cursor: pointer; }
-  .toggle:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
-  .top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-  .stall-img { aspect-ratio: 3 / 4; background: linear-gradient(180deg, var(--panel), var(--card)); display: grid; place-items: center; }
-  .stall-img .star { width: 64px; height: 64px; background: var(--gold); clip-path: polygon(50% 0, 61% 25%, 85% 15%, 75% 39%, 100% 50%, 75% 61%, 85% 85%, 61% 75%, 50% 100%, 39% 75%, 15% 85%, 25% 61%, 0 50%, 25% 39%, 15% 15%, 39% 25%); }
+  .tab { flex: 1; min-height: 48px; background: none; border: 0; color: var(--text-muted); font: 500 16px var(--font-body); cursor: pointer; transition: color 450ms ease-out, box-shadow 450ms ease-out; }
+  .tab[aria-pressed="true"] { color: var(--text); font-weight: 500; box-shadow: inset 0 -2px 0 var(--gold); }
   .band { height: 72px; border-radius: var(--radius-card); border: 1px solid var(--rule); }
+  .chip { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 12px; border: 2px solid var(--rule); border-radius: var(--radius-control);
+    background: var(--card); color: var(--text); font: 600 15px/1 var(--font-display); letter-spacing: var(--tracking-heading); cursor: pointer;
+    transition: background-color 450ms ease-out, color 450ms ease-out; }
+  .chip[aria-pressed="true"], .chip:has(input:checked) { background: var(--accent); color: var(--on-accent); }
+  .chip:has(input:focus-visible) { outline: 2px solid var(--link); outline-offset: 3px; }
+  .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 
-  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 960px; margin: 0 auto; width: 100%; }
+  /* nav */
+  .nav { position: sticky; top: 0; z-index: 10; background: var(--page); border-bottom: 1px solid var(--rule); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 68px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--text); text-decoration: none; font: 700 24px/1 var(--font-display); letter-spacing: var(--tracking-heading); }
+  .brand .star { width: 20px; height: 20px; }
+  .nav-links { display: none; gap: 28px; }
+  .nav-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text); text-decoration: none; font: 600 16px/1 var(--font-display); letter-spacing: var(--tracking-heading); box-shadow: inset 0 -2px 0 transparent; transition: box-shadow 450ms ease-out; }
+  .nav-links a:hover { box-shadow: inset 0 -2px 0 var(--gold); }
+  .nav-end { display: flex; align-items: center; gap: 14px; }
+  .theme-switch { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; min-width: 44px; padding: 0; border: 0; background: none; color: var(--text);
+    font: 600 15px/1 var(--font-display); letter-spacing: var(--tracking-heading); cursor: pointer; }
+  .theme-switch .track { position: relative; width: 52px; height: 28px; flex: none; border: 2px solid var(--rule); border-radius: var(--radius-control); background: var(--card); }
+  .theme-switch .track .star { position: absolute; top: 3px; left: 3px; transition: translate 450ms ease-in-out, rotate 450ms ease-in-out; }
+  .theme-switch[aria-checked="true"] .track .star { translate: 24px 0; rotate: 45deg; }
+  .theme-switch .t-label { display: none; }
+
+  /* hero */
+  .hero { margin-top: 56px; }
+  .hero .frame { max-width: 920px; margin: 0 auto; padding: 64px 20px 56px; }
+  .hero h1 { font-size: clamp(38px, 9vw, var(--type-display)); line-height: 1.08; max-width: 17ch; margin: 16px auto 0; }
+  .hero .lede { font-size: var(--type-lead); color: var(--text-muted); max-width: 46ch; margin: 20px auto 0; }
+  .hero .row { margin-top: 32px; }
+  .hero .divider { margin: 40px auto 28px; }
+  .when { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 0; padding: 0; list-style: none; font: 600 18px/1.3 var(--font-display); letter-spacing: var(--tracking-heading); }
+  .when li { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .when li + li::before { content: ""; width: 10px; height: 10px; background: var(--gold); clip-path: polygon(50% 0, 61% 25%, 85% 15%, 75% 39%, 100% 50%, 75% 61%, 85% 85%, 61% 75%, 50% 100%, 39% 75%, 15% 85%, 25% 61%, 0 50%, 25% 39%, 15% 15%, 39% 25%); }
+  .hero .band { max-width: 920px; margin: 56px auto 0; }
+
+  /* the square */
+  .trio { display: grid; gap: 28px; align-items: center; }
+  .trio .card { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 36px 28px; }
+  .trio .card h3 { font-size: var(--type-h3); }
+  .trio .card p { margin: 0; color: var(--text-muted); max-width: 32ch; }
+  .trio .card .label { margin-top: 4px; }
+  .sky-wrap { width: min(280px, 100%); justify-self: center; }
+  .sky { --sky: var(--accent); container-type: inline-size; position: relative; aspect-ratio: 3 / 4; background: var(--sky); }
+  [data-theme="dark"] .sky { --sky: var(--card); }
+  .sky .lantern { position: absolute; top: 0; width: 14cqw; display: flex; flex-direction: column; align-items: center; }
+  .sky .lantern::before { content: ""; width: 2px; height: var(--drop); background: var(--gold); }
+  .sky .lantern i { position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; background: var(--gold); border-radius: 40% / 30%; }
+  .sky .lantern i::before { content: ""; position: absolute; left: 30%; right: 30%; top: -2cqw; height: 2.4cqw; background: var(--gold); border-radius: 1px; }
+  .sky .lantern i::after { content: ""; position: absolute; left: 50%; bottom: -5cqw; width: 2px; height: 5cqw; translate: -50% 0; background: var(--gold); }
+  .sky .awning { position: absolute; left: 10cqw; right: 10cqw; bottom: 26cqw; height: 9cqw; border-top: 2px solid var(--gold);
+    background: radial-gradient(circle at 50% 0, var(--gold) 0 64%, transparent 66%) 0 0 / 20% 100% repeat-x; }
+  .sky .counter { position: absolute; left: 10cqw; right: 10cqw; bottom: 10cqw; height: 12cqw; border: 2px solid var(--gold); border-bottom: 0; }
+  .sky .counter::before, .sky .counter::after { content: ""; position: absolute; top: -18cqw; height: 18cqw; width: 2px; background: var(--gold); }
+  .sky .counter::before { left: -2px; } .sky .counter::after { right: -2px; }
+  .rules { display: grid; gap: 28px; margin: 64px 0 0; padding: 0; list-style: none; text-align: center; }
+  .rules li { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .rules h3 { font-size: 20px; }
+  .rules p { margin: 0; color: var(--text-muted); max-width: 30ch; }
+
+  /* map and nights */
+  .planner { padding: 24px 16px 32px; }
+  .nights-tabs { display: flex; max-width: 520px; margin: 0 auto 32px; border-bottom: 1px solid var(--rule); }
+  .plan-grid { display: grid; gap: 40px; }
+  .plan-col { min-width: 0; }
+  .plan-col > h3 { font-size: var(--type-h3); }
+  .plan-col > .sub { margin: 4px 0 20px; color: var(--text-muted); }
+  .map-wrap { max-width: 440px; margin: 0 auto; }
+  .map-edge { display: block; text-align: center; margin: 0 0 8px; }
+  .map-edge.bottom { margin: 8px 0 0; }
+  .map { display: grid; grid-template-columns: repeat(11, 1fr); gap: 3px; aspect-ratio: 1; }
+  .plot { display: grid; place-items: center; min-width: 0; border: 1px solid var(--rule); border-radius: 3px; background: var(--card); color: var(--text-muted);
+    font: 500 10px/1 var(--font-body); font-variant-numeric: tabular-nums; transition: background-color 450ms ease-out, color 450ms ease-out, opacity 450ms ease-out; }
+  .plot.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .plot.off { opacity: 0.4; }
+  .court { grid-row: 2 / 11; grid-column: 2 / 11; margin: 8px; border: 2px solid var(--rule); border-radius: var(--radius-card); background: var(--panel);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; padding: 8px; }
+  .court .star { width: 28px; height: 28px; }
+  .court h4 { font-size: 20px; }
+  .court p { margin: 0; font-size: var(--type-caption); color: var(--text-muted); line-height: 1.4; }
+  .chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+  .map-key { min-height: 3.4em; margin: 16px auto 0; max-width: 40ch; text-align: center; color: var(--text-muted); font-size: 15px; }
+  .program { list-style: none; margin: 0; padding: 0 20px; background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); text-align: left; }
+  .program li { display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+  .program li:last-child { border-bottom: 0; }
+  .program time { font: 700 20px/1.2 var(--font-display); letter-spacing: var(--tracking-heading); font-variant-numeric: tabular-nums; }
+  .program strong { display: block; font-weight: 500; line-height: 1.4; }
+  .program span { font-size: 15px; color: var(--text-muted); }
+  .program li.empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 32px 8px; text-align: center; }
+  .program li.empty .star { width: 22px; height: 22px; }
+  .finds-title { margin-top: 36px; font-size: var(--type-h3); }
+  .finds { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; }
+  .finds button { display: flex; align-items: center; gap: 16px; width: 100%; min-height: 56px; padding: 8px 20px; border: 0; background: none; color: var(--text);
+    font: 400 16px/1.4 var(--font-body); text-align: left; cursor: pointer; transition: background-color 450ms ease-out; }
+  .finds button + button { border-top: 1px solid var(--rule); }
+  .finds button b { width: 48px; flex: none; font: 700 20px/1 var(--font-display); letter-spacing: var(--tracking-heading); font-variant-numeric: tabular-nums; }
+  .finds button:hover { background: var(--panel); }
+  .finds button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+  .finds button:focus-visible { outline-offset: -4px; }
+  .finds button[aria-pressed="true"]:focus-visible { outline-color: var(--on-accent); }
+  .callout { max-width: 720px; margin: 72px auto 0; }
+  .callout h3 { font-size: clamp(24px, 4vw, 30px); margin-top: 10px; }
+  .callout p { margin: 10px auto 0; max-width: 48ch; color: var(--text-muted); }
+
+  /* spread the word: launch kit */
+  .kit { display: grid; gap: 32px; align-items: end; }
+  .kit figure { margin: 0; }
   .canvas { container-type: inline-size; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--rule); }
-  .cap { margin-top: 10px; text-align: center; }
-  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); }
-  .slide .inset { position: absolute; inset: 5cqw; border: 0.12cqw solid var(--rule); border-radius: 0.6cqw; }
-  .slide .star { position: absolute; left: 50%; top: 3.6cqw; width: 2.8cqw; height: 2.8cqw; translate: -50% 0; background: var(--gold); clip-path: polygon(50% 0, 61% 25%, 85% 15%, 75% 39%, 100% 50%, 75% 61%, 85% 85%, 61% 75%, 50% 100%, 39% 75%, 15% 85%, 25% 61%, 0 50%, 25% 39%, 15% 15%, 39% 25%); }
-  .slide h3 { position: absolute; left: 10cqw; right: 10cqw; top: 13cqw; text-align: center; font-size: 3.6cqw; }
-  .slide .rule { position: absolute; left: 35cqw; right: 35cqw; top: 22.5cqw; height: 0.12cqw; background: var(--gold-rule); }
-  .slide .facts { position: absolute; left: 14cqw; right: 14cqw; top: 27cqw; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3cqw; text-align: center; }
-  .slide .facts strong { display: block; font: 700 3.4cqw/1.1 var(--font-display); }
-  .slide .facts span { font-size: 1.5cqw; color: var(--text-muted); }
-  .post { aspect-ratio: 4 / 5; position: relative; }
-  .post .arch { position: absolute; left: 12cqw; right: 12cqw; top: 9cqw; bottom: 30cqw; background: var(--card); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6cqw; }
-  .post .arch h3 { font-size: 8.5cqw; }
-  .post .arch p { font-size: 4cqw; margin: 3cqw 0 0; color: var(--text-muted); }
-  .post .details { position: absolute; left: 10cqw; right: 10cqw; bottom: 9cqw; text-align: center; font: 500 3.8cqw/1.4 var(--font-body); }
-  .post .details .rule { height: 0.3cqw; background: var(--gold-rule); margin: 0 auto 3cqw; width: 60%; }
-  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; }
-  .phone header { padding: 9cqw 5cqw 5cqw; text-align: center; border-bottom: 1px solid var(--rule); }
-  .phone header h3 { font-size: 7cqw; }
-  .phone ul { list-style: none; margin: 0; padding: 0 5cqw; }
-  .phone li { display: flex; justify-content: space-between; align-items: center; min-height: 48px; border-bottom: 1px solid var(--rule); font-size: 4.4cqw; }
-  .phone li strong { font-family: var(--font-display); }
+  .kit figcaption { margin-top: 12px; text-align: center; }
+  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); color: var(--text); }
+  .slide .inset { position: absolute; inset: 5cqw; border: max(1px, 0.1cqw) solid var(--rule); border-radius: 0.6cqw; }
+  .slide .top-star { position: absolute; left: 50%; top: 5cqw; width: 2.6cqw; height: 2.6cqw; translate: -50% -50%; }
+  .slide h3 { position: absolute; left: 10cqw; right: 10cqw; top: 10cqw; text-align: center; font-size: 3.33cqw; line-height: 1.15; }
+  .slide .rule { position: absolute; left: 38cqw; right: 38cqw; top: 17.5cqw; height: max(1px, 0.12cqw); background: var(--gold-rule); }
+  .slide .fact { position: absolute; left: 30cqw; right: 30cqw; top: 22cqw; bottom: 10cqw; border: max(1px, 0.12cqw) solid var(--rule); border-radius: 0.6cqw; background: var(--card);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .slide .fact::before, .slide .fact::after { content: ""; position: absolute; left: 50%; width: 1.6cqw; height: 1.6cqw; translate: -50% 0; background: var(--gold);
+    clip-path: polygon(50% 0, 61% 25%, 85% 15%, 75% 39%, 100% 50%, 75% 61%, 85% 85%, 61% 75%, 50% 100%, 39% 75%, 15% 85%, 25% 61%, 0 50%, 25% 39%, 15% 15%, 39% 25%); }
+  .slide .fact::before { top: -0.85cqw; } .slide .fact::after { bottom: -0.85cqw; }
+  .slide .fact strong { font: 700 6cqw/1 var(--font-display); letter-spacing: 0.05cqw; }
+  .slide .fact span { margin-top: 1.4cqw; font-size: 1.56cqw; color: var(--text-muted); }
+  .post { aspect-ratio: 4 / 5; position: relative; background: var(--page); color: var(--text); }
+  .post .arch { position: absolute; left: 14cqw; right: 14cqw; top: 9cqw; height: 72cqw; border-width: 0.4cqw; background: var(--card);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3cqw; text-align: center; padding: 8cqw 6cqw 4cqw; }
+  .post .arch .star { width: 5cqw; height: 5cqw; }
+  .post .arch h3 { font-size: 8.5cqw; line-height: 1.1; }
+  .post .arch p { margin: 0; font-size: 4.4cqw; color: var(--text-muted); }
+  .post .rule { position: absolute; left: 25cqw; right: 25cqw; top: 89cqw; height: 0.3cqw; background: var(--gold-rule); }
+  .post .details { position: absolute; left: 8cqw; right: 8cqw; top: 93cqw; text-align: center; font: 500 3.7cqw/1.4 var(--font-body); }
+  .post .details span { display: block; color: var(--text-muted); font-weight: 400; }
+  .post .stars { position: absolute; left: 0; right: 0; bottom: 8cqw; display: flex; justify-content: center; align-items: center; gap: 3cqw; }
+  .post .stars .star { width: 2.6cqw; height: 2.6cqw; }
+  .post .stars .star:nth-child(2) { width: 4cqw; height: 4cqw; }
+  .phone-fig { max-width: 300px; width: 100%; justify-self: center; }
+  .phone { aspect-ratio: 9 / 19.5; background: var(--page); color: var(--text); display: flex; flex-direction: column; font-size: 4.2cqw; }
+  .phone header { padding: 12cqw 5cqw 5cqw; text-align: center; border-bottom: 1px solid var(--rule); background-size: 12cqw; background-position: center; }
+  .phone header .label { font-size: 3.4cqw; }
+  .phone header h3 { font-size: 7.4cqw; margin-top: 1cqw; }
+  .phone .plan { list-style: none; margin: 5cqw 5cqw 0; padding: 0 4cqw; background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); }
+  .phone .plan li { display: flex; justify-content: space-between; align-items: center; gap: 3cqw; min-height: 48px; border-bottom: 1px solid var(--rule); }
+  .phone .plan li:last-child { border-bottom: 0; }
+  .phone .plan strong { font: 700 4.4cqw/1.2 var(--font-display); letter-spacing: var(--tracking-heading); }
+  .phone .p-status { margin: 4cqw 5cqw 0; text-align: center; font-size: 3.6cqw; }
+  .phone .p-group { margin: 7cqw 0 0; text-align: center; font-size: 3.2cqw; }
+  .phone .p-group + .plan { margin-top: 2.5cqw; }
   .phone .spacer { flex: 1; }
-  .phone .btn { margin: 4cqw 5cqw; justify-content: center; }
-  .phone nav { display: flex; border-top: 1px solid var(--rule); }
-  .tab { flex: 1; min-height: 48px; background: none; border: 0; color: var(--text-muted); font: 500 3.6cqw var(--font-body); cursor: pointer; }
-  .tab[aria-pressed="true"] { color: var(--text); box-shadow: inset 0 2px 0 var(--gold); }
-  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+  .phone .btn { margin: 4cqw 5cqw; min-height: 44px; padding: 0 4cqw; font-size: 4.4cqw; }
+  .phone nav { display: flex; border-top: 1px solid var(--rule); padding-bottom: 4cqw; }
+  .phone .tab { font-size: 3.6cqw; }
+  .phone .tab[aria-pressed="true"] { box-shadow: inset 0 2px 0 var(--gold); }
+
+  /* reserve + footer */
+  .reserve { max-width: 760px; margin: 0 auto; padding: 56px 20px 48px; }
+  .reserve h2 { font-size: clamp(30px, 5vw, var(--type-h1)); margin-top: 12px; line-height: 1.15; }
+  .reserve > p { margin: 14px auto 0; max-width: 48ch; color: var(--text-muted); }
+  .reserve form { display: grid; gap: 18px; max-width: 480px; margin: 32px auto 0; text-align: left; }
+  .reserve label.lbl, .reserve legend { display: block; padding: 0; font-weight: 500; margin-bottom: 6px; }
+  .reserve fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .reserve fieldset .chips { justify-content: flex-start; margin-top: 0; }
+  .reserve .btn { justify-self: center; margin-top: 6px; }
+  .reserve .note { margin: 0; min-height: 1.7em; text-align: center; color: var(--text-muted); }
+  footer { margin-top: 96px; padding-bottom: 40px; text-align: center; }
+  footer .divider { margin: 0 auto 28px; }
+  footer p { margin: 6px 0 0; color: var(--text-muted); font-size: var(--type-caption); }
+
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 24px; }
+    .theme-switch .t-label { display: inline; }
+    .hero .frame { padding: 72px 48px 64px; }
+    .when { flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 14px; }
+    .when li { flex-direction: row; gap: 14px; }
+    .chip { padding: 0 16px; }
+    .rules { grid-template-columns: repeat(3, 1fr); }
+    .planner { padding: 32px 32px 40px; }
+    .plot { font-size: 11px; }
+    .kit { grid-template-columns: 1fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
+    .reserve { padding: 64px 48px 56px; }
+  }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .trio { grid-template-columns: 1fr 0.8fr 1fr; gap: 40px; }
+    .trio .card { min-height: 280px; justify-content: center; }
+    .plan-grid { grid-template-columns: 1fr 1fr; gap: 56px; }
+    .kit { grid-template-columns: 2fr 1fr 0.72fr; }
+    .kit .slide-fig { grid-column: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .tab, .chip, .plot, .finds button, .nav-links a, .theme-switch .track .star { transition: none; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <span class="label">pikmi style · ivory and deep blue</span>
-    <button class="toggle" type="button" id="theme-toggle" aria-pressed="false">Deep blue theme</button>
-  </header>
-  <div class="frame" style="margin-top:32px">
-    <h1>Lapis Lattice</h1>
-    <p class="muted" style="max-width:52ch;margin:16px auto 28px">Lapis blue, ivory and gold, with eight-point stars used as frames and dividers.</p>
-    <div class="row"><a class="btn" href="#components">See the components</a><a class="btn quiet" href="#slides">See the slides</a></div>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="star" aria-hidden="true"></span>Mampir</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#square">The square</a><a href="#nights">Map and nights</a><a href="#word">Spread the word</a>
+    </nav>
+    <div class="nav-end">
+      <button class="theme-switch" type="button" role="switch" aria-checked="false" id="theme-switch" aria-label="Evening theme">
+        <span class="track"><span class="star"></span></span><span class="t-label" aria-hidden="true">Evening</span>
+      </button>
+      <a class="btn small" href="#reserve">Reserve a stall</a>
+    </div>
   </div>
+</header>
 
-  <section id="components" aria-labelledby="h-components">
-    <h2 id="h-components">Components</h2>
-    <hr class="divider">
-    <div class="grid">
-      <div class="card"><h3>Buttons</h3><div class="row" style="margin-top:16px"><a class="btn" href="#ui">Reserve a stall</a><a class="btn quiet" href="#app">Open the app</a></div></div>
-      <div class="card" style="text-align:left"><label for="family">Family name</label><input class="field" id="family" placeholder="Rahman"><p class="status" style="margin:12px 0 0">Saved for Friday evening</p></div>
-      <div class="card pattern"><h3>Pattern surface</h3><p class="muted" style="margin:8px 0 0">Stars at 8% opacity on one surface per screen.</p></div>
+<main id="top">
+  <section class="hero wrap" aria-labelledby="h-hero">
+    <div class="frame">
+      <span class="label">Mampir · community night market</span>
+      <h1 id="h-hero">Forty stalls in the square, after sunset</h1>
+      <p class="lede">The neighbours around the old library open their kitchens, drink stalls and craft tables four nights a week. Drop by, eat slowly, bring your own containers.</p>
+      <div class="row">
+        <a class="btn" href="#reserve">Reserve a stall</a>
+        <a class="btn quiet" href="#nights">See this week's nights</a>
+      </div>
+      <hr class="divider">
+      <ul class="when">
+        <li>Thursday to Sunday</li>
+        <li>From sunset</li>
+        <li>Behind the old library</li>
+      </ul>
     </div>
+    <div class="band pattern" aria-hidden="true"></div>
   </section>
 
-  <section id="ui" aria-labelledby="h-ui">
-    <h2 id="h-ui">UI · Community night market</h2>
-    <hr class="divider">
-    <div class="grid" style="align-items:center">
-      <div class="card"><h3>Food stalls</h3><p class="muted" style="margin:8px 0 0">Forty neighborhood kitchens, open after sunset.</p></div>
-      <div class="arch stall-img" aria-hidden="true"><span class="star"></span></div>
-      <div class="card"><h3>Kids' corner</h3><p class="muted" style="margin:8px 0 0">Lantern making and storytelling until nine.</p></div>
+  <section id="square" class="wrap" aria-labelledby="h-square">
+    <div class="sec-head">
+      <span class="label">The square</span>
+      <h2 id="h-square">What waits in the square</h2>
+      <hr class="divider">
+      <p>Kitchens line the library side, drinks and crafts close the ring, and the courtyard in the middle belongs to the children.</p>
     </div>
-    <div class="band pattern" style="margin-top:32px" aria-hidden="true"></div>
-    <div class="frame" style="margin-top:40px">
+    <div class="trio">
+      <article class="card">
+        <span class="star" aria-hidden="true"></span>
+        <h3>Twenty kitchens</h3>
+        <p>Satay, martabak, grilled corn and rice plates, cooked by the families who live around the square.</p>
+        <span class="label">Stalls 1 to 20</span>
+      </article>
+      <div class="sky-wrap">
+        <div class="arch sky" role="img" aria-label="Three lanterns hanging over a market stall">
+          <span class="lantern" style="left:17cqw; --drop:20cqw"><i></i></span>
+          <span class="lantern" style="left:43cqw; --drop:32cqw"><i></i></span>
+          <span class="lantern" style="left:69cqw; --drop:20cqw"><i></i></span>
+          <span class="awning"></span><span class="counter"></span>
+        </div>
+      </div>
+      <article class="card">
+        <span class="star" aria-hidden="true"></span>
+        <h3>The kids' corner</h3>
+        <p>Lantern making and storytelling in the courtyard, every night until nine.</p>
+        <span class="status">Free, no sign-up needed</span>
+      </article>
+    </div>
+    <ul class="rules">
+      <li><h3>Bring a container</h3><p>Every stall fills your own box or bottle. There are no plastic bags in the square.</p></li>
+      <li><h3>Pay at the stall</h3><p>Cash or a phone payment, straight to the family that cooked.</p></li>
+      <li><h3>Leave by the main road</h3><p>The library side closes first, so the last walk out is past the drink stalls.</p></li>
+    </ul>
+  </section>
+
+  <section id="nights" class="wrap" aria-labelledby="h-nights">
+    <div class="sec-head">
+      <span class="label">Map and nights</span>
+      <h2 id="h-nights">Find your way, then pick a night</h2>
+      <hr class="divider">
+      <p>Choose a night to see what happens in the courtyard, and a kind of stall to find it on the map.</p>
+    </div>
+
+    <div class="card planner">
+      <div class="nights-tabs" role="group" aria-label="Night">
+        <button class="tab" type="button" aria-pressed="true" data-night="thu">Thu</button>
+        <button class="tab" type="button" aria-pressed="false" data-night="fri">Fri</button>
+        <button class="tab" type="button" aria-pressed="false" data-night="sat">Sat</button>
+        <button class="tab" type="button" aria-pressed="false" data-night="sun">Sun</button>
+      </div>
+      <div class="plan-grid">
+        <div class="plan-col">
+          <h3>The square</h3>
+          <p class="sub">Forty stalls in a ring around the courtyard</p>
+          <div class="map-wrap">
+            <span class="label map-edge">Old library</span>
+            <div class="map" id="map" role="img" aria-label="Map of the square: forty stalls in a ring, kitchens 1 to 20 along the library side and the east lane, drinks 21 to 30 along the main road, crafts 31 to 40 on the west lane, the courtyard in the middle">
+              <div class="court"><span class="star" aria-hidden="true"></span><h4>Courtyard</h4><p>Stage and kids' corner</p></div>
+            </div>
+            <span class="label map-edge bottom">Main road · way in</span>
+          </div>
+          <div class="chips" role="group" aria-label="Kind of stall">
+            <button class="chip" type="button" aria-pressed="true" data-show="all">All</button>
+            <button class="chip" type="button" aria-pressed="false" data-show="food">Kitchens</button>
+            <button class="chip" type="button" aria-pressed="false" data-show="drink">Drinks</button>
+            <button class="chip" type="button" aria-pressed="false" data-show="craft">Crafts</button>
+          </div>
+          <p class="map-key" id="map-key" aria-live="polite">Forty stalls, numbered clockwise from the library corner.</p>
+        </div>
+        <div class="plan-col">
+          <h3 id="night-title">Thursday night</h3>
+          <p class="sub" id="night-hours">Stalls open from sunset to 22:00</p>
+          <ul class="program" id="program" aria-live="polite">
+            <li><time>19:30</time><div><strong>Lantern making</strong><span>Kids' corner</span></div></li>
+            <li><time>20:30</time><div><strong>Storytelling</strong><span>Courtyard stage</span></div></li>
+          </ul>
+          <h3 class="finds-title">Worth finding</h3>
+          <p class="sub">Tap one to light it up on the map</p>
+          <div class="finds" role="group" aria-label="Stalls worth finding">
+            <button type="button" aria-pressed="false" data-stall="7" data-where="on the library side"><b>7</b><span>Martabak, sweet and savoury</span></button>
+            <button type="button" aria-pressed="false" data-stall="12" data-where="where the library side meets the east lane"><b>12</b><span>Grilled corn with lime butter</span></button>
+            <button type="button" aria-pressed="false" data-stall="24" data-where="on the main road, near the way in"><b>24</b><span>Rose milk, served cold</span></button>
+            <button type="button" aria-pressed="false" data-stall="33" data-where="on the west lane"><b>33</b><span>Lantern kits for the kids' corner</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame callout">
       <span class="label">This week</span>
-      <h3 style="font-size:28px;margin-top:10px">Thursday to Sunday, after sunset</h3>
-      <p class="muted" style="margin:10px auto 0;max-width:48ch">Town square, behind the old library. Bring your own containers.</p>
+      <h3>Thursday to Sunday, after sunset</h3>
+      <p>Town square, behind the old library. Bring your own containers; every stall fills them.</p>
     </div>
   </section>
 
-  <section aria-labelledby="h-media">
-    <h2 id="h-media">Other media</h2>
-    <hr class="divider">
-    <div class="canvases">
-      <div id="slides">
+  <section id="word" class="wrap" aria-labelledby="h-word">
+    <div class="sec-head">
+      <span class="label">Spread the word</span>
+      <h2 id="h-word">One market, three places to see it</h2>
+      <hr class="divider">
+      <p>The slide for the neighbourhood meeting, the evening post and the stall plan in the app.</p>
+    </div>
+    <div class="kit">
+      <figure class="slide-fig">
         <div class="canvas"><div class="slide">
-          <div class="inset"></div><span class="star" aria-hidden="true"></span>
-          <h3>The night market at a glance</h3><span class="rule" aria-hidden="true"></span>
-          <div class="facts"><div><strong>4 nights</strong><span>Thursday to Sunday</span></div><div><strong>40 stalls</strong><span>neighborhood kitchens</span></div><div><strong>1 square</strong><span>behind the library</span></div></div>
+          <div class="inset"></div><span class="star top-star" aria-hidden="true"></span>
+          <h3>The square opens four nights a week</h3><span class="rule" aria-hidden="true"></span>
+          <div class="fact"><strong>Thu to Sun</strong><span>From sunset, behind the old library</span></div>
         </div></div>
-        <p class="cap label">slides · 1920 x 1080</p>
-      </div>
-      <div id="social">
-        <div class="canvas"><div class="post pattern" data-theme="dark">
-          <div class="arch"><h3>Night market opens</h3><p>Thursday, after sunset</p></div>
-          <div class="details"><div class="rule"></div>Town square · bring your own containers</div>
+        <figcaption class="caption">Meeting slide · 1920 x 1080</figcaption>
+      </figure>
+      <figure>
+        <div class="canvas"><div class="post" data-theme="dark">
+          <div class="arch"><span class="star" aria-hidden="true"></span><h3>Night market opens</h3><p>Thursday, after sunset</p></div>
+          <span class="rule" aria-hidden="true"></span>
+          <div class="details">Town square, behind the old library<span>Bring your own containers</span></div>
+          <div class="stars" aria-hidden="true"><span class="star"></span><span class="star"></span><span class="star"></span></div>
         </div></div>
-        <p class="cap label">social · 1080 x 1350 · deep blue</p>
-      </div>
-      <div id="app">
-        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
-          <header><span class="label">Friday</span><h3>Your stall plan</h3></header>
-          <ul>
+        <figcaption class="caption">Evening post · 1080 x 1350 · deep blue</figcaption>
+      </figure>
+      <figure class="phone-fig">
+        <div class="canvas"><div class="phone">
+          <header class="pattern"><span class="label">Friday</span><h3>Your stall plan</h3></header>
+          <ul class="plan">
             <li><strong>Stall 12</strong><span>Grilled corn</span></li>
-            <li><strong>Stall 18</strong><span>Rose milk</span></li>
-            <li><strong>Stall 27</strong><span>Lantern kits</span></li>
+            <li><strong>Stall 24</strong><span>Rose milk</span></li>
+            <li><strong>Stall 33</strong><span>Lantern kits</span></li>
+          </ul>
+          <p class="p-status status">Saved for Friday evening</p>
+          <p class="label p-group">In the courtyard</p>
+          <ul class="plan">
+            <li><strong>19:30</strong><span>Lantern making</span></li>
+            <li><strong>21:00</strong><span>The neighbourhood band</span></li>
           </ul>
           <div class="spacer"></div>
-          <a class="btn" href="#app">Get directions</a>
-          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Plan</button><button class="tab" type="button" aria-pressed="false">Map</button><button class="tab" type="button" aria-pressed="false">Stalls</button></nav>
+          <a class="btn" href="#nights">Find them on the map</a>
+          <nav role="group" aria-label="App sections">
+            <button class="tab" type="button" aria-pressed="true">Plan</button>
+            <button class="tab" type="button" aria-pressed="false">Map</button>
+            <button class="tab" type="button" aria-pressed="false">Stalls</button>
+          </nav>
         </div></div>
-        <p class="cap label">app · phone</p>
-      </div>
+        <figcaption class="caption">Market app · phone</figcaption>
+      </figure>
     </div>
   </section>
-</div>
+
+  <section id="reserve" class="wrap" aria-labelledby="h-reserve">
+    <div class="frame reserve">
+      <span class="label">For neighbours with a kitchen</span>
+      <h2 id="h-reserve">Reserve a stall for the coming nights</h2>
+      <p>A table, an awning and a power point are free for households on the square. Tell us what you make and which nights you can come.</p>
+      <form id="reserve-form">
+        <div><label class="lbl" for="kitchen">Kitchen or stall name</label><input class="field" id="kitchen" name="kitchen" placeholder="Rahman family kitchen" autocomplete="organization" required></div>
+        <div><label class="lbl" for="r-email">Email</label><input class="field" id="r-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required></div>
+        <fieldset>
+          <legend>Nights you can come</legend>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="night" value="thu" checked>Thu</label>
+            <label class="chip"><input type="checkbox" name="night" value="fri">Fri</label>
+            <label class="chip"><input type="checkbox" name="night" value="sat" checked>Sat</label>
+            <label class="chip"><input type="checkbox" name="night" value="sun">Sun</label>
+          </div>
+        </fieldset>
+        <button class="btn" type="submit">Send the reservation</button>
+        <p class="note" id="reserve-note" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <hr class="divider">
+  <p>Mampir is a fictional night market made for this preview.</p>
+  <p>pikmi style · Lapis Lattice</p>
+</footer>
+
 <script>
-  const html = document.documentElement, toggle = document.getElementById('theme-toggle');
-  toggle.addEventListener('click', () => {
+  // theme switch: ivory by day, deep blue by evening
+  const html = document.documentElement, themeSwitch = document.getElementById('theme-switch');
+  themeSwitch.addEventListener('click', () => {
     const dark = html.dataset.theme !== 'dark';
     if (dark) html.dataset.theme = 'dark'; else delete html.dataset.theme;
-    toggle.setAttribute('aria-pressed', String(dark));
-    toggle.textContent = dark ? 'Ivory theme' : 'Deep blue theme';
+    themeSwitch.setAttribute('aria-checked', String(dark));
   });
-  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
-  })));
+
+  // one pressed button per group
+  document.querySelectorAll('[role="group"]').forEach(g => {
+    const items = g.querySelectorAll('button[aria-pressed]');
+    items.forEach(b => b.addEventListener('click', () => items.forEach(x => x.setAttribute('aria-pressed', String(x === b)))));
+  });
+
+  // map: forty plots in a ring on an 11 x 11 grid, numbered clockwise from the library corner
+  const map = document.getElementById('map');
+  const cells = [];
+  for (let c = 1; c <= 11; c++) cells.push([1, c]);
+  for (let r = 2; r <= 10; r++) cells.push([r, 11]);
+  for (let c = 11; c >= 1; c--) cells.push([11, c]);
+  for (let r = 10; r >= 2; r--) cells.push([r, 1]);
+  const kindOf = n => n <= 20 ? 'food' : n <= 30 ? 'drink' : 'craft';
+  cells.forEach(([r, c], i) => {
+    const p = document.createElement('span');
+    p.className = 'plot'; p.dataset.kind = kindOf(i + 1); p.textContent = i + 1;
+    p.style.gridRow = r; p.style.gridColumn = c; p.setAttribute('aria-hidden', 'true');
+    map.appendChild(p);
+  });
+  const keyText = {
+    all: 'Forty stalls, numbered clockwise from the library corner.',
+    food: 'Kitchens: stalls 1 to 20, along the library side and down the east lane.',
+    drink: 'Drinks: stalls 21 to 30, along the main road by the way in.',
+    craft: 'Crafts: stalls 31 to 40, up the west lane. Lantern kits are at 33.'
+  };
+  const plots = map.querySelectorAll('.plot');
+  const chips = document.querySelectorAll('[data-show]');
+  const finds = document.querySelectorAll('[data-stall]');
+  const mapKey = document.getElementById('map-key');
+  function light(test) {
+    plots.forEach(p => { const on = test ? test(p) : false; p.classList.toggle('on', on); p.classList.toggle('off', !!test && !on); });
+  }
+  chips.forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.show;
+    finds.forEach(f => f.setAttribute('aria-pressed', 'false'));
+    light(k === 'all' ? null : p => p.dataset.kind === k);
+    mapKey.textContent = keyText[k];
+  }));
+  finds.forEach(b => b.addEventListener('click', () => {
+    chips.forEach(c => c.setAttribute('aria-pressed', 'false'));
+    light(p => p.textContent === b.dataset.stall);
+    mapKey.textContent = 'Stall ' + b.dataset.stall + ': ' + b.querySelector('span').textContent.toLowerCase() + ', ' + b.dataset.where + '.';
+  }));
+
+  // nights: the courtyard program, with an empty state for Sunday
+  const nights = {
+    thu: ['Thursday night', 'Stalls open from sunset to 22:00', [['19:30', 'Lantern making', "Kids' corner"], ['20:30', 'Storytelling', 'Courtyard stage']]],
+    fri: ['Friday night', 'Stalls open from sunset to 23:00', [['19:30', 'Lantern making', "Kids' corner"], ['21:00', 'The neighbourhood band', 'Courtyard stage']]],
+    sat: ['Saturday night', 'Stalls open from sunset to 23:00', [['19:00', 'Cooking at stall 7: martabak', 'Watch from the lane'], ['20:30', 'Storytelling', 'Courtyard stage'], ['21:30', 'Lantern walk around the square', 'Starts in the courtyard']]],
+    sun: ['Sunday night', 'Stalls open from sunset to 22:00', []]
+  };
+  const program = document.getElementById('program');
+  document.querySelectorAll('[data-night]').forEach(b => b.addEventListener('click', () => {
+    const [title, hours, items] = nights[b.dataset.night];
+    document.getElementById('night-title').textContent = title;
+    document.getElementById('night-hours').textContent = hours;
+    program.innerHTML = items.length
+      ? items.map(([t, what, where]) => `<li><time>${t}</time><div><strong>${what}</strong><span>${where}</span></div></li>`).join('')
+      : '<li class="empty"><span class="star" aria-hidden="true"></span><strong>No courtyard program on Sunday</strong><span>The stalls stay open as usual. The courtyard rests.</span></li>';
+  }));
+
+  document.getElementById('reserve-form').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('reserve-note').textContent = 'This is a preview: nothing was sent.';
+  });
 </script>
 </body>
 </html>

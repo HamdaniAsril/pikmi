@@ -10,178 +10,667 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--page); color: var(--text); font: 400 16px/1.6 var(--font-body); }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 var(--type-body)/1.6 var(--font-body); }
   a { color: var(--link); }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 80px; }
   h1, h2, h3 { color: var(--ink); font-weight: 600; margin: 0; line-height: 1.2; }
-  h1 { font-size: clamp(32px, 5vw, 56px); }
-  h2 { font-size: 28px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
-  h3 { font-size: 20px; }
-  section { margin-top: 64px; }
+  .wrap { max-width: 1200px; margin-inline: auto; padding-inline: 16px; }
+  section { margin-top: 96px; }
+  .eyebrow { margin: 0; font: 500 var(--type-caption)/1.3 var(--font-body); color: var(--text-muted); }
   .muted { color: var(--text-muted); }
-  .eyebrow { font: 500 13px/1.2 var(--font-body); color: var(--text-muted); }
-  .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); border: 1px solid transparent; border-radius: var(--radius-control);
-    background: var(--accent); color: var(--on-accent); font: 500 15px/1 var(--font-body); text-decoration: none; cursor: pointer;
+  .num { font-variant-numeric: tabular-nums; }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .sec-head { padding-bottom: var(--space-md); margin-bottom: var(--space-lg); border-bottom: 1px solid var(--rule); }
+  .sec-head h2 { font-size: clamp(var(--type-h2), 3.4vw, var(--type-h1)); margin-top: 6px; letter-spacing: -0.2px; }
+  .sec-head p { margin: 10px 0 0; color: var(--text-muted); max-width: 62ch; }
+
+  /* components (from STYLE.md) */
+  .btn { min-height: 44px; padding: 0 var(--space-md); border: 1px solid transparent; border-radius: var(--radius-control);
+    background: var(--accent); color: var(--on-accent); font: 500 15px/1 var(--font-body);
     box-shadow: var(--shadow-rest); transition: transform 150ms ease-out, box-shadow 150ms ease-out; }
   .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-raised); }
   .btn:active { transform: scale(0.98); box-shadow: var(--shadow-rest); }
   .btn.secondary { background: var(--card); color: var(--text); border-color: var(--rule); }
-  .btn:focus-visible, .field:focus-visible, .seg button:focus-visible, a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-  .card { display: block; background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); padding: var(--space-lg); box-shadow: var(--shadow-rest); color: inherit; text-decoration: none; transition: transform 200ms ease-out, box-shadow 200ms ease-out; }
+  .btn:focus-visible, .field:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  .card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); padding: var(--space-lg);
+    box-shadow: var(--shadow-rest); transition: transform 200ms ease-out, box-shadow 200ms ease-out; }
   a.card:hover { transform: translateY(-2px); box-shadow: var(--shadow-raised); }
-  .figure { font: 600 40px/1 var(--font-body); color: var(--ink); font-variant-numeric: tabular-nums; }
-  .figure .unit { font-size: 16px; font-weight: 500; color: var(--text-muted); margin-left: 4px; }
+
+  .figure { font: 600 var(--type-h1)/1 var(--font-body); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .figure .unit { font-size: var(--type-body); font-weight: 500; color: var(--text-muted); }
+
   .ledger { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-  .ledger th { font: 600 12px/1 var(--font-body); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); }
+  .ledger th { font: 600 12px/1 var(--font-body); letter-spacing: var(--tracking-label); text-transform: uppercase;
+    color: var(--text-muted); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); }
   .ledger td { padding: 12px; border-bottom: 1px solid var(--rule); }
   .ledger td.num, .ledger th.num { text-align: right; }
-  .field { min-height: 44px; width: 100%; padding: 0 12px; border: 1px solid var(--field-border); border-radius: var(--radius-control); background: var(--card); color: var(--text); font: 400 16px var(--font-body); }
-  label { display: block; font-weight: 500; font-size: 14px; margin-bottom: 6px; }
+
+  .field { min-height: 44px; width: 100%; padding: 0 12px; border: 1px solid var(--field-border); border-radius: var(--radius-control);
+    background: var(--card); color: var(--text); font: 400 16px var(--font-body); }
   .badge { display: inline-flex; align-items: center; gap: 6px; font: 500 13px/1 var(--font-body); }
   .badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
   .badge.ok { color: var(--success); } .badge.warn { color: var(--warning); } .badge.bad { color: var(--danger); }
+
+  /* additions the page needs around the components */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; cursor: pointer; white-space: nowrap; }
+  .btn[disabled] { cursor: default; opacity: 0.55; transform: none; box-shadow: var(--shadow-rest); }
+  .btn.small { min-height: 44px; padding: 0 12px; font-size: 14px; }
+  a.card { display: block; color: inherit; text-decoration: none; }
+  .figure .unit { margin-left: 6px; }
+  .badge { white-space: nowrap; }
+  .badge.neutral { color: var(--text-muted); }
+  label.lbl { display: block; font: 500 14px/1.3 var(--font-body); color: var(--text); margin-bottom: 6px; }
+  /* segmented control (from the earlier preview) */
   .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: var(--radius-control); background: var(--card); padding: 2px; }
   .seg button { min-height: 44px; padding: 0 14px; border: 0; border-radius: 6px; background: none; color: var(--text-muted); font: 500 14px var(--font-body); cursor: pointer; }
   .seg button[aria-pressed="true"] { background: var(--page); color: var(--accent); box-shadow: inset 0 0 0 1px var(--rule); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-
-  .app { display: grid; grid-template-columns: 220px 1fr; border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; background: var(--page); }
-  .app aside { background: var(--panel); border-right: 1px solid var(--rule); padding: 20px 12px; display: flex; flex-direction: column; gap: 2px; }
-  .app aside a { display: block; padding: 10px 12px; border-radius: var(--radius-control); color: var(--text); text-decoration: none; font-weight: 500; }
-  .app aside a[aria-current="page"] { background: var(--page); color: var(--accent); }
-  .app main { padding: 24px; min-width: 0; }
-  .figs { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; margin: 20px 0; }
-  .figs .card p { margin: 10px 0 0; font-size: 14px; }
   .table-wrap { overflow-x: auto; background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); }
+  .ledger tbody tr:last-child td { border-bottom: 0; }
+  .ledger .sub { display: block; font-size: var(--type-caption); color: var(--text-muted); margin-top: 2px; }
 
-  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 960px; }
+  /* nav */
+  .nav { position: sticky; top: 0; z-index: 10; background: var(--panel); border-bottom: 1px solid var(--rule); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font: 600 20px/1 var(--font-body); color: var(--ink); text-decoration: none; }
+  .mark { width: 24px; height: 24px; flex: none; border-radius: 6px; background: var(--ink);
+    background-image: linear-gradient(var(--card), var(--card)), linear-gradient(var(--card), var(--card)), linear-gradient(var(--card), var(--card));
+    background-size: 14px 2px, 14px 2px, 8px 2px; background-position: 5px 6px, 5px 11px, 11px 16px; background-repeat: no-repeat; }
+  .nav-links { display: none; gap: 28px; }
+  .nav-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text); text-decoration: none; font: 500 15px/1 var(--font-body); }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* hero */
+  .hero { margin-top: 48px; display: grid; gap: 40px; align-items: center; }
+  .hero h1 { font-size: clamp(36px, 7.4vw, var(--type-display)); line-height: 1.08; letter-spacing: -0.6px; max-width: 15ch; margin-top: 14px; }
+  .hero .lede { font-size: var(--type-lead); color: var(--text-muted); max-width: 50ch; margin: 20px 0 0; }
+  .hero .row { margin-top: 28px; }
+  .close-card { padding: 0; overflow: hidden; }
+  .close-card .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 20px var(--space-lg) 16px; border-bottom: 1px solid var(--rule); }
+  .close-card .head h2 { font-size: var(--type-h3); margin-top: 4px; }
+  .close-card .total { padding: 20px var(--space-lg); border-bottom: 1px solid var(--rule); }
+  .close-card .total .figure { font-size: clamp(32px, 8vw, var(--type-h1)); }
+  .close-card .total p { margin: 8px 0 0; font-size: 14px; color: var(--text-muted); }
+  .close-card .ledger th:first-child, .close-card .ledger td:first-child { padding-left: var(--space-lg); width: 64px; }
+  .close-card .ledger th:last-child, .close-card .ledger td:last-child { padding-right: var(--space-lg); }
+  .facts { display: grid; grid-template-columns: repeat(2, 1fr); margin: 56px 0 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .facts div { padding: 20px 16px 20px 0; }
+  .facts div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+  .facts dt { font: 600 var(--type-h2)/1 var(--font-body); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .facts dd { margin: 8px 0 0; font-size: 14px; color: var(--text-muted); }
+
+  /* product */
+  .features { display: grid; gap: 20px; }
+  .feature { display: flex; flex-direction: column; gap: 12px; }
+  .feature h3 { font-size: var(--type-h3); }
+  .feature > p { margin: 0; color: var(--text-muted); }
+  .feature .ledger td { padding: 10px 0; vertical-align: top; }
+  .feature .ledger td.num, .feature .ledger td + td { padding-left: 12px; }
+  .feature .ledger .badge { margin-top: 6px; }
+  .feature .ledger tr:first-child td { border-top: 1px solid var(--rule); }
+  .po-form { display: grid; gap: 10px; margin-top: 4px; }
+  .po-form .row { flex-wrap: nowrap; gap: 8px; }
+  .po-result { min-height: 1.6em; margin: 0; font-size: 14px; }
+  .split { display: grid; gap: 24px; margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--rule); align-items: center; }
+  .split h3 { font-size: var(--type-h2); }
+  .split p { margin: 12px 0 0; color: var(--text-muted); max-width: 56ch; }
+  .zero .figure { font-size: clamp(48px, 13vw, 72px); margin-top: 12px; }
+  .zero .figure .unit { display: block; margin: 10px 0 0; }
+  .zero .foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 14px; }
+
+  /* the close: dashboard */
+  .app { display: grid; border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; background: var(--page); }
+  .app-side { background: var(--panel); border-bottom: 1px solid var(--rule); padding: 12px; }
+  .app-side .org { display: flex; align-items: center; gap: 10px; padding: 4px 4px 12px; }
+  .app-side .org strong { display: block; color: var(--ink); font-weight: 600; font-size: 15px; line-height: 1.2; }
+  .app-side .org span { font-size: var(--type-caption); color: var(--text-muted); }
+  .app-nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  .app-nav button { min-height: 44px; padding: 0 12px; border: 0; border-radius: var(--radius-control); background: none; color: var(--text);
+    font: 500 15px var(--font-body); text-align: left; cursor: pointer; }
+  .app-nav button:hover { color: var(--accent); }
+  .app-nav button[aria-current="page"] { background: var(--page); color: var(--accent); box-shadow: inset 0 0 0 1px var(--rule); }
+  .app-main { padding: 16px; min-width: 0; }
+  .view-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+  .view-head h3 { font-size: var(--type-h2); margin-top: 4px; }
+  .figs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .figs .card:first-child { grid-column: 1 / -1; }
+  .figs .card { padding: 20px; }
+  .figs .figure { margin-top: 10px; font-size: clamp(30px, 8vw, var(--type-h1)); }
+  .figs .card p { margin: 10px 0 0; font-size: 14px; color: var(--text-muted); }
+  .app .ledger th, .app .ledger td { white-space: nowrap; }
+  .table-title { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 0 0 10px; }
+  .table-title h4 { margin: 0; font: 600 var(--type-body)/1.3 var(--font-body); color: var(--ink); }
+  .empty td { text-align: center; padding: 36px 16px; color: var(--text-muted); }
+  .empty strong { display: block; color: var(--ink); font-weight: 600; margin-bottom: 4px; }
+  .app .note { margin: 12px 0 0; font-size: var(--type-caption); color: var(--text-muted); }
+  .view[hidden] { display: none; }
+
+  /* pricing */
+  .plans { padding: 0; overflow: hidden; }
+  .plans .ledger th, .plans .ledger td { padding-left: 16px; padding-right: 16px; }
+  .plans .ledger td:first-child { color: var(--text-muted); }
+  .plans .ledger td.num, .plans .ledger th.num { width: 30%; }
+  .plans .plan-name { display: block; font: 600 var(--type-h3)/1.2 var(--font-body); color: var(--ink); text-transform: none; letter-spacing: 0; }
+  .plans .price td { padding-top: 16px; padding-bottom: 16px; }
+  .plans .price .figure { font-size: clamp(24px, 6vw, var(--type-h2)); }
+  .plans .price .figure .unit { display: block; margin: 6px 0 0; font-size: var(--type-caption); }
+  .plans-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding: 16px; border-top: 1px solid var(--rule); background: var(--page); }
+  .plans-foot p { margin: 0; font-size: var(--type-caption); color: var(--text-muted); }
+
+  /* launch kit */
+  .kit { display: grid; gap: 32px; align-items: end; }
+  .kit figure { margin: 0; }
   .canvas { container-type: inline-size; border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; background: var(--card); box-shadow: var(--shadow-rest); }
-  .cap { margin-top: 10px; }
-  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--card); }
-  .slide h3 { position: absolute; left: 5cqw; right: 5cqw; top: 5cqw; padding-bottom: 1.6cqw; border-bottom: 0.06cqw solid var(--rule); font-size: 2.9cqw; }
-  .slide .chart { position: absolute; left: 5cqw; right: 40cqw; top: 15cqw; bottom: 9cqw; display: flex; align-items: flex-end; gap: 2cqw; border-bottom: 0.06cqw solid var(--text-muted); }
-  .slide .chart div { flex: 1; background: var(--rule); position: relative; }
+  .kit figcaption { margin-top: 10px; font-size: var(--type-caption); color: var(--text-muted); }
+  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--card); color: var(--text); }
+  .slide h3 { position: absolute; left: 5cqw; right: 5cqw; top: 5cqw; padding-bottom: 1.4cqw; border-bottom: max(1px, 0.06cqw) solid var(--rule); font-size: 2.92cqw; line-height: 1.15; }
+  .slide .chart { position: absolute; left: 5cqw; width: 52cqw; top: 17cqw; bottom: 12cqw; display: flex; align-items: flex-end; gap: 3cqw; border-bottom: max(1px, 0.1cqw) solid var(--text-muted); }
+  .slide .chart div { flex: 1; position: relative; background: color-mix(in srgb, var(--text-muted) 28%, var(--card)); }
   .slide .chart div.hi { background: var(--accent); }
-  .slide .chart span { position: absolute; top: -2.2cqw; left: 0; right: 0; text-align: center; font-size: 1.3cqw; color: var(--text-muted); font-variant-numeric: tabular-nums; }
-  .slide .chart div.hi span { color: var(--accent); font-weight: 600; }
-  .slide .side { position: absolute; right: 5cqw; top: 15cqw; width: 30cqw; }
-  .slide .side .figure { font-size: 6cqw; }
-  .slide .side .figure .unit { font-size: 1.6cqw; }
-  .slide .side p { font-size: 1.5cqw; color: var(--text-muted); margin: 1.2cqw 0 0; }
-  .slide .foot { position: absolute; left: 5cqw; right: 5cqw; bottom: 3cqw; display: flex; justify-content: space-between; font-size: 1.05cqw; color: var(--text-muted); }
-  .post { aspect-ratio: 4 / 5; position: relative; background: var(--page); }
-  .post .box { position: absolute; inset: 7cqw; border: 0.2cqw solid var(--rule); background: var(--card); padding: 7cqw; display: flex; flex-direction: column; }
-  .post .eyebrow { font-size: 3cqw; }
-  .post .figure { font-size: 22cqw; margin-top: 8cqw; }
-  .post .figure .unit { font-size: 5cqw; }
-  .post p { font-size: 4.6cqw; line-height: 1.3; margin: 4cqw 0 0; color: var(--text); }
-  .post .foot { margin-top: auto; padding-top: 3cqw; border-top: 0.2cqw solid var(--rule); font-size: 2.8cqw; color: var(--text-muted); }
-  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; }
-  .phone header { padding: 8cqw 5cqw 4cqw; background: var(--panel); border-bottom: 1px solid var(--rule); }
-  .phone header h3 { font-size: 7cqw; }
-  .phone ul { list-style: none; margin: 0; padding: 0 5cqw; background: var(--card); }
-  .phone li { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: 3cqw 0; border-bottom: 1px solid var(--rule); font-size: 4.4cqw; }
-  .phone li .amt { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .slide .chart b { position: absolute; left: 0; right: 0; top: -2.2cqw; text-align: center; font: 600 1.46cqw/1 var(--font-body); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .slide .chart div.hi b { color: var(--accent); }
+  .slide .chart i { position: absolute; left: 0; right: 0; bottom: -2.2cqw; text-align: center; font: normal 400 1.04cqw/1 var(--font-body); color: var(--text-muted); }
+  .slide .side { position: absolute; right: 5cqw; top: 17cqw; width: 29cqw; }
+  .slide .side .eyebrow { font-size: 1.04cqw; }
+  .slide .side p { margin: 1cqw 0 0; font-size: 1.46cqw; line-height: 1.45; color: var(--text); }
+  .slide .foot { position: absolute; left: 5cqw; right: 5cqw; bottom: 5cqw; display: flex; justify-content: space-between; font-size: 1.04cqw; color: var(--text-muted); }
+  .post { aspect-ratio: 4 / 5; position: relative; background: var(--page); color: var(--text); }
+  .post .box { position: absolute; inset: 5.9cqw; border: max(1px, 0.1cqw) solid var(--rule); background: var(--card); padding: 6cqw; display: flex; flex-direction: column; }
+  .post .eyebrow { font-size: 2.6cqw; }
+  .post .figure { font-size: 24cqw; margin-top: 9cqw; letter-spacing: -0.4cqw; }
+  .post .figure .unit { display: block; margin: 2.4cqw 0 0; font-size: 4.44cqw; letter-spacing: 0; }
+  .post p { margin: 7cqw 0 0; font: 600 5cqw/1.25 var(--font-body); color: var(--ink); }
+  .post .foot { margin-top: auto; padding-top: 3cqw; border-top: max(1px, 0.1cqw) solid var(--rule); display: flex; justify-content: space-between; font-size: 2.6cqw; color: var(--text-muted); }
+  .phone-fig { max-width: 300px; width: 100%; justify-self: center; }
+  .phone { aspect-ratio: 9 / 19.5; background: var(--page); color: var(--text); display: flex; flex-direction: column; font-size: 4.2cqw; }
+  .phone .p-head { background: var(--panel); border-bottom: 1px solid var(--rule); padding: 12cqw 5cqw 4cqw; }
+  .phone .p-head .eyebrow { font-size: 3.6cqw; }
+  .phone .p-head h3 { font-size: 7cqw; margin-top: 1cqw; }
+  .phone .p-head p { margin: 1.5cqw 0 0; font-size: 3.6cqw; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .phone ul { list-style: none; margin: 0; padding: 0 5cqw; background: var(--card); border-bottom: 1px solid var(--rule); }
+  .phone li + li { border-top: 1px solid var(--rule); }
+  .phone li label { display: flex; align-items: center; gap: 3cqw; min-height: 44px; padding: 3cqw 0; cursor: pointer; }
+  .phone input[type="checkbox"] { width: 20px; height: 20px; flex: none; margin: 0; accent-color: var(--accent); }
+  .phone .who { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1.4cqw; }
+  .phone .who strong { font-weight: 500; font-size: 4.2cqw; line-height: 1.2; }
+  .phone .badge { font-size: 3.4cqw; }
+  .phone .amt { font-weight: 500; font-variant-numeric: tabular-nums; }
+  .phone li.done .who strong, .phone li.done .amt { color: var(--text-muted); }
+  .phone .p-group { margin: 0; padding: 5cqw 5cqw 2cqw; font: 500 3.4cqw/1.2 var(--font-body); color: var(--text-muted); }
+  .phone ul.past { border-top: 1px solid var(--rule); }
+  .phone ul.past li { display: flex; align-items: center; gap: 3cqw; min-height: 44px; padding: 3cqw 0; }
+  .phone ul.past .who strong, .phone ul.past .amt { color: var(--text-muted); }
+  .phone .p-empty { padding: 6cqw 0; text-align: center; color: var(--text-muted); font-size: 3.8cqw; }
   .phone .spacer { flex: 1; }
-  .phone .btn { margin: 4cqw 5cqw; justify-content: center; }
-  .phone nav { display: flex; justify-content: space-around; border-top: 1px solid var(--rule); background: var(--panel); padding: 2cqw 0 4cqw; font-size: 3.4cqw; }
-  .phone nav span { min-height: 44px; display: flex; align-items: center; color: var(--text-muted); }
-  .phone nav span.on { color: var(--accent); font-weight: 600; }
+  .phone .p-action { padding: 4cqw 5cqw; }
+  .phone .p-action .btn { width: 100%; }
+  .phone .tabbar { display: flex; border-top: 1px solid var(--rule); background: var(--panel); padding-bottom: 4cqw; }
+  .phone .tabbar button { flex: 1; min-height: 44px; border: 0; background: none; color: var(--text-muted); font: 500 3.6cqw var(--font-body); cursor: pointer; }
+  .phone .tabbar button[aria-current="page"] { color: var(--accent); font-weight: 600; box-shadow: inset 0 2px 0 var(--accent); }
 
-  @media (max-width: 760px) {
-    .app { grid-template-columns: 1fr; }
-    .app aside { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--rule); }
-    .figs { grid-template-columns: 1fr; }
+  /* walkthrough + footer */
+  .walk { display: grid; gap: 28px; }
+  .walk h2 { font-size: clamp(var(--type-h2), 3.4vw, var(--type-h1)); margin-top: 6px; }
+  .walk .intro p { margin: 12px 0 0; color: var(--text-muted); max-width: 48ch; }
+  .walk form { display: grid; gap: 16px; }
+  .walk .note { margin: 0; min-height: 1.6em; font-size: 14px; color: var(--text-muted); }
+  footer { margin-top: 80px; border-top: 1px solid var(--rule); background: var(--panel); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 20px; padding-bottom: 32px; font-size: var(--type-caption); color: var(--text-muted); }
+
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 24px; }
+    .facts { grid-template-columns: repeat(4, 1fr); }
+    .facts div { padding: 20px 20px 20px 0; }
+    .facts div + div { padding-left: 20px; border-left: 1px solid var(--rule); }
+    .facts div:nth-child(n+3) { border-top: 0; }
+    .app-main { padding: 24px; }
+    .figs { grid-template-columns: 2fr 1fr 1fr; gap: 16px; }
+    .figs .card:first-child { grid-column: auto; }
+    .kit { grid-template-columns: 1.2fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
+    .walk { padding: 32px; }
   }
-  @media (prefers-reduced-motion: reduce) { .btn, .card { transition: none; } }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .hero { grid-template-columns: 1.05fr 0.95fr; gap: 56px; margin-top: 72px; }
+    .features { grid-template-columns: repeat(3, 1fr); }
+    .split { grid-template-columns: 1fr 1fr; gap: 48px; }
+    .app { grid-template-columns: 220px 1fr; }
+    .app-side { border-bottom: 0; border-right: 1px solid var(--rule); padding: 20px 12px; }
+    .app-nav { flex-direction: column; }
+    .kit { grid-template-columns: 2fr 1fr 0.72fr; }
+    .kit .slide-fig { grid-column: auto; }
+    .walk { grid-template-columns: 1fr 1fr; align-items: start; padding: 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn, .card { transition: none; }
+    .btn:hover, a.card:hover, .btn:active { transform: none; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <span class="eyebrow">pikmi style · light</span>
-    <h1 style="margin-top:12px">Ledger Blue</h1>
-    <p class="muted" style="max-width:60ch">Ledger hairlines, tabular numbers, ink-blue headings and one confident blue for actions.</p>
-  </header>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span>Beres</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#product">Product</a><a href="#close">The close</a><a href="#pricing">Pricing</a><a href="#kit">Launch kit</a>
+    </nav>
+    <a class="btn" href="#walkthrough">Book a walkthrough</a>
+  </div>
+</header>
 
-  <section id="components" aria-labelledby="h-components">
-    <h2 id="h-components">Components</h2>
-    <div class="grid">
-      <div class="card"><h3>Actions</h3><div class="row" style="margin-top:14px"><a class="btn" href="#ui">Export the March report</a><a class="btn secondary" href="#slides">Preview slides</a></div></div>
-      <div class="card"><span class="eyebrow">Invoices due</span><div class="figure" style="margin-top:10px">18<span class="unit">invoices</span></div><p class="muted" style="margin:8px 0 0;font-size:14px">Placeholder figure [REAL DATA]</p></div>
-      <div class="card"><label for="po">Purchase order</label><input class="field" id="po" placeholder="PO-2026-0142"><div class="seg" role="group" aria-label="Period" style="margin-top:14px"><button type="button" aria-pressed="true">Month</button><button type="button" aria-pressed="false">Quarter</button><button type="button" aria-pressed="false">Year</button></div></div>
-      <div class="card"><h3>Status</h3><div class="row" style="margin-top:14px"><span class="badge ok">Paid</span><span class="badge warn">Due in 3 days</span><span class="badge bad">Overdue</span></div></div>
+<main id="top">
+  <section class="hero wrap" aria-labelledby="h-hero">
+    <div>
+      <p class="eyebrow">Month-end close for finance teams</p>
+      <h1 id="h-hero">Beres keeps your month-end close on one ledger.</h1>
+      <p class="lede">Bank lines, invoices, approvals and accruals sit in one checklist. Every step has an owner and a status, and the report goes out when nothing is left to reconcile.</p>
+      <div class="row">
+        <a class="btn" href="#walkthrough">Book a close walkthrough</a>
+        <a class="btn secondary" href="#close">See the March close</a>
+      </div>
+    </div>
+
+    <div class="card close-card" role="group" aria-labelledby="h-close-card">
+      <div class="head">
+        <div><p class="eyebrow">March close · sample company</p><h2 id="h-close-card">Day 3 of 5</h2></div>
+        <span class="badge warn">In progress</span>
+      </div>
+      <div class="total">
+        <div class="figure">12,480.00<span class="unit">USD</span></div>
+        <p>Left to reconcile before the March report can go out.</p>
+      </div>
+      <table class="ledger">
+        <thead><tr><th class="num">Day</th><th>Step</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>Bank reconciliation<span class="sub">Treasury</span></td><td><span class="badge ok">Done</span></td></tr>
+          <tr><td class="num">2</td><td>Payables<span class="sub">AP team</span></td><td><span class="badge ok">Done</span></td></tr>
+          <tr><td class="num">3</td><td>Receivables<span class="sub">AR team</span></td><td><span class="badge warn">In review</span></td></tr>
+          <tr><td class="num">4</td><td>Accruals<span class="sub">Controller</span></td><td><span class="badge neutral">Not started</span></td></tr>
+          <tr><td class="num">5</td><td>Report<span class="sub">Finance lead</span></td><td><span class="badge neutral">Not started</span></td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
-  <section id="ui" aria-labelledby="h-ui">
-    <h2 id="h-ui">UI · Finance dashboard</h2>
-    <div class="app">
-      <aside aria-label="Sections"><a href="#ui" aria-current="page">Overview</a><a href="#components">Invoices</a><a href="#slides">Reports</a><a href="#app">Vendors</a></aside>
-      <main>
-        <div class="row" style="justify-content:space-between"><h3 style="font-size:24px">March close</h3><div class="seg" role="group" aria-label="Range"><button type="button" aria-pressed="true">Month</button><button type="button" aria-pressed="false">Quarter</button></div></div>
-        <div class="figs">
-          <div class="card"><span class="eyebrow">Cash collected</span><div class="figure" style="margin-top:8px">[REAL DATA]</div><p class="muted">Compared with February</p></div>
-          <div class="card"><span class="eyebrow">Open invoices</span><div class="figure" style="margin-top:8px">18</div></div>
-          <div class="card"><span class="eyebrow">Overdue</span><div class="figure" style="margin-top:8px">2</div></div>
-        </div>
-        <div class="table-wrap"><table class="ledger">
-          <thead><tr><th>Vendor</th><th>Invoice</th><th class="num">Amount</th><th>Status</th></tr></thead>
+  <div class="wrap">
+    <dl class="facts">
+      <div><dt>5</dt><dd>steps in the default checklist</dd></div>
+      <div><dt>1</dt><dd>owner on every step</dd></div>
+      <div><dt>49.00</dt><dd>USD per entity a month, Team plan</dd></div>
+      <div><dt>14</dt><dd>days of free trial, no card</dd></div>
+    </dl>
+  </div>
+
+  <section id="product" class="wrap" aria-labelledby="h-product">
+    <div class="sec-head">
+      <p class="eyebrow">Product</p>
+      <h2 id="h-product">Every step of the close has an owner and a status</h2>
+      <p>Beres splits the close into the jobs your team already does, and shows each one as rows you can tick off.</p>
+    </div>
+    <div class="features">
+      <article class="card feature">
+        <p class="eyebrow">Bank reconciliation</p>
+        <h3>Match bank lines to the ledger</h3>
+        <p>Each bank line gets a match, a suggestion or a flag. You only look at the last two.</p>
+        <table class="ledger" aria-label="Sample bank lines">
           <tbody>
-            <tr><td>Northwind Paper</td><td>INV-0931</td><td class="num">1,240.00</td><td><span class="badge ok">Paid</span></td></tr>
-            <tr><td>Harbor Logistics</td><td>INV-0944</td><td class="num">8,615.50</td><td><span class="badge warn">Due in 3 days</span></td></tr>
-            <tr><td>Kiln Studio</td><td>INV-0950</td><td class="num">420.00</td><td><span class="badge bad">Overdue</span></td></tr>
+            <tr><td>CARD 4471 · Harbor Logistics<br><span class="badge ok">Matched</span></td><td class="num">8,615.50</td></tr>
+            <tr><td>TRF 0932 · Kiln Studio<br><span class="badge warn">Suggested match</span></td><td class="num">420.00</td></tr>
+            <tr><td>FEE 0311 · Bank charge<br><span class="badge bad">No match</span></td><td class="num">12.40</td></tr>
           </tbody>
-        </table></div>
-        <p class="muted" style="font-size:13px">Sample vendors and amounts for the preview.</p>
-      </main>
+        </table>
+      </article>
+      <article class="card feature">
+        <p class="eyebrow">Payables</p>
+        <h3>Check an invoice against its order</h3>
+        <p>Type a purchase order number. Beres finds the invoice that bills it and compares the amounts.</p>
+        <form class="po-form" id="po-form">
+          <label class="lbl" for="po">Purchase order number</label>
+          <div class="row">
+            <input class="field" id="po" name="po" value="PO-2026-0142" autocomplete="off">
+            <button class="btn secondary" type="submit">Check</button>
+          </div>
+          <p class="po-result muted" id="po-result" aria-live="polite">Try the number above, or type another one.</p>
+        </form>
+      </article>
+      <article class="card feature">
+        <p class="eyebrow">Receivables</p>
+        <h3>Reminders go out on their own</h3>
+        <p>Customers hear from you before the due date, after it, and once more when they pay.</p>
+        <table class="ledger" aria-label="Reminder schedule">
+          <tbody>
+            <tr><td><span class="badge warn">Due in 3 days</span></td><td>A short reminder with the invoice attached</td></tr>
+            <tr><td><span class="badge bad">Overdue</span></td><td>A second note, copied to the account owner</td></tr>
+            <tr><td><span class="badge ok">Paid</span></td><td>A receipt, and the reminders stop</td></tr>
+          </tbody>
+        </table>
+      </article>
+    </div>
+
+    <div class="split">
+      <div>
+        <h3>Done means zero</h3>
+        <p>One number sits at the top of every close: what is left to reconcile. Each matched line brings it down, and the report unlocks when it reads 0.00.</p>
+        <p><a href="#close">See how the March close got there</a></p>
+      </div>
+      <a class="card zero" href="#close">
+        <p class="eyebrow">February close · sample company</p>
+        <div class="figure">0.00<span class="unit">USD left to reconcile</span></div>
+        <div class="foot"><span class="badge ok">Report sent</span><span class="muted">Closed on day 5</span></div>
+      </a>
     </div>
   </section>
 
-  <section aria-labelledby="h-media">
-    <h2 id="h-media">Other media</h2>
-    <div class="canvases">
-      <div id="slides">
+  <section id="close" class="wrap" aria-labelledby="h-close">
+    <div class="sec-head">
+      <p class="eyebrow">The close</p>
+      <h2 id="h-close">The March close, as your team sees it</h2>
+      <p>A sample company with sample invoices. Switch views, change the range and filter the ledger.</p>
+    </div>
+
+    <div class="app">
+      <aside class="app-side">
+        <div class="org"><span class="mark" aria-hidden="true"></span><div><strong>Linden Works</strong><span>Sample company</span></div></div>
+        <nav class="app-nav" aria-label="App sections">
+          <button type="button" data-view="overview" aria-current="page">Overview</button>
+          <button type="button" data-view="invoices">Invoices</button>
+          <button type="button" data-view="feeds">Bank feeds</button>
+        </nav>
+      </aside>
+
+      <div class="app-main">
+        <div class="view" id="view-overview">
+          <div class="view-head">
+            <div><p class="eyebrow" id="range-label">1 to 31 March 2026</p><h3>Overview</h3></div>
+            <div class="seg" role="group" aria-label="Range">
+              <button type="button" aria-pressed="true" data-range="month">Month</button>
+              <button type="button" aria-pressed="false" data-range="quarter">Quarter</button>
+            </div>
+          </div>
+          <div class="figs">
+            <div class="card"><p class="eyebrow">Cash collected</p><div class="figure"><span data-month="184,320.00" data-quarter="512,940.00">184,320.00</span><span class="unit">USD</span></div><p data-month="February: 162,110.00" data-quarter="Q4 2025: 471,055.00">February: 162,110.00</p></div>
+            <div class="card"><p class="eyebrow">Invoices issued</p><div class="figure" data-month="46" data-quarter="131">46</div><p data-month="February: 41" data-quarter="Q4 2025: 122">February: 41</p></div>
+            <div class="card"><p class="eyebrow">Overdue</p><div class="figure" data-month="2" data-quarter="7">2</div><p data-month="February: 4" data-quarter="Q4 2025: 9">February: 4</p></div>
+          </div>
+          <div class="table-title"><h4>Waiting for approval</h4><span class="muted num" style="font-size:14px">4 invoices</span></div>
+          <div class="table-wrap"><table class="ledger">
+            <thead><tr><th>Vendor</th><th>Invoice</th><th>Due</th><th class="num">Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Harbor Logistics</td><td>INV-0944</td><td>28 Mar</td><td class="num">8,615.50</td><td><span class="badge warn">Due in 3 days</span></td></tr>
+              <tr><td>Kiln Studio</td><td>INV-0950</td><td>12 Mar</td><td class="num">420.00</td><td><span class="badge bad">Overdue</span></td></tr>
+              <tr><td>Copperline Couriers</td><td>INV-0957</td><td>3 Apr</td><td class="num">2,310.00</td><td><span class="badge neutral">Due in 9 days</span></td></tr>
+              <tr><td>Larkspur Paper</td><td>INV-0931</td><td>20 Mar</td><td class="num">1,240.00</td><td><span class="badge ok">Approved</span></td></tr>
+            </tbody>
+          </table></div>
+          <p class="note">Sample vendors and amounts for this preview.</p>
+        </div>
+
+        <div class="view" id="view-invoices" hidden>
+          <div class="view-head">
+            <div><p class="eyebrow">March 2026</p><h3>Invoices</h3></div>
+            <div class="seg" role="group" aria-label="Filter invoices">
+              <button type="button" aria-pressed="true" data-filter="all">All</button>
+              <button type="button" aria-pressed="false" data-filter="due">Due</button>
+              <button type="button" aria-pressed="false" data-filter="overdue">Overdue</button>
+              <button type="button" aria-pressed="false" data-filter="disputed">Disputed</button>
+            </div>
+          </div>
+          <p class="muted num" id="inv-count" aria-live="polite" style="font-size:14px;margin:16px 0 10px">6 invoices</p>
+          <div class="table-wrap"><table class="ledger" id="inv-table">
+            <thead><tr><th>Invoice</th><th>Vendor</th><th>Due</th><th class="num">Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr data-status="due"><td>INV-0944</td><td>Harbor Logistics</td><td>28 Mar</td><td class="num">8,615.50</td><td><span class="badge warn">Due in 3 days</span></td></tr>
+              <tr data-status="overdue"><td>INV-0950</td><td>Kiln Studio</td><td>12 Mar</td><td class="num">420.00</td><td><span class="badge bad">Overdue</span></td></tr>
+              <tr data-status="due"><td>INV-0957</td><td>Copperline Couriers</td><td>3 Apr</td><td class="num">2,310.00</td><td><span class="badge neutral">Due in 9 days</span></td></tr>
+              <tr data-status="paid"><td>INV-0931</td><td>Larkspur Paper</td><td>20 Mar</td><td class="num">1,240.00</td><td><span class="badge ok">Paid</span></td></tr>
+              <tr data-status="overdue"><td>INV-0938</td><td>Fernhill Catering</td><td>9 Mar</td><td class="num">965.00</td><td><span class="badge bad">Overdue</span></td></tr>
+              <tr data-status="paid"><td>INV-0926</td><td>Saltmarsh Print</td><td>4 Mar</td><td class="num">3,080.25</td><td><span class="badge ok">Paid</span></td></tr>
+              <tr class="empty" hidden><td colspan="5"><strong>No disputed invoices in March</strong>When a vendor or customer disputes an amount, it lands here with the reason.</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <div class="view" id="view-feeds" hidden>
+          <div class="view-head">
+            <div><p class="eyebrow">Connected accounts</p><h3>Bank feeds</h3></div>
+            <button class="btn secondary" type="button" id="sync-all">Sync all feeds</button>
+          </div>
+          <p class="muted" id="feed-status" aria-live="polite" style="font-size:14px;margin:16px 0 10px">One feed needs you to sign in again.</p>
+          <div class="table-wrap"><table class="ledger">
+            <thead><tr><th>Account</th><th>Last sync</th><th>Status</th><th class="num">Action</th></tr></thead>
+            <tbody>
+              <tr data-feed><td>Operating ··4471</td><td class="when">Today, 08:00</td><td class="state"><span class="badge ok">Synced</span></td><td class="num"></td></tr>
+              <tr data-feed data-expired><td>Payroll ··0932</td><td class="when">3 days ago</td><td class="state"><span class="badge bad">Sign-in expired</span></td><td class="num"><button class="btn secondary small" type="button" id="reconnect">Reconnect</button></td></tr>
+              <tr data-feed><td>Tax reserve ··2210</td><td class="when">Today, 08:00</td><td class="state"><span class="badge ok">Synced</span></td><td class="num"></td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="wrap" aria-labelledby="h-pricing">
+    <div class="sec-head">
+      <p class="eyebrow">Pricing</p>
+      <h2 id="h-pricing">Two plans, priced per entity</h2>
+      <p>Both plans include the full close checklist. You pay for each legal entity you close, not for each person on the team.</p>
+    </div>
+    <div class="card plans">
+      <div class="table-wrap" style="border:0;border-radius:0">
+        <table class="ledger">
+          <thead><tr><th><span class="sr">Plan</span></th><th class="num"><span class="plan-name">Team</span></th><th class="num"><span class="plan-name">Business</span></th></tr></thead>
+          <tbody>
+            <tr class="price"><td>Monthly price per entity</td><td class="num"><span class="figure">49.00<span class="unit">USD</span></span></td><td class="num"><span class="figure">89.00<span class="unit">USD</span></span></td></tr>
+            <tr><td>Entities</td><td class="num">Up to 3</td><td class="num">No limit</td></tr>
+            <tr><td>Bank feeds per entity</td><td class="num">2</td><td class="num">10</td></tr>
+            <tr><td>Approval rules</td><td class="num">Amount limits</td><td class="num">Amount, vendor, order</td></tr>
+            <tr><td>Audit trail export</td><td class="num">Not included</td><td class="num">Included</td></tr>
+            <tr><td>Support</td><td class="num">Email</td><td class="num">Email and a named contact</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="plans-foot">
+        <p>Prices in USD, before tax. Fictional prices for this preview.</p>
+        <div class="row">
+          <a class="btn secondary" href="#walkthrough">Ask about Business</a>
+          <a class="btn" href="#walkthrough">Start a 14-day Team trial</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kit" class="wrap" aria-labelledby="h-kit">
+    <div class="sec-head">
+      <p class="eyebrow">Launch kit</p>
+      <h2 id="h-kit">One launch, cut for a deck, a feed and a phone</h2>
+      <p>The same ledger rules and ink headings, sized for each place the launch shows up.</p>
+    </div>
+    <div class="kit">
+      <figure class="slide-fig">
         <div class="canvas"><div class="slide">
-          <h3>Overdue invoices fell after reminders went automatic</h3>
-          <div class="chart" aria-hidden="true"><div style="height:80%"><span>[n]</span></div><div style="height:68%"><span>[n]</span></div><div style="height:52%"><span>[n]</span></div><div class="hi" style="height:30%"><span>[n]</span></div></div>
-          <div class="side"><div class="figure">[n]%<span class="unit">fewer overdue</span></div><p>Quarter over quarter, after the reminder rollout. Replace with real figures.</p></div>
-          <div class="foot"><span>Finance review · Q1</span><span>07</span></div>
+          <h3>Day 2 carries the most work in the default checklist</h3>
+          <div class="chart" role="img" aria-label="Tasks per day: day 1, 6; day 2, 9; day 3, 7; day 4, 4; day 5, 2">
+            <div style="height:60%"><b>6</b><i>Day 1</i></div>
+            <div class="hi" style="height:90%"><b>9</b><i>Day 2</i></div>
+            <div style="height:70%"><b>7</b><i>Day 3</i></div>
+            <div style="height:40%"><b>4</b><i>Day 4</i></div>
+            <div style="height:20%"><b>2</b><i>Day 5</i></div>
+          </div>
+          <div class="side">
+            <p class="eyebrow">Default checklist</p>
+            <p>28 tasks over five working days. Payables, on day 2, hold nine of them, so that is where Beres puts the most help.</p>
+          </div>
+          <div class="foot"><span>Beres · Product launch</span><span class="num">04</span></div>
         </div></div>
-        <p class="cap eyebrow">slides · 1920 x 1080</p>
-      </div>
-      <div id="social">
-        <div class="canvas"><div class="post"><div class="box">
-          <span class="eyebrow">Quarterly update</span>
-          <div class="figure">Q1<span class="unit">closed on time</span></div>
-          <p>Our books for the first quarter closed in five working days.</p>
-          <span class="foot">Example company · placeholder post</span>
-        </div></div></div>
-        <p class="cap eyebrow">social · 1080 x 1350</p>
-      </div>
-      <div id="app">
-        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
-          <header><span class="eyebrow">Approvals</span><h3>Waiting for you</h3></header>
-          <ul>
-            <li><span>Harbor Logistics</span><span class="amt">8,615.50</span></li>
-            <li><span>Kiln Studio</span><span class="amt">420.00</span></li>
-            <li><span>Northwind Paper</span><span class="amt">1,240.00</span></li>
+        <figcaption>Keynote slide · 1920 x 1080</figcaption>
+      </figure>
+      <figure>
+        <div class="canvas"><div class="post">
+          <div class="box">
+            <span class="eyebrow">New in Beres</span>
+            <div class="figure">0.00<span class="unit">USD left to reconcile</span></div>
+            <p>The report unlocks when every line is matched.</p>
+            <div class="foot"><span>Beres · month-end close</span><span>Product update</span></div>
+          </div>
+        </div></div>
+        <figcaption>Feed post · 1080 x 1350</figcaption>
+      </figure>
+      <figure class="phone-fig">
+        <div class="canvas"><div class="phone">
+          <div class="p-head">
+            <p class="eyebrow">Approvals</p>
+            <h3>Waiting for you</h3>
+            <p id="p-summary">3 invoices · 11,345.50 USD</p>
+          </div>
+          <ul id="p-list">
+            <li><label><input type="checkbox" data-amount="8615.50" checked><span class="who"><strong>Harbor Logistics</strong><span class="badge warn">Due in 3 days</span></span><span class="amt">8,615.50</span></label></li>
+            <li><label><input type="checkbox" data-amount="420.00" checked><span class="who"><strong>Kiln Studio</strong><span class="badge bad">Overdue</span></span><span class="amt">420.00</span></label></li>
+            <li><label><input type="checkbox" data-amount="2310.00"><span class="who"><strong>Copperline Couriers</strong><span class="badge neutral">Due in 9 days</span></span><span class="amt">2,310.00</span></label></li>
+            <li class="p-empty" hidden>Nothing waiting. New invoices land here.</li>
+          </ul>
+          <p class="p-group">Approved this week</p>
+          <ul class="past">
+            <li><span class="who"><strong>Larkspur Paper</strong><span class="badge ok">Approved</span></span><span class="amt">1,240.00</span></li>
+            <li><span class="who"><strong>Saltmarsh Print</strong><span class="badge ok">Approved</span></span><span class="amt">3,080.25</span></li>
           </ul>
           <div class="spacer"></div>
-          <a class="btn" href="#app">Approve selected</a>
-          <nav aria-label="App sections"><span class="on">Approvals</span><span>Invoices</span><span>Profile</span></nav>
+          <div class="p-action"><button class="btn" type="button" id="p-approve">Approve 2 invoices</button></div>
+          <nav class="tabbar" aria-label="Phone app sections">
+            <button type="button" aria-current="page">Approvals</button>
+            <button type="button">Invoices</button>
+            <button type="button">Profile</button>
+          </nav>
         </div></div>
-        <p class="cap eyebrow">app · phone</p>
-      </div>
+        <figcaption>Approvals app · phone</figcaption>
+      </figure>
     </div>
   </section>
-</div>
+
+  <section id="walkthrough" class="wrap" aria-labelledby="h-walk">
+    <div class="card walk">
+      <div class="intro">
+        <p class="eyebrow">Walkthrough</p>
+        <h2 id="h-walk">Walk through your own close on Beres</h2>
+        <p>Leave your work email. We set up a sample ledger with your entity names and go through one close with you, step by step.</p>
+      </div>
+      <form id="walk-form">
+        <div><label class="lbl" for="email">Work email</label><input class="field" id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required></div>
+        <div><label class="lbl" for="entities">Entities you close each month</label><input class="field" id="entities" name="entities" type="number" min="1" inputmode="numeric" placeholder="3"></div>
+        <div><button class="btn" type="submit">Book the walkthrough</button></div>
+        <p class="note" id="walk-note" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Beres is a fictional company made for this preview.</span>
+    <span>pikmi style · Ledger Blue</span>
+  </div>
+</footer>
+
 <script>
-  document.querySelectorAll('.seg').forEach(seg => seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
-    seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-  })));
+  // segmented controls: one pressed button per group
+  document.querySelectorAll('.seg').forEach(seg => {
+    const buttons = seg.querySelectorAll('button');
+    buttons.forEach(b => b.addEventListener('click', () => buttons.forEach(x => x.setAttribute('aria-pressed', String(x === b)))));
+  });
+
+  // app views
+  const viewButtons = document.querySelectorAll('[data-view]');
+  viewButtons.forEach(b => b.addEventListener('click', () => {
+    viewButtons.forEach(x => { if (x === b) x.setAttribute('aria-current', 'page'); else x.removeAttribute('aria-current'); });
+    document.querySelectorAll('.view').forEach(v => { v.hidden = v.id !== 'view-' + b.dataset.view; });
+  }));
+
+  // range: month or quarter
+  document.querySelectorAll('[data-range]').forEach(b => b.addEventListener('click', () => {
+    const r = b.dataset.range;
+    document.querySelectorAll('[data-month]').forEach(el => { el.textContent = el.dataset[r]; });
+    document.getElementById('range-label').textContent = r === 'month' ? '1 to 31 March 2026' : 'January to March 2026';
+  }));
+
+  // invoice filter, with an empty state
+  const invRows = document.querySelectorAll('#inv-table tr[data-status]');
+  const invEmpty = document.querySelector('#inv-table .empty');
+  document.querySelectorAll('[data-filter]').forEach(b => b.addEventListener('click', () => {
+    const f = b.dataset.filter; let shown = 0;
+    invRows.forEach(r => { const on = f === 'all' || r.dataset.status === f; r.hidden = !on; if (on) shown++; });
+    invEmpty.hidden = shown > 0;
+    document.getElementById('inv-count').textContent = shown + (shown === 1 ? ' invoice' : ' invoices');
+  }));
+
+  // purchase order check
+  document.getElementById('po-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = document.getElementById('po').value.trim().toUpperCase();
+    const out = document.getElementById('po-result');
+    out.innerHTML = v === 'PO-2026-0142'
+      ? '<span class="badge ok">Matches INV-0944 · 8,615.50 USD</span>'
+      : '<span class="badge warn">No March order with that number</span>';
+  });
+
+  // bank feeds: loading, error, recovered
+  const feedStatus = document.getElementById('feed-status');
+  function sync(rows, done) {
+    rows.forEach(r => { r.querySelector('.state').innerHTML = '<span class="badge neutral">Syncing…</span>'; });
+    setTimeout(() => {
+      rows.forEach(r => { r.querySelector('.state').innerHTML = '<span class="badge ok">Synced</span>'; r.querySelector('.when').textContent = 'Just now'; });
+      done();
+    }, 1200);
+  }
+  const syncAll = document.getElementById('sync-all');
+  syncAll.addEventListener('click', () => {
+    const rows = [...document.querySelectorAll('[data-feed]:not([data-expired])')];
+    syncAll.disabled = true; syncAll.textContent = 'Syncing…'; feedStatus.textContent = 'Syncing ' + rows.length + ' feeds.';
+    sync(rows, () => {
+      syncAll.disabled = false; syncAll.textContent = 'Sync all feeds';
+      feedStatus.textContent = document.querySelector('[data-expired]') ? 'Synced. One feed still needs you to sign in again.' : 'All feeds are up to date.';
+    });
+  });
+  const reconnect = document.getElementById('reconnect');
+  reconnect.addEventListener('click', () => {
+    const row = reconnect.closest('tr');
+    reconnect.disabled = true; feedStatus.textContent = 'Reconnecting the payroll feed.';
+    sync([row], () => { row.removeAttribute('data-expired'); reconnect.remove(); feedStatus.textContent = 'All feeds are up to date.'; });
+  });
+
+  // phone: approvals
+  const pList = document.getElementById('p-list');
+  const pApprove = document.getElementById('p-approve');
+  const money = n => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function pUpdate() {
+    const pending = [...pList.querySelectorAll('input:not(:disabled)')];
+    const picked = pending.filter(i => i.checked);
+    const total = pending.reduce((s, i) => s + Number(i.dataset.amount), 0);
+    document.getElementById('p-summary').textContent = pending.length
+      ? pending.length + (pending.length === 1 ? ' invoice · ' : ' invoices · ') + money(total) + ' USD'
+      : 'Nothing left to approve';
+    pList.querySelector('.p-empty').hidden = pending.length > 0;
+    pApprove.disabled = picked.length === 0;
+    pApprove.textContent = picked.length ? 'Approve ' + picked.length + (picked.length === 1 ? ' invoice' : ' invoices') : 'Select invoices to approve';
+  }
+  pList.addEventListener('change', pUpdate);
+  pApprove.addEventListener('click', () => {
+    pList.querySelectorAll('input:checked:not(:disabled)').forEach(i => {
+      i.checked = false; i.disabled = true;
+      const li = i.closest('li'); li.classList.add('done');
+      li.querySelector('.badge').className = 'badge ok'; li.querySelector('.badge').textContent = 'Approved';
+    });
+    pUpdate();
+  });
+  const tabs = document.querySelectorAll('.tabbar button');
+  tabs.forEach(t => t.addEventListener('click', () => tabs.forEach(x => { if (x === t) x.setAttribute('aria-current', 'page'); else x.removeAttribute('aria-current'); })));
+
+  document.getElementById('walk-form').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('walk-note').textContent = 'This is a preview: nothing was sent.';
+  });
 </script>
 </body>
 </html>

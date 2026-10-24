@@ -10,153 +10,528 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--page); color: var(--text); font: 400 17px/1.5 var(--font-body); }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 80px; overflow-x: clip; }
-  h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; line-height: 0.9; }
-  h1 { font-size: clamp(56px, 14vw, 128px); rotate: -3deg; transform-origin: left; }
-  h2 { font-size: clamp(32px, 6vw, 56px); margin-bottom: 24px; }
-  section { margin-top: 72px; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 var(--type-body)/1.5 var(--font-body); }
+  main { overflow-x: clip; }
+  [id] { scroll-margin-top: 88px; }
+  .wrap { max-width: 1200px; margin-inline: auto; padding-inline: 16px; }
   p { max-width: 60ch; }
-  .block { background: var(--card); border: var(--border-heavy); border-right-width: 10px; border-bottom-width: 10px; box-shadow: var(--hard-shadow); padding: var(--space-lg); }
+  h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; line-height: 0.9; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
+  .kicker { margin: 0; font: 900 var(--type-caption)/1.2 var(--font-body); text-transform: uppercase; letter-spacing: 0.04em; }
+  .num { font-variant-numeric: tabular-nums; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  :focus-visible { outline: var(--border-focus); outline-offset: 2px; }
+
+  /* components (from STYLE.md) */
+  .block { background: var(--card); border: var(--border-heavy); border-right-width: 10px; border-bottom-width: 10px;
+    box-shadow: var(--hard-shadow); padding: var(--space-lg); }
   .block.yellow { background: var(--panel); }
   .block.blue { background: var(--clash-blue); color: #FFFFFF; }
-  .block.blue a { color: #FFFFFF; }
-  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--border-heavy); border-radius: 0;
-    background: var(--accent); color: var(--on-accent); box-shadow: var(--hard-shadow-sm); font: 900 18px/1 var(--font-body); text-transform: uppercase; text-decoration: none; cursor: pointer; transition: none; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
+    min-height: 48px; padding: 0 var(--space-lg); border: var(--border-heavy); border-radius: 0;
+    background: var(--accent); color: var(--on-accent); box-shadow: var(--hard-shadow-sm);
+    font: 900 18px/1 var(--font-body); text-transform: uppercase; cursor: pointer; transition: none; }
   .btn:hover { background: var(--clash-yellow); }
   .btn:active { box-shadow: none; transform: translate(4px, 4px); }
+  .btn:focus-visible, .field:focus-visible { outline: var(--border-focus); outline-offset: 2px; }
   .btn.blue { background: var(--clash-blue); color: #FFFFFF; }
   .btn.blue:hover { background: var(--clash-yellow); color: var(--text); }
-  .btn:focus-visible, .field:focus-visible, .link:focus-visible, .tab:focus-visible { outline: var(--border-focus); outline-offset: 2px; }
   .block.blue :focus-visible { outline-color: var(--clash-yellow); }
-  .field { min-height: 48px; width: 100%; border: var(--border-heavy); border-radius: 0; padding: 0 var(--space-md); background: var(--card); color: var(--text); font: 700 18px var(--font-body); }
-  label { display: block; font: 900 14px/1 var(--font-body); text-transform: uppercase; margin-bottom: 8px; }
-  .sticker { display: inline-block; padding: var(--space-sm) var(--space-md); background: var(--clash-magenta); border: 4px solid var(--text); rotate: 5deg; font: 900 16px/1 var(--font-body); text-transform: uppercase; }
+  .field { min-height: 48px; width: 100%; border: var(--border-heavy); border-radius: 0; padding: 0 var(--space-md);
+    background: var(--card); color: var(--text); font: 700 18px var(--font-body); }
+  .shout { font: 400 var(--type-display)/0.85 var(--font-display); text-transform: uppercase; rotate: -3deg; }
+  .sticker { display: inline-block; padding: var(--space-sm) var(--space-md); background: var(--clash-magenta);
+    border: 4px solid var(--text); rotate: 5deg; font: 900 16px/1 var(--font-body); text-transform: uppercase; }
   .link { color: var(--link); text-decoration: underline; text-decoration-thickness: 3px; font-weight: 700; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
-  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-  .num { font: 400 64px/0.9 var(--font-display); }
-
-  .hero { position: relative; padding: 24px 0 8px; }
-  .hero .sticker { position: absolute; right: 4%; top: 0; }
-  .hero p { font-size: 22px; font-weight: 700; margin: 28px 0 24px; }
-  .bands { display: grid; gap: 32px; }
-  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
-  .steps .block { padding: 20px; }
-  .steps .num { display: block; margin-bottom: 8px; }
-  .quote { font: 400 clamp(28px, 5vw, 48px)/1 var(--font-display); text-transform: uppercase; }
-
-  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 960px; }
-  .canvas { container-type: inline-size; border: 4px solid var(--text); overflow: hidden; }
-  .cap { margin-top: 10px; font: 900 13px/1 var(--font-body); text-transform: uppercase; }
-  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--panel); }
-  .slide .frame { position: absolute; inset: 5cqw; border: 0.32cqw solid var(--text); }
-  .slide .shout { position: absolute; left: 8cqw; top: 9cqw; font: 400 13cqw/0.85 var(--font-display); text-transform: uppercase; rotate: -3deg; transform-origin: left; }
-  .slide .shout span { color: var(--accent); -webkit-text-stroke: 0.25cqw var(--text); }
-  .slide p { position: absolute; left: 8cqw; bottom: 8cqw; margin: 0; width: 50cqw; font: 700 1.9cqw/1.3 var(--font-body); }
-  .slide .sticker { position: absolute; right: 9cqw; bottom: 9cqw; font-size: 1.8cqw; padding: 1cqw 1.6cqw; border-width: 0.3cqw; }
-  .post { aspect-ratio: 4 / 5; position: relative; background: var(--clash-blue); color: #FFFFFF; }
-  .post .shout { position: absolute; left: 6cqw; right: 6cqw; top: 9cqw; font: 400 19cqw/0.84 var(--font-display); text-transform: uppercase; rotate: -3deg; }
-  .post .info { position: absolute; left: 6cqw; right: 12cqw; bottom: 8cqw; background: var(--card); color: var(--text); border: 0.8cqw solid var(--text); box-shadow: 1.6cqw 1.6cqw 0 var(--text); padding: 4cqw; font: 700 3.6cqw/1.25 var(--font-body); }
-  .post .sticker { position: absolute; right: 6cqw; top: 58cqw; font-size: 3.6cqw; padding: 1.6cqw 2.6cqw; border-width: 0.6cqw; color: var(--text); }
-  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; padding: 7cqw 5cqw 4cqw; gap: 4cqw; }
-  .phone h3 { font-size: 11cqw; rotate: -2deg; }
-  .phone .item { border: 4px solid var(--text); padding: 3.5cqw; display: flex; justify-content: space-between; font-weight: 700; font-size: 4.4cqw; }
-  .phone .item.on { background: var(--panel); }
-  .phone .spacer { flex: 1; }
-  .phone .btn { justify-content: center; }
-  .phone .tabs { display: flex; gap: 2cqw; }
-  .tab { flex: 1; min-height: 44px; border: 4px solid var(--text); background: var(--card); font: 900 3.6cqw/1 var(--font-body); text-transform: uppercase; cursor: pointer; }
+  .block.blue .link, .band.blue .link { color: #FFFFFF; }
+  /* square toggle used for filters and tabs: the active one is filled yellow */
+  .tab { min-height: 48px; min-width: 44px; padding: 0 14px; border: 4px solid var(--text); border-radius: 0;
+    background: var(--card); color: var(--text); font: 900 15px/1 var(--font-body); text-transform: uppercase; cursor: pointer; transition: none; }
   .tab[aria-pressed="true"] { background: var(--panel); }
+  .tab:hover { text-decoration: underline; text-decoration-thickness: 3px; }
 
-  @media (max-width: 640px) {
-    h1 { rotate: -2deg; }
-    .hero .sticker { position: static; margin: 0 0 20px; }
+  /* bands */
+  .band { padding-block: 64px 72px; border-top: var(--border-heavy); }
+  .band.yellow { background: var(--panel); }
+  .band.blue { background: var(--clash-blue); color: #FFFFFF; }
+  .band.blue :focus-visible { outline-color: var(--clash-yellow); }
+  .sec-head { margin-bottom: 40px; }
+  .sec-head h2 { font-size: clamp(40px, 9vw, var(--type-h1)); max-width: 13ch; rotate: -2deg; transform-origin: left center; }
+  .sec-head.tilt-r h2 { rotate: 2deg; }
+  .sec-head p { margin: 24px 0 0; font: 700 var(--type-lead)/1.35 var(--font-body); }
+
+  /* nav */
+  .nav { position: sticky; top: 0; z-index: 10; background: var(--page); border-bottom: var(--border-heavy); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--text); text-decoration: none;
+    font: 400 22px/1 var(--font-display); text-transform: uppercase; }
+  .brand .mark { display: grid; place-items: center; width: 40px; height: 40px; background: var(--panel); border: 4px solid var(--text);
+    font-size: 15px; rotate: -4deg; }
+  .nav-links { display: none; gap: 4px; }
+  .nav-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: var(--text); text-decoration: none;
+    font: 900 15px/1 var(--font-body); text-transform: uppercase; }
+  .nav-links a:hover { text-decoration: underline; text-decoration-thickness: 3px; }
+  .nav .btn { padding: 0 var(--space-md); font-size: 16px; }
+
+  /* hero */
+  .hero { --h1: clamp(52px, 12.5vw, var(--type-display)); padding-block: 40px 72px; }
+  .hero-stage { position: relative; }
+  .hero-sticker { margin: 0 0 24px; }
+  .hero h1 { position: relative; z-index: 1; font-size: var(--h1); margin: 0 0 calc(var(--h1) * -0.32); transform-origin: left bottom; }
+  .hero-block { max-width: 720px; padding-top: calc(var(--space-lg) + var(--h1) * 0.3); }
+  .hero .lede { margin: 0 0 28px; font: 700 var(--type-lead)/1.35 var(--font-body); max-width: 34ch; }
+  .hero-poster { display: none; }
+  .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px 16px; margin: 64px 0 0; padding-top: 24px; border-top: var(--border-heavy); }
+  .facts dt { font: 400 clamp(56px, 12vw, 96px)/0.85 var(--font-display); }
+  .facts dd { margin: 10px 0 0; font: 900 var(--type-caption)/1.2 var(--font-body); text-transform: uppercase; }
+
+  /* the night */
+  .night .huge { font-size: clamp(88px, 22vw, 280px); margin: 0 0 40px; transform-origin: left bottom; }
+  .night-grid { display: grid; gap: 36px; }
+  .night-grid h2 { font-size: clamp(40px, 9vw, var(--type-h1)); max-width: 11ch; }
+  .night-grid .say { margin: 24px 0 0; font: 700 var(--type-lead)/1.35 var(--font-body); }
+  .details { margin: 0; border-top: var(--border-heavy); }
+  .details div { display: grid; grid-template-columns: 84px 1fr; gap: 16px; padding: 16px 0; border-bottom: 2px solid var(--rule); }
+  .details dt { font: 400 20px/1.2 var(--font-display); text-transform: uppercase; }
+  .details dd { margin: 0; }
+
+  /* the floor */
+  .trio { display: grid; gap: 36px; }
+  .trio .block { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .trio .n { font: 400 clamp(72px, 16vw, 112px)/0.8 var(--font-display); }
+  .trio h3 { font-size: 32px; }
+  .trio p { margin: 0; }
+  .trio .block > :last-child { margin-top: auto; }
+  .trio .sticker { margin-top: 8px; }
+
+  /* house rule */
+  .rule { display: grid; gap: 32px; justify-items: start; }
+  .rule .kicker { font-size: 16px; }
+  .sticker.quote { margin: 0; max-width: 15ch; padding: 24px 28px; border-width: 6px; box-shadow: var(--hard-shadow);
+    font: 400 clamp(36px, 8vw, 80px)/0.95 var(--font-display); color: var(--text); rotate: 3deg; }
+  .rule-note { margin: 0; max-width: 40ch; font: 700 var(--type-lead)/1.35 var(--font-body); }
+
+  /* lineup */
+  .sched { display: grid; gap: 40px; align-items: start; }
+  .sched-main { padding: var(--space-md); }
+  .sched-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .sched-head h3 { font-size: var(--type-h3); }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 10px 8px; border-bottom: 2px solid var(--rule); font: 900 13px/1.2 var(--font-body); text-transform: uppercase; }
+  td { padding: 10px 8px; border-bottom: 2px solid var(--rule); }
+  th.num, td.num { text-align: right; }
+  th:first-child, td:first-child { width: 1%; white-space: nowrap; padding-left: 0; }
+  td.num { font-weight: 900; }
+  .act { width: 1%; }
+  .band-name { display: block; font-weight: 900; font-size: 18px; line-height: 1.2; }
+  .sounds { display: block; font-size: 15px; }
+  .opt { display: none; }
+  .save { min-height: 44px; min-width: 76px; padding: 0 10px; border: 4px solid var(--text); border-radius: 0; background: var(--card); color: var(--text);
+    font: 900 13px/1 var(--font-body); text-transform: uppercase; cursor: pointer; transition: none; }
+  .save:hover { text-decoration: underline; text-decoration-thickness: 3px; }
+  .save[aria-pressed="true"] { background: var(--text); color: var(--page); }
+  .empty { padding: 24px 0 8px; }
+  .empty .shout, .mine-empty .shout { font-size: clamp(52px, 13vw, 96px); margin: 8px 0 20px; transform-origin: left; }
+  .empty p:last-child, .mine-empty p:last-child { margin: 0; font-weight: 700; }
+  .mynight h3 { font-size: var(--type-h3); margin-bottom: 20px; }
+  .mine-empty .shout { font-size: 44px; }
+  .mine { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .mine li { display: flex; gap: 12px; align-items: baseline; padding: 10px 12px; background: var(--card); border: 4px solid var(--text); font-weight: 700; }
+  .mine .num { font-weight: 900; }
+  .mine .day { margin-left: auto; font: 900 13px/1 var(--font-body); text-transform: uppercase; }
+  .mynight .link { display: inline-block; margin-top: 24px; }
+
+  /* launch kit */
+  .kit { display: grid; gap: 40px; align-items: end; }
+  .kit figure { margin: 0; }
+  .frame { container-type: inline-size; overflow: hidden; border: var(--border-heavy); box-shadow: var(--hard-shadow); background: var(--card); }
+  figcaption { margin-top: 16px; font: 900 13px/1.3 var(--font-body); text-transform: uppercase; }
+  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--card); }
+  .slide .inset { position: absolute; inset: 5cqw; border: 0.32cqw solid var(--text); }
+  .slide .s-kicker { position: absolute; top: 7.5cqw; left: 8cqw; font: 900 1.25cqw/1 var(--font-body); text-transform: uppercase; }
+  .slide .s-big { position: absolute; left: 7cqw; top: 10cqw; margin: 0; font: 400 30cqw/0.8 var(--font-display); color: var(--accent);
+    text-shadow: 0.6cqw 0.6cqw 0 var(--text); -webkit-text-stroke: 0.25cqw var(--text); rotate: -3deg; }
+  .slide .s-body { position: absolute; right: 8cqw; bottom: 9cqw; width: 34cqw; margin: 0; font: 700 2.1cqw/1.25 var(--font-body); }
+  .slide .sticker { position: absolute; right: 9cqw; top: 9cqw; padding: 1cqw 1.6cqw; border-width: 0.25cqw; font-size: 1.6cqw; }
+  .post { aspect-ratio: 4 / 5; position: relative; background: var(--clash-blue); color: #FFFFFF; }
+  .post .p-shout { position: absolute; left: 5cqw; top: 10cqw; margin: 0; font: 400 24.5cqw/0.82 var(--font-display); text-transform: uppercase; rotate: -3deg; }
+  .post .sticker { position: absolute; right: 8cqw; top: 57cqw; padding: 1.6cqw 2.6cqw; border-width: 0.6cqw; font-size: 3.6cqw; color: var(--text); }
+  .post .p-info { position: absolute; left: 6cqw; right: 12cqw; bottom: 9cqw; padding: 4.5cqw; background: var(--card); color: var(--text);
+    border: 0.8cqw solid var(--text); box-shadow: 1.6cqw 1.6cqw 0 var(--text); font: 700 4.4cqw/1.2 var(--font-body); }
+  .phone-fig { max-width: 300px; width: 100%; justify-self: center; }
+  .phone { aspect-ratio: 9 / 19.5; background: var(--page); display: flex; flex-direction: column; gap: 4cqw; padding: 6cqw 5cqw 5cqw; }
+  .ph-bar { display: flex; justify-content: space-between; font: 900 3.6cqw/1 var(--font-body); text-transform: uppercase; }
+  .ph-title { font-size: 12cqw; rotate: -2deg; transform-origin: left; margin: 2cqw 0 4cqw; }
+  .ph-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.5cqw; }
+  .ph-list li { display: flex; justify-content: space-between; align-items: center; gap: 2cqw; padding: 3cqw 3.5cqw; border: 4px solid var(--text); font: 700 4.4cqw/1.2 var(--font-body); }
+  .ph-list li.on { background: var(--panel); }
+  .ph-list .num { font-weight: 900; }
+  .ph-map { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5cqw; }
+  .ph-map span { display: grid; place-items: center; min-height: 18cqw; padding: 2cqw; border: 4px solid var(--text); font: 900 3.8cqw/1.1 var(--font-body); text-transform: uppercase; text-align: center; }
+  .ph-map .floor { grid-column: 1 / -1; min-height: 30cqw; background: var(--panel); }
+  .ph-empty .shout { font-size: 16cqw; margin: 6cqw 0 5cqw; rotate: -2deg; transform-origin: left; }
+  .ph-empty p:last-child { margin: 0; font: 700 4.4cqw/1.3 var(--font-body); }
+  .phone .spacer { flex: 1; }
+  .phone .btn { width: 100%; min-height: 48px; padding: 0 3cqw; font-size: 4.8cqw; }
+  .phone .btn[aria-pressed="true"] { background: var(--panel); }
+  .ph-tabs { display: flex; gap: 2cqw; }
+  .ph-tabs .tab { flex: 1; min-width: 0; min-height: 44px; padding: 0 1cqw; font-size: 3.6cqw; }
+
+  /* tickets */
+  .tickets { display: grid; gap: 32px; }
+  .tickets { padding: 20px; }
+  .tickets .shout { font-size: clamp(36px, 11vw, 96px); margin: 0 0 28px; max-width: 9ch; transform-origin: left; }
+  .tickets .t-copy p { margin: 0; font: 700 var(--type-lead)/1.35 var(--font-body); }
+  .tickets form { display: grid; gap: 16px; align-content: start; }
+  .tickets .kicker { display: block; }
+  .night-pick { display: flex; flex-wrap: wrap; gap: 8px; }
+  .form-row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .form-row .field { flex: 1 1 220px; }
+  .check { display: flex; align-items: center; gap: 12px; min-height: 44px; font: 900 15px/1.2 var(--font-body); text-transform: uppercase; cursor: pointer; }
+  .check input { appearance: none; flex: none; width: 32px; height: 32px; margin: 0; border: 4px solid var(--text); border-radius: 0; background: var(--card); cursor: pointer; }
+  .check input:checked { background: var(--text); box-shadow: inset 0 0 0 4px var(--panel); }
+  .note { min-height: 1.5em; margin: 0; font-weight: 900; }
+
+  footer { border-top: var(--border-heavy); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 24px 32px;
+    font: 900 var(--type-label)/1.4 var(--font-body); text-transform: uppercase; }
+
+  /* below 640px: tilt at most 2 degrees and stack */
+  @media (max-width: 639.98px) {
+    .shout, .post .p-shout, .slide .s-big { rotate: -2deg; }
+    .sticker, .sticker.quote { rotate: 2deg; }
+    .brand .mark { rotate: -2deg; }
+  }
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 24px; }
+    .facts { grid-template-columns: repeat(4, 1fr); }
+    .sched-main, .tickets { padding: var(--space-lg); }
+    .opt { display: table-cell; }
+    .kit { grid-template-columns: 1.2fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
+  }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .hero { padding-top: 56px; }
+    .hero-sticker { position: absolute; top: 8px; right: 0; margin: 0; z-index: 2; }
+    .hero-poster { display: grid; position: absolute; right: 24px; bottom: -36px; width: 300px; padding: 20px 24px 24px; gap: 4px;
+      background: var(--clash-blue); color: #FFFFFF; border: var(--border-heavy); box-shadow: var(--hard-shadow); rotate: 4deg; }
+    .hero-poster b { font: 400 180px/0.8 var(--font-display); font-weight: 400; }
+    .night-grid { grid-template-columns: 1fr 1fr; gap: 64px; }
+    .trio { grid-template-columns: repeat(3, 1fr); }
+    .trio .block:nth-child(2) { margin-top: 48px; }
+    .rule { grid-template-columns: auto 1fr; align-items: end; column-gap: 56px; }
+    .rule .kicker { grid-column: 1 / -1; }
+    .sched { grid-template-columns: 1fr 340px; }
+    .kit { grid-template-columns: 2fr 1fr 0.72fr; }
+    .kit .slide-fig { grid-column: auto; }
+    .tickets { grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    .tickets .shout { font-size: clamp(40px, 5.2vw, 68px); }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="hero">
-    <span class="sticker">pikmi style</span>
-    <h1>Primary<br>riot</h1>
-    <p>Thick black borders, hard shadows, pure primaries that clash on purpose and type that collides.</p>
-    <div class="row"><a class="btn" href="#components">Make some noise</a><a class="link" href="#slides">See the slides</a></div>
-  </header>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true">−2</span>Minus Two</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#night">The night</a><a href="#floor">The floor</a><a href="#lineup">Lineup</a><a href="#kit">Posters</a><a href="#tickets">Wristbands</a>
+    </nav>
+    <a class="btn" href="#tickets">Tickets</a>
+  </div>
+</header>
 
-  <section id="components" aria-labelledby="h-components">
-    <h2 id="h-components">Components</h2>
-    <div class="grid">
-      <div class="block"><label>Buttons</label>
-        <div class="row"><a class="btn" href="#ui">Buy a ticket</a><a class="btn blue" href="#app">Get the app</a></div>
+<main id="top">
+  <section class="hero wrap" aria-labelledby="h-hero">
+    <div class="hero-stage">
+      <span class="sticker hero-sticker">Fri 14 + Sat 15 Nov</span>
+      <h1 id="h-hero" class="shout">Bring cash.<br>Bring ears.</h1>
+      <div class="block hero-block">
+        <p class="lede">A two-night zine fair and show on level minus two of a parking garage. Twelve bands play on the floor between forty zine tables.</p>
+        <div class="row">
+          <a class="btn" href="#tickets">Get a wristband</a>
+          <a class="link" href="#lineup">See who plays when</a>
+        </div>
       </div>
-      <div class="block yellow"><label for="email">Email</label><input class="field" id="email" type="email" placeholder="you@zine.mail"></div>
-      <div class="block blue"><span class="num">12</span><p style="margin:8px 0 0;font-weight:700">bands, one night, no seats.</p></div>
-      <div class="block"><span class="sticker">sold out soon</span><p style="margin:24px 0 0"><a class="link" href="#social">A blue link, underlined hard</a></p></div>
+      <div class="hero-poster" aria-hidden="true"><span class="kicker">Level</span><b>−2</b><span class="kicker">Dock Street car park</span></div>
+    </div>
+    <dl class="facts">
+      <div><dt class="num">2</dt><dd>nights</dd></div>
+      <div><dt class="num">12</dt><dd>bands on the floor</dd></div>
+      <div><dt class="num">40</dt><dd>zine tables</dd></div>
+      <div><dt class="num">1</dt><dd>copier by the ramp</dd></div>
+    </dl>
+  </section>
+
+  <section id="night" class="band yellow night" aria-labelledby="h-night">
+    <div class="wrap">
+      <p class="shout huge" aria-hidden="true">Down.</p>
+      <div class="night-grid">
+        <div>
+          <h2 id="h-night">Two floors under the street</h2>
+          <p class="say">Take the car ramp down from Dock Street, past the barrier, and follow the noise. The show and the fair share one concrete floor.</p>
+        </div>
+        <dl class="details">
+          <div><dt>When</dt><dd>Fri 14 and Sat 15 Nov. Doors at 20:00, last band on at 00:45, out by 02:00.</dd></div>
+          <div><dt>Bring</dt><dd>Cash. The bar, the tables and the copier take nothing else.</dd></div>
+          <div><dt>Ears</dt><dd>Free earplugs at the door. The ceiling is low and it gets loud.</dd></div>
+          <div><dt>Ages</dt><dd>All ages until 23:00, then 18 and over.</dd></div>
+        </dl>
+      </div>
     </div>
   </section>
 
-  <section id="ui" aria-labelledby="h-ui">
-    <h2 id="h-ui">UI · Event page</h2>
-    <div class="bands">
-      <div class="block yellow">
-        <h3 style="font-size:clamp(40px,8vw,88px);rotate:-2deg">Loud fest</h3>
-        <p style="font-size:20px;font-weight:700">A one-night zine fair and show in a parking garage. Bring cash, bring ears.</p>
-        <a class="btn" href="#components">Get a wristband</a>
+  <section id="floor" class="band" aria-labelledby="h-floor">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="h-floor">Three things on one floor</h2>
+        <p>No backstage and no VIP area. Everything happens between the painted parking lines.</p>
       </div>
-      <div class="steps">
-        <div class="block"><span class="num">01</span><strong>Pick a night.</strong> Friday or Saturday, doors at eight.</div>
-        <div class="block"><span class="num">02</span><strong>Print your own zine</strong> or buy one at the door.</div>
-        <div class="block"><span class="num">03</span><strong>Stay loud.</strong> Last band plays at two.</div>
+      <div class="trio">
+        <article class="block">
+          <span class="n" aria-hidden="true">01</span>
+          <h3>Twelve bands</h3>
+          <p>Six a night, up to forty-five minutes each, no encores. They plug in on the concrete between the tables.</p>
+          <a class="link" href="#lineup">See who plays when</a>
+        </article>
+        <article class="block yellow">
+          <span class="n" aria-hidden="true">02</span>
+          <h3>Forty zine tables</h3>
+          <p>Every zine is made by the person selling it. Cash only, and trading one zine for another is fine.</p>
+          <span class="sticker">trades welcome</span>
+        </article>
+        <article class="block">
+          <span class="n" aria-hidden="true">03</span>
+          <h3>A copier by the ramp</h3>
+          <p>Bring a master, print up to fifty copies and sell them before midnight. The toner is on us.</p>
+          <a class="btn blue" href="#tickets">Book a slot</a>
+        </article>
       </div>
-      <div class="block blue"><p class="quote" style="margin:0">No stage. No barrier. Just the floor.</p></div>
     </div>
   </section>
 
-  <section aria-labelledby="h-media">
-    <h2 id="h-media">Other media</h2>
-    <div class="canvases">
-      <div id="slides">
-        <div class="canvas"><div class="slide">
-          <div class="frame"></div>
-          <div class="shout">Print <span>it</span><br>yourself</div>
-          <p>Every zine at the fair is made by the people selling it. Bring yours.</p>
-          <span class="sticker">part 02</span>
-        </div></div>
-        <p class="cap">slides · 1920 x 1080 · red, yellow, blue + magenta</p>
+  <section class="band blue" aria-labelledby="h-rule">
+    <div class="wrap rule">
+      <h2 id="h-rule" class="kicker">House rule one</h2>
+      <p class="sticker quote">No stage. No barrier. Just the floor.</p>
+      <p class="rule-note">Bands play at floor level, so the front row is whoever got there first. Step back if someone needs room.</p>
+    </div>
+  </section>
+
+  <section id="lineup" class="band" aria-labelledby="h-lineup">
+    <div class="wrap">
+      <div class="sec-head tilt-r">
+        <h2 id="h-lineup">Who plays when</h2>
+        <p>Set times for both nights. Save the sets you came for and they stack up in your night.</p>
       </div>
-      <div id="social">
-        <div class="canvas"><div class="post">
-          <div class="shout">Loud fest</div>
-          <span class="sticker">fri + sat</span>
-          <div class="info">Parking garage, level minus two. Doors at 8. Cash only.</div>
-        </div></div>
-        <p class="cap">social · 1080 x 1350</p>
-      </div>
-      <div id="app">
-        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
-          <h3>Lineup</h3>
-          <div class="item on"><span>The Staplers</span><span>21:00</span></div>
-          <div class="item"><span>Photocopy</span><span>22:30</span></div>
-          <div class="item"><span>Cut and Paste</span><span>00:15</span></div>
-          <div class="spacer"></div>
-          <a class="btn" href="#app">Save my night</a>
-          <nav class="tabs" aria-label="App sections" role="group">
-            <button class="tab" type="button" aria-pressed="true">Lineup</button>
-            <button class="tab" type="button" aria-pressed="false">Map</button>
-            <button class="tab" type="button" aria-pressed="false">Zines</button>
-          </nav>
-        </div></div>
-        <p class="cap">app · phone</p>
+      <div class="sched">
+        <div class="block sched-main">
+          <div class="sched-head">
+            <h3>Set times</h3>
+            <div class="filters" role="group" aria-label="Night">
+              <button class="tab" type="button" data-filter="Fri" aria-pressed="true">Fri 14</button>
+              <button class="tab" type="button" data-filter="Sat" aria-pressed="false">Sat 15</button>
+              <button class="tab" type="button" data-filter="Sun" aria-pressed="false">Sun 16</button>
+            </div>
+          </div>
+          <table id="sched-table">
+            <thead><tr><th class="num" scope="col">Start</th><th scope="col">Band</th><th class="num opt" scope="col">Min</th><th class="act" scope="col"><span class="sr-only">Save</span></th></tr></thead>
+            <tbody>
+              <tr data-day="Fri" data-start="20:30" data-band="Riso Kids"><td class="num">20:30</td><td><span class="band-name">Riso Kids</span><span class="sounds">two drummers, no singer</span></td><td class="num opt">30</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Riso Kids">Save</button></td></tr>
+              <tr data-day="Fri" data-start="21:15" data-band="The Staplers"><td class="num">21:15</td><td><span class="band-name">The Staplers</span><span class="sounds">fast, short songs</span></td><td class="num opt">35</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save The Staplers">Save</button></td></tr>
+              <tr data-day="Fri" data-start="22:00" data-band="Margin Notes"><td class="num">22:00</td><td><span class="band-name">Margin Notes</span><span class="sounds">slow and very loud</span></td><td class="num opt">40</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Margin Notes">Save</button></td></tr>
+              <tr data-day="Fri" data-start="22:55" data-band="Photocopy"><td class="num">22:55</td><td><span class="band-name">Photocopy</span><span class="sounds">shouted choruses</span></td><td class="num opt">40</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Photocopy">Save</button></td></tr>
+              <tr data-day="Fri" data-start="23:50" data-band="Saddle Stitch"><td class="num">23:50</td><td><span class="band-name">Saddle Stitch</span><span class="sounds">surf guitar, but angry</span></td><td class="num opt">35</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Saddle Stitch">Save</button></td></tr>
+              <tr data-day="Fri" data-start="00:45" data-band="Cut and Paste"><td class="num">00:45</td><td><span class="band-name">Cut and Paste</span><span class="sounds">noise with a beat</span></td><td class="num opt">45</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Cut and Paste">Save</button></td></tr>
+              <tr data-day="Sat" data-start="20:30" data-band="Bleed Edge" hidden><td class="num">20:30</td><td><span class="band-name">Bleed Edge</span><span class="sounds">one bass, one tape deck</span></td><td class="num opt">30</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Bleed Edge">Save</button></td></tr>
+              <tr data-day="Sat" data-start="21:15" data-band="Toner Low" hidden><td class="num">21:15</td><td><span class="band-name">Toner Low</span><span class="sounds">garage pop</span></td><td class="num opt">35</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Toner Low">Save</button></td></tr>
+              <tr data-day="Sat" data-start="22:00" data-band="Spot Color" hidden><td class="num">22:00</td><td><span class="band-name">Spot Color</span><span class="sounds">keyboards and yelling</span></td><td class="num opt">40</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Spot Color">Save</button></td></tr>
+              <tr data-day="Sat" data-start="22:55" data-band="Fold Line" hidden><td class="num">22:55</td><td><span class="band-name">Fold Line</span><span class="sounds">three chords, many songs</span></td><td class="num opt">40</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Fold Line">Save</button></td></tr>
+              <tr data-day="Sat" data-start="23:50" data-band="Glue Stick Choir" hidden><td class="num">23:50</td><td><span class="band-name">Glue Stick Choir</span><span class="sounds">everyone sings along</span></td><td class="num opt">35</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Glue Stick Choir">Save</button></td></tr>
+              <tr data-day="Sat" data-start="00:45" data-band="Collate" hidden><td class="num">00:45</td><td><span class="band-name">Collate</span><span class="sounds">noise, silence, more noise</span></td><td class="num opt">45</td><td class="act"><button class="save" type="button" aria-pressed="false" aria-label="Save Collate">Save</button></td></tr>
+            </tbody>
+          </table>
+          <div class="empty" id="sched-empty" hidden>
+            <p class="shout">No Sunday.</p>
+            <p>We sleep. The garage takes cars again from 07:00.</p>
+          </div>
+        </div>
+        <aside class="block yellow mynight" aria-labelledby="h-mine">
+          <h3 id="h-mine">Your night</h3>
+          <div class="mine-empty" id="mine-empty">
+            <p class="shout">Nothing yet.</p>
+            <p>Save a set from the table and it lands here.</p>
+          </div>
+          <ol class="mine" id="mine" hidden></ol>
+          <p class="sr-only" id="mine-live" aria-live="polite"></p>
+          <a class="link" href="#tickets">Get a wristband first</a>
+        </aside>
       </div>
     </div>
   </section>
-</div>
+
+  <section id="kit" class="band yellow" aria-labelledby="h-kit">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="h-kit">Posters for every wall</h2>
+        <p>The same noise, cut for the projector between sets, the feed and the lineup app.</p>
+      </div>
+      <div class="kit">
+        <figure class="slide-fig">
+          <div class="frame"><div class="slide">
+            <div class="inset"></div>
+            <span class="s-kicker">Minus Two · the fair</span>
+            <p class="s-big">40</p>
+            <p class="s-body">zine tables, every one run by the person who made the zine.</p>
+            <span class="sticker">cash only</span>
+          </div></div>
+          <figcaption>Projector slide · 1920 x 1080</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><div class="post">
+            <p class="p-shout">Minus<br>two</p>
+            <span class="sticker">zine fair + show</span>
+            <div class="p-info">Fri 14 + Sat 15 Nov. Dock Street car park, level −2. Doors at 20:00, cash only.</div>
+          </div></div>
+          <figcaption>Feed post · 1080 x 1350</figcaption>
+        </figure>
+        <figure class="phone-fig">
+          <div class="frame"><div class="phone">
+            <div class="ph-bar"><span>Minus Two</span><span>Fri 14</span></div>
+            <div class="ph-view" data-view="lineup">
+              <h3 class="ph-title">Lineup</h3>
+              <ul class="ph-list">
+                <li><span>Riso Kids</span><span class="num">20:30</span></li>
+                <li class="on"><span>The Staplers</span><span class="num">21:15</span></li>
+                <li><span>Margin Notes</span><span class="num">22:00</span></li>
+                <li><span>Photocopy</span><span class="num">22:55</span></li>
+                <li><span>Saddle Stitch</span><span class="num">23:50</span></li>
+                <li><span>Cut and Paste</span><span class="num">00:45</span></li>
+              </ul>
+            </div>
+            <div class="ph-view" data-view="map" hidden>
+              <h3 class="ph-title">Map</h3>
+              <div class="ph-map">
+                <span>Ramp · exit</span><span>Bar</span>
+                <span class="floor">The floor</span>
+                <span>Tables A–D</span><span>Copier</span>
+              </div>
+            </div>
+            <div class="ph-view ph-empty" data-view="zines" hidden>
+              <h3 class="ph-title">Zines</h3>
+              <p class="shout">Not yet.</p>
+              <p>The table list opens on Friday at 20:00.</p>
+            </div>
+            <div class="spacer"></div>
+            <button class="btn" type="button" id="ph-save" aria-pressed="false">Save my night</button>
+            <nav class="ph-tabs" aria-label="Phone app sections">
+              <button class="tab" type="button" data-view="lineup" aria-pressed="true">Lineup</button>
+              <button class="tab" type="button" data-view="map" aria-pressed="false">Map</button>
+              <button class="tab" type="button" data-view="zines" aria-pressed="false">Zines</button>
+            </nav>
+          </div></div>
+          <figcaption>Lineup app · phone</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="tickets" class="band" aria-labelledby="h-tickets">
+    <div class="wrap">
+      <div class="block blue tickets">
+        <div class="t-copy">
+          <h2 id="h-tickets" class="shout">Hold a wristband</h2>
+          <p>15 a night or 25 for both, paid in cash at the door. Leave an email and we hold one in your name until 21:00.</p>
+        </div>
+        <form id="ticket-form">
+          <span class="kicker" id="night-label">Night</span>
+          <div class="night-pick" role="group" aria-labelledby="night-label">
+            <button class="tab" type="button" aria-pressed="false">Fri 14</button>
+            <button class="tab" type="button" aria-pressed="false">Sat 15</button>
+            <button class="tab" type="button" aria-pressed="true">Both</button>
+          </div>
+          <label class="kicker" for="email">Email</label>
+          <div class="form-row">
+            <input class="field" id="email" type="email" autocomplete="email" required>
+            <button class="btn" type="submit">Hold mine</button>
+          </div>
+          <label class="check"><input type="checkbox" id="copier"> Add a copier slot</label>
+          <p class="note" id="ticket-note" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Minus Two is a fictional event made for this preview</span>
+    <span>pikmi style · primary riot</span>
+  </div>
+</footer>
+
 <script>
-  document.querySelectorAll('.tabs').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
-  })));
+  // night filter on the set times
+  const rows = [...document.querySelectorAll('#sched-table tbody tr')];
+  const table = document.getElementById('sched-table');
+  const empty = document.getElementById('sched-empty');
+  const filters = document.querySelectorAll('[data-filter]');
+  filters.forEach(btn => btn.addEventListener('click', () => {
+    filters.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    let shown = 0;
+    rows.forEach(r => { const on = r.dataset.day === btn.dataset.filter; r.hidden = !on; if (on) shown++; });
+    table.hidden = shown === 0;
+    empty.hidden = shown !== 0;
+  }));
+
+  // saved sets stack up in "your night"
+  const mine = document.getElementById('mine');
+  const mineEmpty = document.getElementById('mine-empty');
+  const mineLive = document.getElementById('mine-live');
+  function renderMine() {
+    const saved = rows.filter(r => r.querySelector('.save').getAttribute('aria-pressed') === 'true');
+    mine.replaceChildren(...saved.map(r => {
+      const li = document.createElement('li');
+      [['num', r.dataset.start], ['', r.dataset.band], ['day', r.dataset.day]].forEach(([cls, text]) => {
+        const s = document.createElement('span'); if (cls) s.className = cls; s.textContent = text; li.append(s);
+      });
+      return li;
+    }));
+    mine.hidden = saved.length === 0;
+    mineEmpty.hidden = saved.length > 0;
+  }
+  document.querySelectorAll('.save').forEach(b => b.addEventListener('click', () => {
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', String(on));
+    b.textContent = on ? 'Saved' : 'Save';
+    renderMine();
+    mineLive.textContent = (on ? 'Saved ' : 'Removed ') + b.closest('tr').dataset.band + '.';
+  }));
+
+  // phone app tabs switch the screen
+  const phTabs = document.querySelectorAll('.ph-tabs .tab');
+  const phViews = document.querySelectorAll('.ph-view');
+  phTabs.forEach(t => t.addEventListener('click', () => {
+    phTabs.forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+    phViews.forEach(v => { v.hidden = v.dataset.view !== t.dataset.view; });
+  }));
+  const phSave = document.getElementById('ph-save');
+  phSave.addEventListener('click', () => {
+    const on = phSave.getAttribute('aria-pressed') !== 'true';
+    phSave.setAttribute('aria-pressed', String(on));
+    phSave.textContent = on ? 'Night saved' : 'Save my night';
+  });
+
+  // one night per ticket
+  const picks = document.querySelectorAll('.night-pick .tab');
+  picks.forEach(p => p.addEventListener('click', () => picks.forEach(x => x.setAttribute('aria-pressed', String(x === p)))));
+
+  document.getElementById('ticket-form').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('ticket-note').textContent = 'This is a preview: nothing was sent.';
+  });
 </script>
 </body>
 </html>

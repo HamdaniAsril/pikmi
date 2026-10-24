@@ -10,193 +10,499 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   body { margin: 0; background: var(--page); color: var(--text); font: 400 16px/1.55 var(--font-display); }
-  a { color: var(--link); text-underline-offset: 3px; }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 72px; }
-  .mono { font-family: var(--font-mono); }
-  .label { font: 400 var(--type-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--accent); }
+  a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+  p { margin: 0; }
+  .wrap { max-width: 1200px; margin-inline: auto; padding-inline: 16px; }
+  section { margin-top: 96px; }
   h1, h2, h3 { font-weight: 700; text-transform: uppercase; letter-spacing: var(--tracking-display); line-height: 1.02; margin: 0; }
-  h1 { font-size: clamp(40px, 9vw, 96px); }
-  h1 .hi { color: var(--accent); }
-  h2 { font-size: 28px; margin-bottom: 20px; }
-  section { margin-top: 64px; }
+  .label { font: 400 var(--type-label)/1.3 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--accent); }
+  .label.dim { color: var(--text-muted); }
   .muted { color: var(--text-muted); }
+  .hi { color: var(--accent); }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .between { justify-content: space-between; }
+  :focus-visible { outline: 2px solid var(--neon-magenta); outline-offset: 2px; }
+  label { display: block; margin-bottom: 8px; font: 400 var(--type-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
+  .sec-head { margin: 0 0 40px; }
+  .sec-head h2 { font-size: clamp(30px, 6.4vw, 52px); margin-top: 14px; max-width: 18ch; }
+  .sec-head p { margin-top: 14px; color: var(--text-muted); max-width: 60ch; }
 
-  .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-lg); border: 1px solid var(--accent); border-radius: var(--radius-key);
-    background: transparent; color: var(--accent); font: 600 14px/1 var(--font-display); letter-spacing: var(--tracking-label); text-transform: uppercase;
-    text-decoration: none; cursor: pointer; transition: background-color 120ms ease-out, color 120ms ease-out; }
+  /* components (from STYLE.md) */
+  .btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; cursor: pointer;
+    min-height: 44px; padding: 0 var(--space-lg); border: 1px solid var(--accent); border-radius: var(--radius-key);
+    background: transparent; color: var(--accent);
+    font: 600 14px/1 var(--font-display); letter-spacing: var(--tracking-label); text-transform: uppercase;
+    transition: background-color 120ms ease-out, color 120ms ease-out; }
   .btn:hover { background: var(--accent); color: var(--on-accent); }
   .btn:active { transform: translate(2px, -1px); color: var(--neon-magenta); border-color: var(--neon-magenta); }
   .btn.primary { background: var(--accent); color: var(--on-accent); box-shadow: var(--glow); }
-  .btn:focus-visible, .field:focus-visible, .seg button:focus-visible { outline: 2px solid var(--neon-magenta); outline-offset: 2px; }
-  .frame { position: relative; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius-panel); padding: var(--space-lg); transition: border-color 120ms ease-out; }
+  .btn:focus-visible, .field:focus-visible { outline: 2px solid var(--neon-magenta); outline-offset: 2px; }
+
+  .frame { position: relative; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius-panel);
+    padding: var(--space-lg); transition: border-color 120ms ease-out; }
   .frame:hover { border-color: var(--accent); }
-  .frame .corner { position: absolute; top: -0.6em; left: var(--space-md); padding: 0 var(--space-xs); background: var(--page);
-    font: 400 var(--type-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--accent); }
-  .readout { background: var(--card); background-image: var(--scanline); border: 1px solid var(--rule); border-radius: var(--radius-panel); padding: var(--space-lg); font-family: var(--font-mono); }
-  .readout .value { font-size: 64px; line-height: 1; font-variant-numeric: tabular-nums; }
-  .readout .unit { color: var(--accent); font-size: 18px; }
-  .field { min-height: 44px; width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--text-muted); border-radius: var(--radius-key); padding: 0 var(--space-md); font: 400 16px var(--font-mono); }
+  .frame .corner { position: absolute; top: -0.6em; left: var(--space-md); padding: 0 var(--space-xs);
+    background: var(--page); font: 400 var(--type-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+    text-transform: uppercase; color: var(--accent); }
+
+  .readout { background: var(--card); background-image: var(--scanline); border: 1px solid var(--rule);
+    border-radius: var(--radius-panel); padding: var(--space-lg); font-family: var(--font-mono); }
+  .readout .value { font-size: 64px; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+  .readout .unit { color: var(--accent); }
+
+  .field { min-height: 44px; width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--text-muted);
+    border-radius: var(--radius-key); padding: 0 var(--space-md); font: 400 16px var(--font-mono); }
   .field:focus { border-color: var(--accent); }
-  .live { display: inline-flex; align-items: center; gap: var(--space-sm); font: 400 var(--type-label)/1 var(--font-mono); text-transform: uppercase; letter-spacing: var(--tracking-label); }
+  .field::placeholder { color: var(--text-muted); opacity: 1; }
+
+  .live { display: inline-flex; align-items: center; gap: var(--space-sm); font: 400 var(--type-label)/1 var(--font-mono);
+    text-transform: uppercase; letter-spacing: var(--tracking-label); color: var(--text); }
   .live::before { content: ""; width: 8px; height: 8px; background: var(--accent); box-shadow: var(--glow); }
   @media (prefers-reduced-motion: no-preference) { .live::before { animation: pulse 2.4s ease-in-out infinite; } }
   @keyframes pulse { 50% { opacity: 0.35; } }
-  .tag { display: inline-block; padding: 2px var(--space-sm); border: 1px solid var(--neon-magenta); color: var(--neon-magenta); font: 400 var(--type-label)/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: 1px; }
+
+  .tag { display: inline-block; padding: 2px var(--space-sm); border: 1px solid var(--neon-magenta);
+    color: var(--neon-magenta); font: 400 var(--type-label)/1.4 var(--font-mono); text-transform: uppercase; }
   .warn { color: var(--neon-yellow); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
-  .grid .frame { display: flex; flex-direction: column; gap: 14px; }
-  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-  label { display: block; font: 400 var(--type-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
-  .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: var(--radius-key); }
-  .seg button { min-height: 44px; padding: 0 14px; background: none; border: 0; color: var(--text-muted); font: 400 13px var(--font-mono); text-transform: uppercase; cursor: pointer; }
+
+  /* segmented picker: magenta marks the selected option */
+  .seg { display: inline-flex; max-width: 100%; overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius-key); }
+  .seg button { flex: none; min-height: 44px; padding: 0 14px; background: none; border: 0; color: var(--text-muted); cursor: pointer;
+    font: 600 13px/1 var(--font-display); letter-spacing: 1px; text-transform: uppercase; transition: color 120ms ease-out; }
+  .seg button:hover { color: var(--text); }
   .seg button[aria-pressed="true"] { color: var(--neon-magenta); box-shadow: inset 0 -2px 0 var(--neon-magenta); }
+  .seg button:active { transform: translate(2px, -1px); }
+  .seg button:focus-visible { outline-offset: -2px; }
 
-  /* ui */
-  .hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: end; }
-  .hero p { max-width: 52ch; margin: 18px 0 24px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 20px; font-family: var(--font-mono); font-size: 14px; }
-  th { text-align: left; font-weight: 400; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; padding: 10px 8px; border-bottom: 1px solid var(--rule); }
+  /* nav */
+  .nav { position: sticky; top: 0; z-index: 5; background: var(--page); border-bottom: 1px solid var(--rule); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--text); text-decoration: none;
+    font: 700 20px/1 var(--font-display); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+  .nav-links { display: none; gap: 28px; }
+  .nav-links a { padding: 16px 0; color: var(--text); text-decoration-color: var(--rule);
+    font: 600 13px/1 var(--font-display); letter-spacing: var(--tracking-label); text-transform: uppercase; transition: color 120ms ease-out; }
+  .nav-links a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* hero */
+  .hero { margin-top: 48px; }
+  .hero-frame { padding: 40px 20px 24px; }
+  .hero-grid { display: grid; gap: 32px; }
+  .hero h1 { font-size: clamp(40px, 11vw, var(--type-display)); line-height: 0.98; max-width: 11ch; }
+  .hero .lede { color: var(--text-muted); font-size: var(--type-lead); max-width: 46ch; margin: 20px 0 28px; }
+  .hero-readout { align-self: end; display: grid; gap: 18px; }
+  .hero-readout .value { font-size: clamp(64px, 17vw, 104px); }
+  .hero-readout .unit { font-size: 20px; }
+  .readout-data { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0; padding-top: 14px; border-top: 1px solid var(--rule); }
+  .readout-data dt { font-size: var(--type-label); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
+  .readout-data dd { margin: 6px 0 0; font-size: 17px; color: var(--text); }
+  .specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px 16px; margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); }
+  .specs div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 8px; }
+  .specs dd { margin: 0; font: 400 36px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+  .specs dt { font: 400 var(--type-label)/1.3 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
+
+  /* sys.01 the run */
+  .parts { display: grid; gap: 32px; }
+  .part { display: flex; flex-direction: column; gap: 16px; padding-top: 32px; }
+  .part h3 { font-size: var(--type-h3); }
+  .part > p { color: var(--text-muted); }
+  .part .push { margin-top: auto; }
+  .part .seg { align-self: flex-start; }
+  .data { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; padding: 14px 0 0; border-top: 1px solid var(--rule); list-style: none; }
+  .data dt, .data .k { display: block; font: 400 var(--type-label)/1.3 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
+  .data dd, .data .v { display: block; margin: 6px 0 0; font: 400 17px/1.2 var(--font-mono); color: var(--text); }
+  .board { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-key); }
+
+  /* sys.02 race control */
+  .dash { display: grid; gap: 32px; }
+  .d-focus { display: grid; gap: 18px; align-content: start; }
+  .d-focus .value { font-size: clamp(64px, 16vw, 112px); }
+  .d-focus .unit { font-size: 20px; }
+  .d-you { display: flex; flex-direction: column; gap: 18px; padding-top: 32px; }
+  .d-you .data { grid-template-columns: repeat(2, 1fr); row-gap: 16px; }
+  .d-table { padding-top: 32px; min-width: 0; }
+  .d-table .head { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .d-table h3 { font-size: var(--type-h3); }
+  .table-wrap { overflow-x: auto; margin-top: 16px; }
+  table { width: 100%; border-collapse: collapse; }
+  .opt { display: none; }
+  th { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--rule); font: 400 var(--type-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
   td { padding: 12px 8px; border-bottom: 1px solid var(--rule); }
-  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.num, th.num { text-align: right; }
+  td.num, td.code { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
   tr.sel td { color: var(--neon-magenta); }
+  .running { color: var(--accent); }
+  .empty { margin-top: 16px; padding: 16px; border: 1px dashed var(--rule); border-radius: var(--radius-key); color: var(--text-muted); }
 
-  /* canvases */
-  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 960px; }
+  /* sys.03 launch kit */
+  .kit { display: grid; gap: 32px; align-items: end; }
+  .kit figure { margin: 0; }
   .canvas { container-type: inline-size; border: 1px solid var(--rule); border-radius: var(--radius-panel); overflow: hidden; }
-  .cap { margin-top: 10px; color: var(--text-muted); }
+  .kit figcaption { margin-top: 10px; }
   .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); }
-  .slide .inset { position: absolute; inset: 5cqw; border: 0.1cqw solid var(--accent); border-radius: 0.2cqw; }
-  .slide .inset .corner { position: absolute; top: -0.7cqw; left: 2cqw; padding: 0 0.6cqw; background: var(--page); font: 400 1.1cqw/1 var(--font-mono); letter-spacing: 0.1cqw; color: var(--accent); text-transform: uppercase; }
-  .slide h3 { position: absolute; left: 9cqw; top: 11cqw; width: 44cqw; font-size: 3.8cqw; }
+  .slide .inset { position: absolute; inset: 5cqw; border: max(1px, 0.1cqw) solid var(--rule); border-radius: 0.2cqw; }
+  .slide .inset .corner { position: absolute; top: -0.6cqw; left: 2cqw; padding: 0 0.6cqw; background: var(--page);
+    font: 400 1.05cqw/1 var(--font-mono); letter-spacing: 0.1cqw; color: var(--accent); text-transform: uppercase; }
+  .slide h3 { position: absolute; left: 9cqw; top: 10cqw; width: 48cqw; font-size: 3.75cqw; }
   .slide h3 .mg { color: var(--neon-magenta); }
-  .slide .big { position: absolute; right: 9cqw; bottom: 9cqw; font: 400 10.5cqw/0.9 var(--font-mono); font-variant-numeric: tabular-nums; }
-  .slide .big small { font-size: 2.2cqw; color: var(--accent); }
-  .slide .foot { position: absolute; left: 9cqw; bottom: 9cqw; width: 34cqw; font-size: 1.5cqw; color: var(--text-muted); margin: 0; }
+  .slide .big { position: absolute; right: 9cqw; bottom: 8.5cqw; font: 400 10.4cqw/0.9 var(--font-mono); font-variant-numeric: tabular-nums; }
+  .slide .big small { font-size: 2.4cqw; color: var(--accent); margin-left: 0.6cqw; }
+  .slide .note { position: absolute; left: 9cqw; bottom: 9cqw; width: 36cqw; font-size: 1.46cqw; line-height: 1.35; color: var(--text-muted); }
   .post { aspect-ratio: 4 / 5; position: relative; background: var(--page); }
-  .post .crop { position: absolute; width: 6cqw; height: 6cqw; border-color: var(--accent); border-style: solid; border-width: 0; }
-  .post .c1 { top: 5cqw; left: 5cqw; border-top-width: 0.3cqw; border-left-width: 0.3cqw; }
-  .post .c2 { top: 5cqw; right: 5cqw; border-top-width: 0.3cqw; border-right-width: 0.3cqw; }
-  .post .c3 { bottom: 5cqw; left: 5cqw; border-bottom-width: 0.3cqw; border-left-width: 0.3cqw; }
-  .post .c4 { bottom: 5cqw; right: 5cqw; border-bottom-width: 0.3cqw; border-right-width: 0.3cqw; }
-  .post .lab { position: absolute; top: 8cqw; left: 8cqw; font: 400 2.6cqw/1 var(--font-mono); letter-spacing: 0.25cqw; color: var(--accent); text-transform: uppercase; }
-  .post .word { position: absolute; left: 8cqw; right: 8cqw; top: 30cqw; font: 700 13cqw/0.92 var(--font-display); text-transform: uppercase; }
+  .post .crop { position: absolute; width: 7cqw; height: 7cqw; border: 0 solid var(--accent); }
+  .post .c1 { top: 5cqw; left: 5cqw; border-top-width: max(1px, 0.3cqw); border-left-width: max(1px, 0.3cqw); }
+  .post .c2 { top: 5cqw; right: 5cqw; border-top-width: max(1px, 0.3cqw); border-right-width: max(1px, 0.3cqw); }
+  .post .c3 { bottom: 5cqw; left: 5cqw; border-bottom-width: max(1px, 0.3cqw); border-left-width: max(1px, 0.3cqw); }
+  .post .c4 { bottom: 5cqw; right: 5cqw; border-bottom-width: max(1px, 0.3cqw); border-right-width: max(1px, 0.3cqw); }
+  .post .lab { position: absolute; top: 10cqw; left: 9cqw; padding: 1cqw 1.6cqw; border: max(1px, 0.15cqw) solid var(--accent);
+    font: 400 2.6cqw/1 var(--font-mono); letter-spacing: 0.25cqw; color: var(--accent); text-transform: uppercase; }
+  .post .word { position: absolute; left: 9cqw; right: 9cqw; top: 30cqw; font: 700 13cqw/0.92 var(--font-display); text-transform: uppercase; }
   .post .word .glow { color: var(--accent); text-shadow: 0 0 3cqw rgba(0, 240, 255, 0.55); }
-  .post p { position: absolute; left: 8cqw; right: 8cqw; bottom: 12cqw; margin: 0; font-size: 4.4cqw; color: var(--text-muted); }
-  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--panel); display: flex; flex-direction: column; padding: 7cqw 5cqw 4cqw; gap: 4cqw; }
-  .phone .ttl { font: 700 7.5cqw/1 var(--font-display); text-transform: uppercase; }
+  .post p { position: absolute; left: 9cqw; right: 9cqw; bottom: 12cqw; font-size: 4.4cqw; line-height: 1.25; color: var(--text-muted); }
+  .phone { aspect-ratio: 9 / 19.5; background: var(--panel); display: flex; flex-direction: column; padding: 7cqw 5cqw 3cqw; gap: 4cqw; }
+  .phone .p-title { font: 700 8cqw/1 var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); }
   .phone .readout { padding: 5cqw; }
   .phone .readout .value { font-size: 15cqw; }
-  .phone ul { list-style: none; margin: 0; padding: 0; }
-  .phone li { display: flex; justify-content: space-between; padding: 3.5cqw 0; border-bottom: 1px solid var(--rule); font-size: 4.6cqw; }
+  .phone .readout .unit { display: block; margin-top: 2cqw; font-size: 4cqw; letter-spacing: 0.4cqw; text-transform: uppercase; }
+  .phone ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  .phone li { display: flex; justify-content: space-between; padding: 3.4cqw 3cqw; background: var(--card); border-bottom: 1px solid var(--rule); font-size: 4.6cqw; }
   .phone li span:last-child { font-family: var(--font-mono); color: var(--text-muted); }
+  .phone li.best span:last-child { color: var(--neon-magenta); }
   .phone .spacer { flex: 1; }
-  .phone .btn { justify-content: center; width: 100%; }
-  .phone .tabs { display: flex; justify-content: space-around; border-top: 1px solid var(--rule); padding-top: 3cqw; font: 400 3.6cqw var(--font-mono); text-transform: uppercase; color: var(--text-muted); }
-  .phone .tabs span { padding: 2cqw 1cqw; min-height: 44px; display: flex; align-items: center; }
-  .phone .tabs .on { color: var(--text); box-shadow: inset 0 -2px 0 var(--neon-magenta); }
+  .phone .btn { width: 100%; }
+  .phone .tabs { display: flex; border-top: 1px solid var(--rule); }
+  .phone .tabs button { flex: 1; min-height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2cqw;
+    padding: 2.4cqw 0; background: none; border: 0; color: var(--text-muted); cursor: pointer;
+    font: 600 3.4cqw/1 var(--font-display); letter-spacing: 0.3cqw; text-transform: uppercase; }
+  .phone .tabs svg { width: 6.5cqw; height: 6.5cqw; fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-linecap: square; }
+  .phone .tabs button[aria-pressed="true"] { color: var(--text); box-shadow: inset 0 -2px 0 var(--neon-magenta); }
+  .phone .tabs button:active { transform: translate(2px, -1px); }
+  .phone .tabs button:focus-visible { outline-offset: -2px; }
+  .phone-fig { max-width: 300px; width: 100%; justify-self: center; }
 
-  @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } }
+  /* sys.04 sign up + footer */
+  .join { display: grid; gap: 28px; padding: 40px 20px 28px; }
+  .join h2 { font-size: clamp(30px, 6.4vw, 52px); max-width: 14ch; }
+  .join .muted { margin-top: 14px; max-width: 46ch; }
+  .join form { display: grid; gap: 18px; align-content: start; }
+  .join .note { min-height: 1.55em; font-size: var(--type-body); color: var(--text-muted); }
+  footer { margin-top: 80px; border-top: 1px solid var(--rule); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-top: 22px; padding-bottom: 36px; font-size: var(--type-caption); color: var(--text-muted); }
+
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 24px; }
+    .opt { display: table-cell; }
+    .specs { grid-template-columns: repeat(4, 1fr); }
+    .d-table .head { flex-direction: row; align-items: center; justify-content: space-between; }
+    .kit { grid-template-columns: 1.2fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
+    .join { padding: 48px 32px 32px; }
+  }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .hero-frame { padding: 64px 48px 40px; }
+    .hero-grid { grid-template-columns: 1.35fr 1fr; align-items: end; }
+    .parts { grid-template-columns: repeat(3, 1fr); }
+    .dash { grid-template-columns: repeat(12, 1fr); }
+    .d-focus { grid-column: span 7; }
+    .d-you { grid-column: span 5; }
+    .d-table { grid-column: 1 / -1; }
+    .kit { grid-template-columns: 2fr 1fr 0.72fr; }
+    .kit .slide-fig { grid-column: auto; }
+    .join { grid-template-columns: 1fr 1fr; padding: 56px 48px 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn, .frame, .seg button, .nav-links a { transition: none; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <span class="label">pikmi style · dark only</span>
-    <h1 style="margin-top:14px">night <span class="hi">circuit</span></h1>
-    <p class="muted" style="max-width:56ch">Near-black surfaces, thin cyan strokes, a magenta second voice and readouts in a narrow mono.</p>
-  </header>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">Afterlap <span class="label">s03</span></a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#run">The run</a><a href="#heats">Race control</a><a href="#kit">Launch kit</a><a href="#join">Sign up</a>
+    </nav>
+    <a class="btn" href="#join">Join a heat</a>
+  </div>
+</header>
 
-  <section id="components" aria-labelledby="h-components">
-    <h2 id="h-components">Components</h2>
-    <div class="grid">
-      <div class="frame"><span class="corner">sys.01 buttons</span>
-        <div class="row"><a class="btn primary" href="#ui">Join the run</a><a class="btn" href="#slides">See slides</a></div>
-        <a href="#social">A cyan link, underlined</a>
-      </div>
-      <div class="frame"><span class="corner">sys.02 readout</span>
-        <div class="readout"><span class="value">72</span> <span class="unit">ms ping</span></div>
-      </div>
-      <div class="frame"><span class="corner">sys.03 input</span>
-        <div><label for="handle">Handle</label><input class="field" id="handle" placeholder="your callsign"></div>
-        <div class="seg" role="group" aria-label="Region">
-          <button type="button" aria-pressed="true">EU</button><button type="button" aria-pressed="false">ASIA</button><button type="button" aria-pressed="false">US</button>
-        </div>
-      </div>
-      <div class="frame"><span class="corner">sys.04 status</span>
-        <span class="live">server live</span>
-        <div class="row"><span class="tag">selected</span><span class="warn mono">Warning: queue full</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="ui" aria-labelledby="h-ui">
-    <h2 id="h-ui">UI · Landing and dashboard</h2>
-    <div class="frame"><span class="corner">night run · season 03</span>
-      <div class="hero">
+<main id="top">
+  <section class="hero wrap" aria-labelledby="h-hero">
+    <div class="frame hero-frame">
+      <span class="corner">night run · season 03</span>
+      <div class="hero-grid">
         <div>
-          <h3 style="font-size:clamp(32px,6vw,64px)">Race the city <span style="color:var(--accent)">after dark</span></h3>
-          <p class="muted">A late-night street racing league. Sign up, pick a district and start in the next open heat.</p>
-          <div class="row"><a class="btn primary" href="#components">Join the next heat</a><a class="btn" href="#app">Get the app</a></div>
+          <h1 id="h-hero">Race the city after <span class="hi">dark</span></h1>
+          <p class="lede">A late-night racing league on closed city circuits. Sign up, pick a district and start in the next open heat.</p>
+          <div class="row">
+            <a class="btn primary" href="#join">Join the next heat</a>
+            <a class="btn" href="#heats">See tonight's heats</a>
+          </div>
         </div>
-        <div class="readout"><span class="label" style="display:block;margin-bottom:10px">next heat in</span><span class="value">04:12</span> <span class="unit">min</span></div>
+        <div class="readout hero-readout">
+          <div class="row between">
+            <span class="label">next heat · harbor</span>
+            <span class="live" id="heat-live">sign-up open</span>
+          </div>
+          <p><span class="value" id="countdown" role="timer">04:12</span> <span class="unit">min</span></p>
+          <dl class="readout-data">
+            <div><dt>track</dt><dd>Dockline</dd></div>
+            <div><dt>laps</dt><dd>5</dd></div>
+            <div><dt>grid</dt><dd>12 cars</dd></div>
+          </dl>
+        </div>
       </div>
-      <table>
-        <thead><tr><th>District</th><th>Track</th><th class="num">Laps</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td>Harbor</td><td>Dockline</td><td class="num">5</td><td><span class="live">open</span></td></tr>
-          <tr class="sel"><td>Old town</td><td>Arcade loop</td><td class="num">3</td><td>selected</td></tr>
-          <tr><td>Ridge</td><td>Switchback</td><td class="num">7</td><td class="muted">closed</td></tr>
-        </tbody>
-      </table>
+      <dl class="specs">
+        <div><dt>districts</dt><dd>04</dd></div>
+        <div><dt>min between heats</dt><dd>20</dd></div>
+        <div><dt>first start</dt><dd>22:00</dd></div>
+        <div><dt>cars per heat</dt><dd>12</dd></div>
+      </dl>
     </div>
   </section>
 
-  <section aria-labelledby="h-media">
-    <h2 id="h-media">Other media</h2>
-    <div class="canvases">
-      <div id="slides">
-        <div class="canvas"><div class="slide">
-          <div class="inset"><span class="corner">sys.04 / latency</span></div>
-          <h3>Heats start <span class="mg">twice as fast</span> after the patch</h3>
-          <p class="foot">Median wait from sign-up to start, test week. [REAL DATA]</p>
-          <div class="big">06<small> sec</small></div>
-        </div></div>
-        <p class="cap label">slides · 1920 x 1080</p>
+  <section id="run" class="wrap" aria-labelledby="h-run">
+    <div class="sec-head">
+      <span class="label">sys.01 // the run</span>
+      <h2 id="h-run">From sign-up to the grid in one night</h2>
+      <p>Three things to set before your first heat. Race control handles the rest.</p>
+    </div>
+    <div class="parts">
+      <article class="frame part">
+        <span class="corner">sys.01 callsign</span>
+        <h3>Pick a callsign</h3>
+        <p>It goes on the grid, the timing board and every lap you set. Letters, numbers and dashes.</p>
+        <div class="push">
+          <label for="callsign">Callsign</label>
+          <input class="field" id="callsign" maxlength="12" placeholder="ZERO-9" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="board"><span class="label dim">on the board</span><span class="tag" id="callsign-tag">zero-9</span></div>
+      </article>
+      <article class="frame part">
+        <span class="corner">sys.02 district</span>
+        <h3>Choose a district</h3>
+        <p>Each district runs its own circuit and its own heats. Switch any time before your heat starts.</p>
+        <div class="seg push" role="group" aria-label="District">
+          <button type="button" aria-pressed="true" data-district="harbor">Harbor</button><button type="button" aria-pressed="false" data-district="oldtown">Old town</button><button type="button" aria-pressed="false" data-district="ridge">Ridge</button>
+        </div>
+        <dl class="data" id="district-data" aria-live="polite">
+          <div><dt>track</dt><dd data-k="track">Dockline</dd></div>
+          <div><dt>length</dt><dd data-k="length">2.6 km</dd></div>
+          <div><dt>laps</dt><dd data-k="laps">5</dd></div>
+        </dl>
+      </article>
+      <article class="frame part">
+        <span class="corner">sys.03 heats</span>
+        <h3>Start in the next heat</h3>
+        <p>Heats leave every 20 minutes. Your slot shows up on race control as soon as you sign up.</p>
+        <ul class="data push">
+          <li><span class="k">first</span><span class="v">22:00</span></li>
+          <li><span class="k">last</span><span class="v">03:00</span></li>
+          <li><span class="k">grid</span><span class="v">12</span></li>
+        </ul>
+        <a class="btn" href="#heats">Open race control</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="heats" class="wrap" aria-labelledby="h-heats">
+    <div class="sec-head">
+      <span class="label">sys.02 // race control</span>
+      <h2 id="h-heats">Every heat, live from the grid</h2>
+      <p>Race control lists every heat in every district as it runs. Filter by district to find an open slot.</p>
+    </div>
+    <div class="dash">
+      <div class="readout d-focus">
+        <div class="row between">
+          <span class="label">fastest lap tonight · heat 07</span>
+          <span class="live">updating</span>
+        </div>
+        <p><span class="value">64.8</span> <span class="unit">sec</span></p>
+        <dl class="readout-data">
+          <div><dt>leader</dt><dd>ARC-77</dd></div>
+          <div><dt>gap</dt><dd>+0.84 s</dd></div>
+          <div><dt>laps left</dt><dd>2 of 5</dd></div>
+        </dl>
       </div>
-      <div id="social">
+      <div class="frame d-you">
+        <span class="corner">your heat</span>
+        <div class="row between"><h3 style="font-size: var(--type-h3)">Heat 09</h3><span class="tag">selected</span></div>
+        <dl class="data">
+          <div><dt>district</dt><dd>Old town</dd></div>
+          <div><dt>track</dt><dd>Arcade loop</dd></div>
+          <div><dt>start</dt><dd>22:40</dd></div>
+          <div><dt>grid slot</dt><dd>04</dd></div>
+        </dl>
+        <a class="btn" href="#run">Change district</a>
+      </div>
+      <div class="frame d-table">
+        <span class="corner">tonight · 4 districts</span>
+        <div class="head">
+          <h3>Tonight's heats</h3>
+          <div class="seg" role="group" aria-label="Filter by district" id="heat-filter">
+            <button type="button" aria-pressed="true" data-filter="all">All</button><button type="button" aria-pressed="false" data-filter="harbor">Harbor</button><button type="button" aria-pressed="false" data-filter="oldtown">Old town</button><button type="button" aria-pressed="false" data-filter="ridge">Ridge</button><button type="button" aria-pressed="false" data-filter="airfield">Airfield</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Heat</th><th>District</th><th class="opt">Track</th><th class="num opt">Laps</th><th class="num">Start</th><th>Status</th></tr></thead>
+            <tbody id="heat-rows">
+              <tr data-district="harbor"><td class="code">07</td><td>Harbor</td><td class="opt">Dockline</td><td class="num opt">5</td><td class="num">22:00</td><td class="running">running</td></tr>
+              <tr data-district="ridge"><td class="code">08</td><td>Ridge</td><td class="opt">Switchback</td><td class="num opt">7</td><td class="num">22:20</td><td class="warn">queue full</td></tr>
+              <tr data-district="oldtown" class="sel"><td class="code">09</td><td>Old town</td><td class="opt">Arcade loop</td><td class="num opt">3</td><td class="num">22:40</td><td><span class="tag">your heat</span></td></tr>
+              <tr data-district="harbor"><td class="code">10</td><td>Harbor</td><td class="opt">Dockline</td><td class="num opt">5</td><td class="num">23:00</td><td>open</td></tr>
+              <tr data-district="oldtown"><td class="code">11</td><td>Old town</td><td class="opt">Arcade loop</td><td class="num opt">3</td><td class="num">23:20</td><td>open</td></tr>
+              <tr data-district="ridge"><td class="code">12</td><td>Ridge</td><td class="opt">Switchback</td><td class="num opt">7</td><td class="num">23:40</td><td>open</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="empty" id="heat-empty" hidden>No heats in Airfield tonight. The district opens in week 2.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="kit" class="wrap" aria-labelledby="h-kit">
+    <div class="sec-head">
+      <span class="label">sys.03 // launch kit</span>
+      <h2 id="h-kit">Season 03 on every screen</h2>
+      <p>The same league, cut for the keynote, the feed and the app in your pocket.</p>
+    </div>
+    <div class="kit">
+      <figure class="slide-fig">
+        <div class="canvas"><div class="slide">
+          <div class="inset"><span class="corner">sys.04 / tracks</span></div>
+          <h3>Airfield is the <span class="mg">longest</span> track yet</h3>
+          <p class="note">Opens in week 2 of season 03. Five laps per heat, twelve cars on the grid.</p>
+          <div class="big">7.4<small>km</small></div>
+        </div></div>
+        <figcaption class="label dim">keynote slide · 1920 x 1080</figcaption>
+      </figure>
+      <figure>
         <div class="canvas"><div class="post">
           <span class="crop c1"></span><span class="crop c2"></span><span class="crop c3"></span><span class="crop c4"></span>
-          <span class="lab">season 03 · 01/04</span>
+          <span class="lab">season 03 · 01/05</span>
           <div class="word">night <span class="glow">run</span> opens friday</div>
-          <p>Five districts. One map. Sign up in the app.</p>
+          <p>Four districts. One map. Sign up in the app.</p>
         </div></div>
-        <p class="cap label">social · 1080 x 1350</p>
-      </div>
-      <div id="app">
-        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
-          <span class="label">heat 07</span>
-          <span class="ttl">Dockline</span>
-          <div class="readout"><span class="value">02:41</span> <span class="unit">best</span></div>
+        <figcaption class="label dim">feed post · 1080 x 1350 · 01/05</figcaption>
+      </figure>
+      <figure class="phone-fig">
+        <div class="canvas"><div class="phone">
+          <span class="label">heat 09 · practice</span>
+          <p class="p-title">Arcade loop</p>
+          <div class="readout"><span class="value">00:51.2</span><span class="unit">best lap</span></div>
           <ul>
-            <li><span>Lap 1</span><span>00:53</span></li>
-            <li><span>Lap 2</span><span>00:51</span></li>
-            <li><span>Lap 3</span><span>00:57</span></li>
+            <li><span>Lap 1</span><span>00:53.4</span></li>
+            <li class="best"><span>Lap 2</span><span>00:51.2</span></li>
+            <li><span>Lap 3</span><span>00:57.0</span></li>
           </ul>
           <div class="spacer"></div>
-          <a class="btn primary" href="#app">Start heat</a>
-          <nav class="tabs" aria-label="App sections"><span class="on">race</span><span>map</span><span>crew</span></nav>
+          <button class="btn primary" type="button" id="start-heat" aria-pressed="false">Start heat</button>
+          <nav class="tabs" aria-label="League app sections">
+            <button type="button" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-6"/></svg>Race</button>
+            <button type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Map</button>
+            <button type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M15.5 14.5c2.8 0 5 2.2 5 5.5"/></svg>Crew</button>
+          </nav>
         </div></div>
-        <p class="cap label">app · phone</p>
-      </div>
+        <figcaption class="label dim">league app · phone</figcaption>
+      </figure>
     </div>
   </section>
-</div>
+
+  <section id="join" class="wrap" aria-labelledby="h-join">
+    <div class="frame join">
+      <span class="corner">sys.04 // sign up</span>
+      <div>
+        <h2 id="h-join">Get on the grid this friday</h2>
+        <p class="muted">Leave an email and a callsign. Race control sends your district and start time before the first heat.</p>
+      </div>
+      <form id="join-form">
+        <div>
+          <label for="email">Email</label>
+          <input class="field" id="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+        <div>
+          <label for="join-callsign">Callsign</label>
+          <input class="field" id="join-callsign" maxlength="12" placeholder="ZERO-9" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="row"><button class="btn primary" type="submit">Join the next heat</button></div>
+        <p class="note" id="join-note" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Afterlap is a fictional league made for this preview.</span>
+    <span>pikmi style · night circuit</span>
+  </div>
+</footer>
+
 <script>
-  document.querySelectorAll('.seg').forEach(seg => seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
-    seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-  })));
+  // one pressed option per picker
+  document.querySelectorAll('.seg, .phone .tabs').forEach(group => {
+    const buttons = group.querySelectorAll('button');
+    buttons.forEach(b => b.addEventListener('click', () => buttons.forEach(x => x.setAttribute('aria-pressed', String(x === b)))));
+  });
+
+  // callsign shows up on the board as you type
+  const callsign = document.getElementById('callsign');
+  const callsignTag = document.getElementById('callsign-tag');
+  callsign.addEventListener('input', () => { callsignTag.textContent = callsign.value.trim() || 'zero-9'; });
+
+  // district picker swaps the circuit data
+  const districts = {
+    harbor: { track: 'Dockline', length: '2.6 km', laps: '5' },
+    oldtown: { track: 'Arcade loop', length: '1.9 km', laps: '3' },
+    ridge: { track: 'Switchback', length: '1.4 km', laps: '7' }
+  };
+  document.querySelectorAll('[data-district]').forEach(b => {
+    if (b.tagName !== 'BUTTON') return;
+    b.addEventListener('click', () => {
+      const d = districts[b.dataset.district];
+      document.querySelectorAll('#district-data [data-k]').forEach(dd => { dd.textContent = d[dd.dataset.k]; });
+    });
+  });
+
+  // race control filter, with an empty state
+  const rows = document.querySelectorAll('#heat-rows tr');
+  const empty = document.getElementById('heat-empty');
+  document.querySelectorAll('#heat-filter button').forEach(b => b.addEventListener('click', () => {
+    const f = b.dataset.filter;
+    let shown = 0;
+    rows.forEach(r => { const on = f === 'all' || r.dataset.district === f; r.hidden = !on; if (on) shown++; });
+    empty.hidden = shown > 0;
+  }));
+
+  // next heat countdown: ticks down once, then stops
+  const countdown = document.getElementById('countdown');
+  const heatLive = document.getElementById('heat-live');
+  let left = 4 * 60 + 12;
+  const tick = setInterval(() => {
+    left -= 1;
+    const m = String(Math.floor(left / 60)).padStart(2, '0');
+    const s = String(left % 60).padStart(2, '0');
+    countdown.textContent = m + ':' + s;
+    if (left <= 0) { clearInterval(tick); heatLive.textContent = 'heat started'; }
+  }, 1000);
+
+  // phone: start or leave the heat
+  const start = document.getElementById('start-heat');
+  start.addEventListener('click', () => {
+    const on = start.getAttribute('aria-pressed') !== 'true';
+    start.setAttribute('aria-pressed', String(on));
+    start.textContent = on ? 'Leave heat' : 'Start heat';
+  });
+
+  document.getElementById('join-form').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('join-note').textContent = 'This is a preview: nothing was sent.';
+  });
 </script>
 </body>
 </html>

@@ -10,137 +10,570 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
   html, body { overflow-x: clip; }
-  body { margin: 0; background: var(--page); color: var(--text); font: 400 19px/1.75 var(--font-body); }
+  body { margin: 0; }
   a { color: var(--link); text-underline-offset: 4px; }
-  .wrap { position: relative; max-width: 1120px; margin: 0 auto; padding: 72px 16px 96px; }
-  h1, h2, h3 { font-family: var(--font-display); font-style: italic; font-weight: 600; margin: 0; line-height: 1.1; }
-  h1 { font-size: clamp(46px, 9vw, 88px); }
-  h2 { font-size: 40px; margin-bottom: 24px; }
-  h3 { font-size: 28px; }
-  section { position: relative; margin-top: 88px; }
+  p { margin: 0; }
+  figure { margin: 0; }
+  h1, h2, h3 { margin: 0; line-height: 1.1; }
+  .wrap { max-width: 1120px; margin-inline: auto; padding-inline: 16px; }
+  section { position: relative; margin-top: 112px; }
   .muted { color: var(--text-muted); }
-  .center { text-align: center; }
-  .wash { position: absolute; width: 420px; aspect-ratio: 1; border-radius: 50%; filter: blur(48px); background: var(--peach); opacity: var(--wash-opacity); pointer-events: none; z-index: 0; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  /* content sits above the washes */
+  .has-wash > :not(.wash) { position: relative; z-index: 1; }
+  .sec-head { max-width: 620px; margin-bottom: 40px; }
+  .sec-head h2 { font-size: var(--type-h2); }
+  .sec-head p { margin-top: 14px; }
+
+  /* components (from STYLE.md) */
+  .wash { position: absolute; width: 420px; aspect-ratio: 1; border-radius: 50%; filter: blur(48px);
+    background: var(--peach); opacity: var(--wash-opacity); pointer-events: none; z-index: 0; }
   .wash.teal { background: var(--teal); }
-  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: var(--radius-control); background: var(--accent); color: var(--on-accent);
-    font: 500 18px/1 var(--font-body); text-decoration: none; cursor: pointer; transition: box-shadow 500ms ease-in-out, transform 500ms ease-in-out; }
+
+  h1, h2, h3 { font-family: var(--font-display); font-style: italic; font-weight: 600; color: var(--text); }
+  body { font: 400 19px/1.75 var(--font-body); color: var(--text); background: var(--page); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; cursor: pointer;
+    min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: var(--radius-control);
+    background: var(--accent); color: var(--on-accent); font: 500 18px/1 var(--font-body);
+    transition: box-shadow 500ms ease-in-out, transform 500ms ease-in-out; }
   .btn:hover { box-shadow: var(--bloom-shadow); }
   .btn:active { transform: scale(0.98); }
   .btn.soft { background: var(--card); color: var(--text); box-shadow: inset 0 0 0 1px var(--rule); }
-  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  .card { position: relative; z-index: 1; display: block; background: var(--card); border-radius: var(--radius-card); padding: var(--space-lg); border: 1px solid var(--rule); color: inherit; text-decoration: none; transition: box-shadow 500ms ease-in-out; }
-  a.card:hover { box-shadow: var(--bloom-shadow); }
-  .panel { position: relative; z-index: 1; background: var(--panel); border-radius: var(--radius-card); padding: var(--space-xl) var(--space-lg); }
-  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--text-muted); border-radius: var(--radius-control); background: var(--card); color: var(--text); font: 400 18px var(--font-body); }
-  label { display: block; margin-bottom: 6px; font-weight: 500; }
-  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-  .grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
-  .z { position: relative; z-index: 1; }
-  .painted { aspect-ratio: 4 / 5; border-radius: var(--radius-card); position: relative; overflow: hidden; background: var(--card); border: 1px solid var(--rule); }
-  .painted span { position: absolute; border-radius: 50%; filter: blur(30px); }
+  .btn.soft:hover { box-shadow: inset 0 0 0 1px var(--rule), var(--bloom-shadow); }
+  .btn:focus-visible, .field:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  .canvases { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 920px; }
-  .canvas { container-type: inline-size; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--rule); background: var(--page); }
-  .cap { margin-top: 12px; font-size: 15px; color: var(--text-muted); }
-  .slide { aspect-ratio: 16 / 9; position: relative; overflow: hidden; }
-  .slide .w { position: absolute; border-radius: 50%; filter: blur(5cqw); opacity: 0.3; }
-  .slide h3 { position: absolute; left: 8cqw; top: 12cqw; width: 52cqw; font-size: 5cqw; }
-  .slide p { position: absolute; left: 8cqw; top: 26cqw; width: 44cqw; margin: 0; font-size: 1.9cqw; line-height: 1.6; }
-  .post { aspect-ratio: 4 / 5; position: relative; overflow: hidden; display: grid; place-items: center; text-align: center; padding: 10cqw; }
-  .post .w { position: absolute; border-radius: 50%; filter: blur(8cqw); opacity: 0.3; }
-  .post h3 { position: relative; font-size: 11cqw; line-height: 1.05; }
-  .post p { position: relative; margin: 4cqw 0 0; font-size: 4.2cqw; }
-  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; position: relative; overflow: hidden; display: flex; flex-direction: column; padding: 10cqw 6cqw 5cqw; gap: 5cqw; }
-  .phone .w { position: absolute; width: 80cqw; height: 80cqw; border-radius: 50%; filter: blur(10cqw); opacity: 0.3; background: var(--peach); top: -30cqw; right: -30cqw; }
-  .phone h3 { position: relative; font-size: 9cqw; }
-  .phone .card { padding: 5cqw; border-radius: 7cqw; }
-  .phone .card strong { display: block; font-size: 4.8cqw; font-weight: 500; }
-  .phone .card span { font-size: 4cqw; color: var(--text-muted); }
-  .phone .spacer { flex: 1; }
-  .phone .btn { justify-content: center; position: relative; }
-  .phone nav { position: relative; display: flex; justify-content: space-around; border-top: 1px solid var(--rule); padding-top: 2cqw; }
-  .tab { min-height: 48px; padding: 0 3cqw; background: none; border: 0; color: var(--text-muted); font: 400 4cqw var(--font-body); cursor: pointer; }
-  .tab[aria-pressed="true"] { color: var(--text); font-style: italic; }
+  .card { position: relative; z-index: 1; background: var(--card); border-radius: var(--radius-card); padding: var(--space-lg);
+    border: 1px solid var(--rule); transition: box-shadow 500ms ease-in-out; }
+  a.card { display: block; color: inherit; text-decoration: none; }
+  a.card:hover { box-shadow: var(--bloom-shadow); }
+  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--text-muted); border-radius: var(--radius-control);
+    background: var(--card); color: var(--text); font: 400 18px var(--font-body); }
   @media (prefers-reduced-motion: reduce) { .btn, .card { transition: none; } }
+
+  /* nav: clear over the hero washes, paper once the page scrolls */
+  .nav { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid transparent;
+    transition: background-color 500ms ease-in-out, border-color 500ms ease-in-out; }
+  .nav.scrolled { background: var(--page); border-bottom-color: var(--rule); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
+  .brand { font: italic 600 26px/1 var(--font-display); color: var(--text); text-decoration: none; }
+  .nav-links { display: none; gap: 8px; }
+  .nav-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--text); text-decoration: none; font-size: 18px; }
+  .nav-links a:hover { text-decoration: underline; }
+  .nav .btn { padding: 0 24px; }
+
+  /* hero */
+  .hero { margin-top: 0; padding-top: 48px; text-align: center; }
+  .hero .wash { width: 300px; top: -230px; left: -180px; }
+  .hero .wash.teal { left: auto; right: -180px; top: -170px; }
+  .hero .eyebrow { font-size: var(--type-caption); letter-spacing: 0.06em; }
+  .hero h1 { font-size: clamp(52px, 14vw, var(--type-display)); line-height: 1; margin: 14px 0 22px; }
+  .hero .lede { font-size: var(--type-lead); line-height: 1.6; max-width: 40ch; margin: 0 auto; }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
+  .details { display: grid; gap: 16px; max-width: 960px; margin: 64px auto 0; text-align: left; }
+  .details .card { padding: 24px 28px; }
+  .d-label { font-size: var(--type-caption); color: var(--text-muted); }
+  .d-main { font: italic 600 28px/1.15 var(--font-display); margin: 6px 0 4px; }
+  .d-sub { font-size: 17px; color: var(--text-muted); }
+  .d-sub.go { color: var(--link); text-decoration: underline; text-underline-offset: 4px; }
+
+  /* the garden: story column and one painted image */
+  .story { display: grid; gap: 40px; align-items: center; }
+  .story-text h2 { font-size: var(--type-h2); }
+  .story-text p { margin-top: 18px; max-width: 58ch; }
+  .painting { padding: 0; overflow: hidden; aspect-ratio: 5 / 6; }
+  .painting svg { display: block; width: 100%; height: 100%; }
+  .p-teal { fill: var(--teal); } .p-peach { fill: var(--peach); } .p-rose { fill: var(--rose); }
+  .p-arch { fill: none; stroke: var(--accent); stroke-width: 15; stroke-linecap: round; opacity: 0.32; }
+  .art-defs { position: absolute; width: 0; height: 0; }
+
+  /* the day */
+  #day .wash { right: -260px; top: 60px; }
+  .schedule { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+  .schedule .card { display: flex; flex-direction: column; gap: 8px; }
+  .schedule .time { font-weight: 500; font-variant-numeric: tabular-nums; }
+  .schedule h3 { font-size: var(--type-h3); }
+  .schedule p:last-child { color: var(--text-muted); font-size: 18px; }
+  .quote { margin: 40px 0 0; padding: 48px 24px; background: var(--panel); border-radius: var(--radius-card); text-align: center; }
+  .quote p { font: italic 500 28px/1.35 var(--font-display); max-width: 30ch; margin: 0 auto; }
+  .quote footer { margin-top: 14px; font-size: var(--type-caption); color: var(--text-muted); }
+
+  /* guest page */
+  .guest { background: var(--panel); border-radius: var(--radius-card); padding: 16px; }
+  .guest-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; padding: 8px 8px 20px; }
+  .guest-head h3 { font-size: var(--type-h3); }
+  .guest-head .muted { font-size: 17px; }
+  .tabs { display: flex; gap: 4px; width: 100%; }
+  .tab { flex: 1; min-height: 44px; padding: 0 10px; border: 0; border-radius: var(--radius-control); background: transparent;
+    color: var(--text); font: 500 17px/1 var(--font-body); cursor: pointer; transition: background-color 500ms ease-in-out; }
+  .tab[aria-selected="true"] { background: var(--card); box-shadow: inset 0 0 0 1px var(--rule); }
+  .g-grid { display: grid; gap: 16px; }
+  .guest .card { padding: 24px; }
+  .guest .card h3 { font-size: var(--type-h3); }
+  .small { font-size: 17px; }
+  .plan { display: block; width: 100%; height: auto; margin: 16px 0; }
+  .plan .t { fill: var(--card); stroke: var(--text-muted); stroke-width: 1.2; }
+  .plan .t.mine { fill: var(--peach); fill-opacity: 0.3; stroke: var(--text); stroke-width: 2; }
+  .plan .pergola { fill: none; stroke: var(--rule); stroke-width: 2; stroke-dasharray: 2 8; stroke-linecap: round; }
+  .plan .tree { fill: var(--teal); opacity: 0.35; }
+  .plan text { font: 500 15px var(--font-body); fill: var(--text-muted); }
+  .plan text.mine { fill: var(--text); }
+  .facts { margin: 16px 0 24px; display: grid; gap: 10px; }
+  .facts div { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+  .facts dt { color: var(--text-muted); }
+  .facts dd { margin: 0; text-align: right; }
+  .timeline { list-style: none; margin: 16px 0 0; padding: 0; }
+  .timeline li { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  .timeline li:last-child { border-bottom: 0; }
+  .timeline time { font-weight: 500; font-variant-numeric: tabular-nums; }
+  .timeline .now { font-style: italic; }
+  .song-form { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .song-form .field { flex: 1 1 220px; }
+  label { display: block; font-weight: 500; }
+  .error { margin-top: 6px; font-size: 17px; color: var(--danger); }
+  .error:empty { margin: 0; }
+  .songs { list-style: none; margin: 8px 0 0; padding: 0; }
+  .songs li { padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .empty { margin-top: 8px; padding: 20px; border: 1px dashed var(--rule); border-radius: var(--radius-control); color: var(--text-muted); text-align: center; }
+
+  /* keepsakes: scaled canvases */
+  .kit { display: grid; gap: 32px; align-items: end; }
+  .frame { container-type: inline-size; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--rule); background: var(--page); }
+  figcaption { margin-top: 12px; font-size: var(--type-caption); color: var(--text-muted); }
+  .canvas-wash { position: absolute; border-radius: 50%; background: var(--peach); opacity: var(--wash-opacity); pointer-events: none; }
+  .slide { aspect-ratio: 16 / 9; position: relative; overflow: hidden; }
+  .slide .canvas-wash { width: 46cqw; aspect-ratio: 1; right: -12cqw; top: -16cqw; filter: blur(4cqw); }
+  .slide .s-text { position: absolute; left: 5cqw; top: 5cqw; bottom: 5cqw; width: 46cqw; display: flex; flex-direction: column; justify-content: center; }
+  .slide .s-label { position: absolute; top: 0; font-size: 1.15cqw; color: var(--text-muted); }
+  .slide h3 { font-size: 4cqw; line-height: 1.1; }
+  .slide .s-body { margin-top: 2.5cqw; width: 40cqw; font-size: 1.56cqw; line-height: 1.6; }
+  .slide .vignette { position: absolute; right: 5cqw; top: 5cqw; bottom: 5cqw; width: 38cqw;
+    -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent); mask-image: radial-gradient(closest-side, #000 62%, transparent); }
+  .slide .vignette svg { width: 100%; height: 100%; }
+  .post { aspect-ratio: 4 / 5; position: relative; overflow: hidden; display: grid; place-items: center; padding: 5.9cqw; }
+  .post .canvas-wash { width: 78cqw; aspect-ratio: 1; filter: blur(7cqw); }
+  .post .canvas-wash.a { background: var(--teal); left: -20cqw; top: -6cqw; }
+  .post .canvas-wash.b { right: -22cqw; bottom: -8cqw; }
+  .post .card { width: 82cqw; padding: 8cqw 5cqw; border-radius: 4cqw; text-align: center; }
+  .post .pc-names { font-size: 2.8cqw; letter-spacing: 0.06em; }
+  .post .pc-title { font: italic 600 9cqw/1 var(--font-display); margin: 3cqw 0; }
+  .post .pc-line { font-size: 3.4cqw; line-height: 1.4; }
+  .phone { aspect-ratio: 9 / 19.5; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 3.5cqw; padding: 9cqw 5cqw 3cqw; }
+  .phone .canvas-wash { width: 80cqw; aspect-ratio: 1; right: -32cqw; top: -34cqw; filter: blur(9cqw); }
+  .phone > :not(.canvas-wash) { position: relative; }
+  .phone .p-top { font-size: 4.2cqw; }
+  .phone .p-title { font: italic 600 10cqw/1.05 var(--font-display); margin-bottom: 2cqw; }
+  .phone .card { padding: 4.5cqw 5cqw; border-radius: 7cqw; }
+  .phone .card strong { display: block; font-weight: 500; font-size: 4.8cqw; line-height: 1.3; }
+  .phone .card span { display: block; font-size: 4.2cqw; line-height: 1.4; color: var(--text-muted); }
+  .phone .spacer { flex: 1; }
+  .phone .btn { font-size: 4.6cqw; padding: 0; }
+  .phone .p-tabs { display: flex; gap: 1cqw; border-top: 1px solid var(--rule); padding-top: 2cqw; }
+  .phone .p-tabs button { flex: 1; min-height: 44px; border: 0; border-radius: var(--radius-control); background: none; color: var(--text-muted);
+    font: 500 4.2cqw/1 var(--font-body); cursor: pointer; }
+  .phone .p-tabs button[aria-pressed="true"] { color: var(--text); background: var(--panel); }
+  .phone-fig { max-width: 300px; width: 100%; justify-self: center; }
+
+  /* reply */
+  #reply .wash { left: -260px; top: -60px; }
+  .reply { display: grid; gap: 32px; align-items: start; }
+  .reply-copy h2 { font-size: var(--type-h2); }
+  .reply-copy p { margin-top: 14px; max-width: 46ch; }
+  .reply-form { display: grid; gap: 20px; padding: 24px; }
+  .reply-form label, .reply-form legend { margin-bottom: 8px; }
+  fieldset { border: 0; margin: 0; padding: 0; }
+  legend { padding: 0; font-weight: 500; }
+  .choice { display: flex; flex-wrap: wrap; gap: 10px; }
+  .choice .btn { flex: 1 1 140px; padding: 0 16px; }
+  .choice .btn[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--accent); }
+  select.field { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--text) 50%), linear-gradient(135deg, var(--text) 50%, transparent 50%);
+    background-position: calc(100% - 22px) 50%, calc(100% - 16px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 44px; }
+  .reply-form .btn[type="submit"] { width: 100%; }
+  .note { font-size: 17px; }
+  .note:empty { display: none; }
+
+  .site-foot { margin-top: 96px; border-top: 1px solid var(--rule); }
+  .site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 20px; padding-bottom: 32px; font-size: var(--type-caption); color: var(--text-muted); }
+
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 24px; }
+    .hero { padding-top: 72px; }
+    .hero .wash { width: 420px; top: -260px; left: -150px; }
+    .hero .wash.teal { left: auto; right: -170px; top: -190px; }
+    .details { grid-template-columns: repeat(3, 1fr); }
+    .schedule { grid-template-columns: repeat(2, 1fr); }
+    .quote { padding: 56px 40px; }
+    .quote p { font-size: 32px; }
+    .guest { padding: 24px; }
+    .tabs { width: auto; }
+    .tab { flex: none; padding: 0 18px; }
+    .g-grid { grid-template-columns: 1.2fr 1fr; }
+    .kit { grid-template-columns: 1.2fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
+  }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .story { grid-template-columns: 1fr 0.85fr; gap: 72px; }
+    .schedule { grid-template-columns: repeat(4, 1fr); }
+    .guest { padding: 32px; }
+    .kit { grid-template-columns: 2fr 1fr 0.72fr; }
+    .kit .slide-fig { grid-column: auto; }
+    .reply { grid-template-columns: 1fr 1fr; gap: 64px; }
+    .reply-copy { padding-top: 32px; }
+    .reply-form { padding: var(--space-lg); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    [role="tabpanel"]:not([hidden]) { animation: settle 500ms ease-in-out; }
+    @keyframes settle { from { opacity: 0; } }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .nav, .tab { transition: none; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <span class="wash" style="left:-160px;top:-120px" aria-hidden="true"></span>
-  <span class="wash teal" style="right:-180px;top:40px" aria-hidden="true"></span>
-  <header class="center z">
-    <p style="margin:0 0 12px">pikmi style</p>
-    <h1>Soft Wash</h1>
-    <p style="max-width:42ch;margin:20px auto 30px">Soft washes bleeding into warm paper, blue-grey ink and italic serif headings.</p>
-    <div class="row" style="justify-content:center"><a class="btn" href="#components">See the components</a><a class="btn soft" href="#slides">See the slides</a></div>
-  </header>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">Laila &amp; Arif</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#garden">The garden</a><a href="#day">The day</a><a href="#guests">Guest page</a><a href="#keepsakes">Keepsakes</a>
+    </nav>
+    <a class="btn" href="#reply">Reply</a>
+  </div>
+</header>
 
-  <section id="components" aria-labelledby="h-components">
-    <h2 id="h-components" class="z">Components</h2>
-    <div class="grid">
-      <div class="card"><h3>Buttons</h3><div class="row" style="margin-top:16px"><a class="btn" href="#ui">Send your reply</a><a class="btn soft" href="#app">Open the app</a></div></div>
-      <div class="card"><label for="guest">Your name</label><input class="field" id="guest" placeholder="Laila and Arif"><p class="muted" style="margin:10px 0 0;font-size:16px">As it should appear on the place card.</p></div>
-      <a class="card" href="#social"><h3>A card that blooms</h3><p class="muted" style="margin:8px 0 0">Hover it to see the blue bloom instead of a lift.</p></a>
+<main id="top">
+  <section class="hero wrap has-wash" aria-labelledby="h-hero">
+    <span class="wash" aria-hidden="true"></span>
+    <span class="wash teal" aria-hidden="true"></span>
+    <p class="eyebrow">Saturday, 14 June · Hollinford</p>
+    <h1 id="h-hero">Laila &amp; Arif</h1>
+    <p class="lede">We are getting married in the walled rose garden behind the old orchard house. Come for the vows, then stay for lunch and the music.</p>
+    <div class="actions">
+      <a class="btn" href="#reply">Reply by 1 May</a>
+      <a class="btn soft" href="#day">See the day</a>
+    </div>
+    <div class="details">
+      <div class="card">
+        <p class="d-label">When</p>
+        <p class="d-main">Saturday, 14 June</p>
+        <p class="d-sub">The ceremony starts at 11:00</p>
+      </div>
+      <a class="card" href="#garden">
+        <p class="d-label">Where</p>
+        <p class="d-main">The orchard house</p>
+        <p class="d-sub go">12 Merrow Lane, Hollinford</p>
+      </a>
+      <a class="card" href="#reply">
+        <p class="d-label">Reply by</p>
+        <p class="d-main">The first of May</p>
+        <p class="d-sub go">Send your reply</p>
+      </a>
     </div>
   </section>
 
-  <section id="ui" aria-labelledby="h-ui">
-    <span class="wash" style="left:30%;top:-60px;width:360px" aria-hidden="true"></span>
-    <h2 id="h-ui" class="z">UI · A garden wedding</h2>
-    <div class="grid" style="align-items:center">
-      <div class="z">
-        <h3 style="font-size:40px">Laila &amp; Arif</h3>
-        <p>Saturday the fourteenth of June, in the rose garden behind the old orchard house. Lunch follows under the pergola.</p>
-        <a class="btn" href="#components">Reply by the first of May</a>
-      </div>
-      <div class="painted" aria-hidden="true">
-        <span style="width:60%;height:50%;left:8%;top:12%;background:var(--rose);opacity:.45"></span>
-        <span style="width:55%;height:45%;right:5%;bottom:14%;background:var(--teal);opacity:.4"></span>
-      </div>
+  <section id="garden" class="wrap story" aria-labelledby="h-garden">
+    <div class="story-text">
+      <h2 id="h-garden">A walled garden behind the old orchard house</h2>
+      <p>The orchard house sits at the end of Merrow Lane, past the last row of apple trees. Behind it is a rose garden with a brick wall all the way round and a pergola down the middle. That is where we will say our vows.</p>
+      <p>Arif's grandmother planted the first roses by the gate. They still flower every June, which is how we chose the fourteenth.</p>
+      <p>The shuttle times and your table are on your <a href="#guests">guest page</a>.</p>
     </div>
-    <div class="panel" style="margin-top:40px"><p style="margin:0;font: italic 500 30px/1.4 var(--font-display)">"Come as you are, and stay until the candles burn down."</p></div>
+    <figure class="card painting" role="img" aria-label="Watercolor of the rose arch in the walled garden, with climbing roses and a soft lawn">
+      <svg viewBox="0 0 400 480" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <filter id="paint" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="7" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" xChannelSelector="R" yChannelSelector="G" result="moved"/>
+            <feGaussianBlur in="moved" stdDeviation="3.5"/>
+          </filter>
+        </defs>
+        <g id="garden-art" filter="url(#paint)">
+          <ellipse class="p-teal" cx="130" cy="110" rx="190" ry="130" opacity="0.26"/>
+          <ellipse class="p-peach" cx="300" cy="360" rx="170" ry="120" opacity="0.28"/>
+          <ellipse class="p-teal" cx="200" cy="476" rx="260" ry="60" opacity="0.36"/>
+          <path class="p-arch" d="M122 470 V250 A78 78 0 0 1 278 250 V470"/>
+          <g class="p-teal" opacity="0.45">
+            <ellipse cx="116" cy="300" rx="24" ry="12" transform="rotate(-60 116 300)"/>
+            <ellipse cx="126" cy="372" rx="24" ry="12" transform="rotate(50 126 372)"/>
+            <ellipse cx="114" cy="430" rx="22" ry="11" transform="rotate(-40 114 430)"/>
+            <ellipse cx="150" cy="186" rx="24" ry="12" transform="rotate(-30 150 186)"/>
+            <ellipse cx="206" cy="160" rx="24" ry="12" transform="rotate(10 206 160)"/>
+            <ellipse cx="262" cy="190" rx="24" ry="12" transform="rotate(40 262 190)"/>
+            <ellipse cx="286" cy="290" rx="24" ry="12" transform="rotate(70 286 290)"/>
+            <ellipse cx="276" cy="360" rx="24" ry="12" transform="rotate(-50 276 360)"/>
+            <ellipse cx="288" cy="428" rx="22" ry="11" transform="rotate(40 288 428)"/>
+          </g>
+          <g class="p-rose" opacity="0.55">
+            <circle cx="128" cy="240" r="24"/><circle cx="176" cy="178" r="20"/><circle cx="240" cy="174" r="22"/>
+            <circle cx="280" cy="236" r="20"/><circle cx="118" cy="340" r="18"/><circle cx="290" cy="330" r="22"/>
+            <circle cx="122" cy="406" r="15"/>
+          </g>
+          <g class="p-peach" opacity="0.6">
+            <circle cx="204" cy="190" r="14"/><circle cx="264" cy="208" r="13"/><circle cx="108" cy="282" r="13"/>
+            <circle cx="296" cy="392" r="14"/><circle cx="146" cy="214" r="11"/>
+          </g>
+        </g>
+      </svg>
+    </figure>
   </section>
 
-  <section aria-labelledby="h-media">
-    <h2 id="h-media" class="z">Other media</h2>
-    <div class="canvases">
-      <div id="slides">
-        <div class="canvas"><div class="slide">
-          <span class="w" style="width:50cqw;height:50cqw;right:-12cqw;top:-14cqw;background:var(--peach)" aria-hidden="true"></span>
-          <h3>A day in the rose garden</h3>
-          <p>Ceremony at eleven, lunch under the pergola, music until the evening light goes gold.</p>
-        </div></div>
-        <p class="cap">slides · 1920 x 1080</p>
+  <section id="day" class="wrap has-wash" aria-labelledby="h-day">
+    <span class="wash teal" aria-hidden="true"></span>
+    <div class="sec-head">
+      <h2 id="h-day">How the day unfolds</h2>
+      <p>Everything happens in the garden or a few steps from it. Bring flat shoes: the lawn is soft.</p>
+    </div>
+    <ol class="schedule">
+      <li class="card"><p class="time">11:00</p><h3>The vows</h3><p>Under the rose arch. Chairs are set out on the lawn, so come a little early.</p></li>
+      <li class="card"><p class="time">12:30</p><h3>Lunch under the pergola</h3><p>Long tables, a garden menu and a vegetarian one. Your table is on the card at the gate.</p></li>
+      <li class="card"><p class="time">15:00</p><h3>Tea in the orchard</h3><p>Cake, lawn games, and a slow walk through the apple trees for anyone who wants one.</p></li>
+      <li class="card"><p class="time">19:00</p><h3>Music on the terrace</h3><p>A small band plays until late. The lanterns go up when the light goes gold.</p></li>
+    </ol>
+    <blockquote class="quote">
+      <p>“Come as you are, and stay until the candles burn down.”</p>
+      <footer>From our invitation</footer>
+    </blockquote>
+  </section>
+
+  <section id="guests" class="wrap" aria-labelledby="h-guests">
+    <div class="sec-head">
+      <h2 id="h-guests">Your guest page</h2>
+      <p>Once you reply, the code on your invitation opens a page with your table, your day and the band's song list.</p>
+    </div>
+    <div class="guest">
+      <div class="guest-head">
+        <div>
+          <p class="muted">Invitation code LA-0614</p>
+          <h3>Welcome back</h3>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Guest page">
+          <button class="tab" type="button" role="tab" id="t-table" aria-selected="true" aria-controls="p-table">Your table</button>
+          <button class="tab" type="button" role="tab" id="t-day" aria-selected="false" aria-controls="p-day" tabindex="-1">Your day</button>
+          <button class="tab" type="button" role="tab" id="t-songs" aria-selected="false" aria-controls="p-songs" tabindex="-1">Songs</button>
+        </div>
       </div>
-      <div id="social">
-        <div class="canvas"><div class="post">
-          <span class="w" style="width:80cqw;height:80cqw;left:-20cqw;top:-10cqw;background:var(--teal)" aria-hidden="true"></span>
-          <span class="w" style="width:70cqw;height:70cqw;right:-20cqw;bottom:-10cqw;background:var(--peach)" aria-hidden="true"></span>
-          <div><h3>Save the date</h3><p>14 June · the orchard house</p></div>
-        </div></div>
-        <p class="cap">social · 1080 x 1350</p>
+
+      <div role="tabpanel" id="p-table" aria-labelledby="t-table">
+        <div class="g-grid">
+          <div class="card">
+            <p class="small muted">Lunch under the pergola</p>
+            <h3>Table 4 · Lavender</h3>
+            <svg class="plan" viewBox="0 0 320 176" role="img" aria-label="Seating plan: six round tables along the pergola, table 4 marked">
+              <path class="pergola" d="M20 75 H300"/>
+              <circle class="tree" cx="40" cy="160" r="11"/><circle class="tree" cx="96" cy="162" r="9"/><circle class="tree" cx="160" cy="160" r="11"/><circle class="tree" cx="224" cy="162" r="9"/><circle class="tree" cx="280" cy="160" r="11"/>
+              <circle class="t" cx="70" cy="40" r="20"/><text x="70" y="44" text-anchor="middle">1</text>
+              <circle class="t" cx="160" cy="40" r="20"/><text x="160" y="44" text-anchor="middle">2</text>
+              <circle class="t" cx="250" cy="40" r="20"/><text x="250" y="44" text-anchor="middle">3</text>
+              <circle class="t mine" cx="70" cy="110" r="20"/><text class="mine" x="70" y="114" text-anchor="middle">4</text>
+              <circle class="t" cx="160" cy="110" r="20"/><text x="160" y="114" text-anchor="middle">5</text>
+              <circle class="t" cx="250" cy="110" r="20"/><text x="250" y="114" text-anchor="middle">6</text>
+            </svg>
+            <p class="muted small">On the lemon tree side, nearest the gate. Place cards wait at the garden entrance.</p>
+          </div>
+          <div class="card">
+            <h3>Your reply</h3>
+            <dl class="facts">
+              <div><dt>Coming</dt><dd>Yes, two places</dd></div>
+              <div><dt>Menu</dt><dd>Vegetarian, no nuts</dd></div>
+              <div><dt>Shuttle</dt><dd>10:15 from the station</dd></div>
+            </dl>
+            <a class="btn soft" href="#reply">Change my reply</a>
+          </div>
+        </div>
       </div>
-      <div id="app">
-        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
-          <span class="w" aria-hidden="true"></span>
-          <h3>Your table</h3>
-          <div class="card"><strong>Table 4 · Lavender</strong><span>Near the pergola</span></div>
+
+      <div role="tabpanel" id="p-day" aria-labelledby="t-day" hidden>
+        <div class="card">
+          <h3>Your day, hour by hour</h3>
+          <ol class="timeline">
+            <li><time>10:15</time><span>The shuttle leaves from the forecourt at Hollinford station.</span></li>
+            <li><time>10:40</time><span>Lemonade at the garden gate. Pick up your place card.</span></li>
+            <li><time>11:00</time><span class="now">The vows, under the rose arch.</span></li>
+            <li><time>12:30</time><span>Lunch at table 4, Lavender.</span></li>
+            <li><time>15:00</time><span>Tea and cake in the orchard.</span></li>
+            <li><time>19:00</time><span>Music on the terrace.</span></li>
+            <li><time>22:30</time><span>Last shuttle back to the station.</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <div role="tabpanel" id="p-songs" aria-labelledby="t-songs" hidden>
+        <div class="card">
+          <h3>Ask the band for a song</h3>
+          <form class="song-form" id="song-form" novalidate>
+            <label for="song" class="small" style="flex-basis:100%">A song that gets you dancing</label>
+            <input class="field" id="song" autocomplete="off" aria-describedby="song-error">
+            <button class="btn" type="submit">Add to the list</button>
+          </form>
+          <p class="error" id="song-error" aria-live="polite"></p>
+          <ul class="songs" id="songs" aria-label="Your song requests"></ul>
+          <p class="empty" id="songs-empty">No songs yet. Add one and the band will see it on the day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="keepsakes" class="wrap" aria-labelledby="h-kit">
+    <div class="sec-head">
+      <h2 id="h-kit">The same garden on every screen</h2>
+      <p>A welcome slide for the screen by the pergola, a save-the-date for the family chat, and the guest app, painted the same way.</p>
+    </div>
+    <div class="kit">
+      <figure class="slide-fig">
+        <div class="frame"><div class="slide">
+          <span class="canvas-wash" aria-hidden="true"></span>
+          <div class="s-text">
+            <p class="s-label">Laila &amp; Arif · 14 June</p>
+            <h3>Lunch is under the pergola at half past twelve</h3>
+            <p class="s-body">Find your table on the card by the gate. The vegetarian dishes are marked with a leaf.</p>
+          </div>
+          <div class="vignette" aria-hidden="true"><svg viewBox="0 0 400 480" preserveAspectRatio="xMidYMid slice"><use href="#garden-art"/></svg></div>
+        </div></div>
+        <figcaption>Welcome slide · 1920 x 1080</figcaption>
+      </figure>
+      <figure>
+        <div class="frame"><div class="post">
+          <span class="canvas-wash a" aria-hidden="true"></span>
+          <span class="canvas-wash b" aria-hidden="true"></span>
+          <div class="card">
+            <p class="pc-names">Laila &amp; Arif</p>
+            <p class="pc-title">Save the date</p>
+            <p class="pc-line">14 June · the orchard house, Hollinford</p>
+          </div>
+        </div></div>
+        <figcaption>Save-the-date post · 1080 x 1350</figcaption>
+      </figure>
+      <figure class="phone-fig">
+        <div class="frame"><div class="phone">
+          <span class="canvas-wash" aria-hidden="true"></span>
+          <p class="p-top">14 June · Orchard house</p>
+          <p class="p-title">Your table</p>
+          <div class="card"><strong>Table 4 · Lavender</strong><span>Near the gate, by the lemon trees</span></div>
           <div class="card"><strong>Menu</strong><span>Vegetarian, no nuts</span></div>
+          <div class="card"><strong>Next</strong><span>Lunch at 12:30</span></div>
+          <div class="card"><strong>Last shuttle</strong><span>22:30 to Hollinford station</span></div>
           <div class="spacer"></div>
-          <a class="btn" href="#app">Update my reply</a>
-          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Table</button><button class="tab" type="button" aria-pressed="false">Day</button><button class="tab" type="button" aria-pressed="false">Map</button></nav>
+          <a class="btn" href="#reply">Update my reply</a>
+          <nav class="p-tabs" aria-label="Guest app sections" data-pressed-group>
+            <button type="button" aria-pressed="true">Table</button>
+            <button type="button" aria-pressed="false">Day</button>
+            <button type="button" aria-pressed="false">Map</button>
+          </nav>
         </div></div>
-        <p class="cap">app · phone</p>
-      </div>
+        <figcaption>Guest app · phone</figcaption>
+      </figure>
     </div>
   </section>
-</div>
+
+  <section id="reply" class="wrap has-wash" aria-labelledby="h-reply">
+    <span class="wash" aria-hidden="true"></span>
+    <div class="reply">
+      <div class="reply-copy">
+        <h2 id="h-reply">Will you join us in the garden?</h2>
+        <p>Reply by the first of May, so the kitchen knows how many to cook for. You can change your answer on your guest page until the end of May.</p>
+      </div>
+      <form class="card reply-form" id="reply-form" novalidate>
+        <div>
+          <label for="r-name">Your names</label>
+          <input class="field" id="r-name" autocomplete="name" aria-describedby="r-name-error" required>
+          <p class="error" id="r-name-error"></p>
+        </div>
+        <fieldset>
+          <legend>Will you come?</legend>
+          <div class="choice" data-pressed-group>
+            <button class="btn soft" type="button" aria-pressed="true">Yes, gladly</button>
+            <button class="btn soft" type="button" aria-pressed="false">Sadly, no</button>
+          </div>
+        </fieldset>
+        <div>
+          <label for="r-meal">Menu</label>
+          <select class="field" id="r-meal">
+            <option>Garden menu</option>
+            <option>Vegetarian</option>
+            <option>Children's plate</option>
+          </select>
+        </div>
+        <button class="btn" type="submit">Send our reply</button>
+        <p class="note" id="reply-note" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>The wedding of Laila &amp; Arif is fictional, made for this preview.</span>
+    <span>pikmi style · Soft Wash</span>
+  </div>
+</footer>
+
 <script>
-  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
-  })));
+  // the nav turns to paper once the hero washes scroll away
+  const nav = document.querySelector('.nav');
+  const paperNav = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+  paperNav();
+  window.addEventListener('scroll', paperNav, { passive: true });
+
+  // guest page tabs, with arrow keys
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  function selectTab(tab) {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => selectTab(tab));
+    tab.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      selectTab(next); next.focus(); e.preventDefault();
+    });
+  });
+
+  // one pressed button per group
+  document.querySelectorAll('[data-pressed-group]').forEach(group => {
+    const buttons = group.querySelectorAll('button[aria-pressed]');
+    buttons.forEach(b => b.addEventListener('click', () => buttons.forEach(x => x.setAttribute('aria-pressed', String(x === b)))));
+  });
+
+  // song requests
+  const songInput = document.getElementById('song');
+  const songError = document.getElementById('song-error');
+  const songList = document.getElementById('songs');
+  document.getElementById('song-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const title = songInput.value.trim();
+    if (!title) { songError.textContent = 'Write a song title first.'; songInput.focus(); return; }
+    songError.textContent = '';
+    const li = document.createElement('li');
+    li.textContent = title;
+    songList.append(li);
+    document.getElementById('songs-empty').hidden = true;
+    songInput.value = '';
+  });
+
+  // reply
+  const nameInput = document.getElementById('r-name');
+  const nameError = document.getElementById('r-name-error');
+  document.getElementById('reply-form').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!nameInput.value.trim()) {
+      nameError.textContent = 'Please write your names, as on the invitation.';
+      nameInput.setAttribute('aria-invalid', 'true');
+      nameInput.focus();
+      return;
+    }
+    nameError.textContent = '';
+    nameInput.removeAttribute('aria-invalid');
+    document.getElementById('reply-note').textContent = 'This is a preview: nothing was sent.';
+  });
 </script>
 </body>
 </html>

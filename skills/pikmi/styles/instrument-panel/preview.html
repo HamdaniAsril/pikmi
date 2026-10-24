@@ -10,96 +10,154 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body { margin: 0; background: var(--page); color: var(--text); font: 300 16px/1.5 var(--font-sans); }
   a { color: var(--link); }
   [data-theme="dark"] a { text-decoration: underline; }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 24px 16px 64px; }
-  .label { font: 500 var(--type-label)/1 var(--font-sans); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
-  h1 { font-weight: 200; font-size: clamp(40px, 8vw, 88px); line-height: 1; margin: 12px 0 8px; text-transform: lowercase; }
-  h2 { font-weight: 300; font-size: 32px; margin: 0 0 16px; text-transform: lowercase; }
-  section { margin-top: 56px; }
-  .top { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-  .lede { color: var(--text-muted); max-width: 60ch; margin: 0; }
+  .wrap { max-width: 1200px; margin-inline: auto; padding-inline: 16px; }
+  .label { font: 500 var(--type-label)/1.2 var(--font-sans); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
+  .muted { color: var(--text-muted); }
+  section { margin-top: 96px; }
+  .sec-head { margin: 0 0 24px; }
+  .sec-head h2 { font-weight: 200; font-size: clamp(32px, 6vw, 48px); line-height: 1.05; margin: 0; text-transform: lowercase; }
+  .sec-head h2 .label { font-size: var(--type-label); vertical-align: middle; margin-right: 8px; }
+  .sec-head p { margin: 12px 0 0; color: var(--text-muted); max-width: 60ch; }
+  :focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
 
   /* components (from STYLE.md) */
   .panel { background: var(--panel); border-radius: var(--radius-panel); padding: var(--space-sm); }
+  .card { background: var(--card); border-radius: var(--radius-key); padding: var(--space-md); }
   .key { display: flex; flex-direction: column; justify-content: space-between; min-width: 64px; min-height: 56px;
     padding: 6px 8px; border: 0; border-radius: var(--radius-key); background: var(--key);
-    box-shadow: var(--key-travel) var(--key-shadow); cursor: pointer; text-align: left; }
-  .key .k-label { align-self: flex-end; font: 500 var(--type-label)/1 var(--font-sans); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--key-label); }
-  .key .k-num { font: 300 16px/1 var(--font-sans); color: var(--key-number); }
+    box-shadow: var(--key-travel) var(--key-shadow); cursor: pointer; text-align: left; font: inherit; color: inherit; }
+  .key .label { align-self: flex-end; font: 500 var(--type-label)/1 var(--font-sans); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--key-label); }
+  .key .number { font: 300 16px/1 var(--font-sans); color: var(--key-number); }
   .key:active { transform: translateY(2px); box-shadow: none; }
   .key[aria-pressed="true"] { background: var(--key-active); box-shadow: var(--key-travel) var(--key-active-shadow); }
   .key[aria-pressed="true"] * { color: var(--key-active-ink); }
   .key.alt { background: var(--key-alt); box-shadow: var(--key-travel) var(--key-alt-shadow); }
-  .key.alt .k-label { color: var(--key-alt-label); } .key.alt .k-num { color: var(--key-alt-number); }
-  .key:focus-visible, .round:focus-visible, .cta:focus-visible, .switch:focus-visible, .toggle:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+  .key.alt .label { color: var(--key-alt-label); } .key.alt .number { color: var(--key-alt-number); }
   .keys { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+  /* two-function key: action on top, shift action in orange on a black lower half */
+  .key.fn { padding: 0; overflow: hidden; justify-content: stretch; }
+  .key.fn .top { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 6px 8px 4px; }
+  .key.fn .shift { padding: 4px 8px 5px; background: var(--key-alt); font: 500 var(--type-label)/1 var(--font-sans); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--accent); }
   .screen { background: var(--screen); color: var(--on-screen); border-radius: var(--radius-key); box-shadow: inset 0 0 0 2px var(--screen-bezel); padding: 16px; }
   .screen .value { font: 900 64px/1 var(--font-dot); }
   .screen .unit { font: 700 20px/1 var(--font-dot); color: var(--accent); }
+  .screen .tag { font: 500 var(--type-label)/1 var(--font-sans); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--key-alt-label); }
   .encoder { width: 48px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center;
     background: repeating-conic-gradient(var(--encoder-ring) 0 5deg, var(--encoder-groove) 5deg 10deg); }
   .encoder::after { content: ""; width: 28px; aspect-ratio: 1; border-radius: 50%; background: var(--cap, var(--signal-blue)); box-shadow: inset 0 -2px 3px var(--encoder-cap-shade); }
-  .round { width: 64px; height: 64px; border-radius: 50%; border: 0; background: var(--accent); color: var(--on-accent);
+  .round { width: 64px; height: 64px; flex: none; border-radius: 50%; border: 0; background: var(--accent); color: var(--on-accent);
     font: 500 var(--type-label)/1 var(--font-sans); letter-spacing: var(--tracking-label); text-transform: uppercase;
     box-shadow: var(--key-travel) var(--key-active-shadow); cursor: pointer; }
   .round:active { transform: translateY(2px); box-shadow: none; }
-  .cta { display: inline-block; background: var(--text); color: var(--page); border: 0; border-radius: var(--radius-pill); padding: 12px 26px; font: 300 16px var(--font-sans); cursor: pointer; text-decoration: none; }
-  .switch { display: inline-flex; align-items: center; gap: 10px; background: none; border: 0; padding: 8px 0; min-height: 44px; color: var(--text); font: inherit; cursor: pointer; }
+  .cta { display: inline-flex; align-items: center; min-height: 44px; background: var(--text); color: var(--page); border: 0; border-radius: var(--radius-pill); padding: 0 26px; font: 300 16px var(--font-sans); cursor: pointer; text-decoration: none; }
+  [data-theme="dark"] .cta { text-decoration: none; }
+  .cta.small { min-height: 36px; padding: 0 16px; font-size: 14px; }
+  .link { color: var(--link); }
+  .field { min-height: 44px; width: 100%; padding: 0 var(--space-sm); border: 1px solid var(--text-muted);
+    border-radius: var(--radius-key); background: var(--card); color: var(--text); font: 300 16px var(--font-sans); }
+  .switch { display: inline-flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; min-height: 44px; color: var(--text); font: inherit; cursor: pointer; }
   .switch .track { width: 44px; height: 22px; border-radius: var(--radius-key); background: var(--key); box-shadow: inset 0 0 0 1px var(--rule); position: relative; }
   .switch .track::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 2px; background: var(--key-alt); transition: left 80ms linear; }
   .switch[aria-checked="true"] .track::after { left: 25px; }
-  .led { width: 8px; height: 8px; border-radius: 50%; background: var(--rule); }
-  .switch[aria-checked="true"] .led { background: var(--led); }
+  .led { width: 8px; height: 8px; flex: none; border-radius: 50%; background: var(--rule); }
+  .switch[aria-checked="true"] .led, .led.on { background: var(--led); }
   .sticker { width: 96px; aspect-ratio: 1; display: grid; place-items: center; rotate: -8deg; background: var(--accent); color: var(--on-accent);
     font: 900 18px/1 var(--font-dot); text-align: center;
     clip-path: polygon(50% 0, 57.8% 10.8%, 69.1% 3.8%, 72.2% 16.7%, 85.4% 14.6%, 83.3% 27.8%, 96.2% 30.9%, 89.2% 42.2%, 100% 50%, 89.2% 57.8%, 96.2% 69.1%, 83.3% 72.2%, 85.4% 85.4%, 72.2% 83.3%, 69.1% 96.2%, 57.8% 89.2%, 50% 100%, 42.2% 89.2%, 30.9% 96.2%, 27.8% 83.3%, 14.6% 85.4%, 16.7% 72.2%, 3.8% 69.1%, 10.8% 57.8%, 0 50%, 10.8% 42.2%, 3.8% 30.9%, 16.7% 27.8%, 14.6% 14.6%, 27.8% 16.7%, 30.9% 3.8%, 42.2% 10.8%); }
-  .toggle { background: var(--text); color: var(--page); border: 0; border-radius: var(--radius-pill); padding: 10px 18px; min-height: 44px; font: 500 var(--type-label)/1 var(--font-sans); letter-spacing: var(--tracking-label); text-transform: uppercase; cursor: pointer; }
-  .comp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-  .comp-grid .panel { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .kata { display: inline-block; background: var(--screen); color: var(--accent); padding: 4px 8px; border-radius: var(--radius-key); font: 500 12px/1 var(--font-sans); letter-spacing: 1px; }
   .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 
-  /* ui: dashboard */
-  .dash { display: grid; grid-template-columns: 180px 1fr; gap: 16px; }
-  .dash nav { display: flex; flex-direction: column; gap: 8px; }
-  .dash nav .key { width: 100%; }
-  .bars { display: flex; align-items: flex-end; gap: 6px; height: 96px; margin-top: 16px; }
+  /* nav */
+  .nav { position: sticky; top: 0; z-index: 5; background: var(--page); border-bottom: 1px solid var(--rule); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; }
+  .brand { font-weight: 400; font-size: 18px; color: var(--text); text-decoration: none; text-transform: lowercase; }
+  [data-theme="dark"] .brand { text-decoration: none; }
+  .nav-links { display: none; gap: 24px; }
+  .nav-links a { color: var(--text); text-decoration: none; text-transform: lowercase; font-size: 15px; }
+  .nav-links a:hover { text-decoration: underline; }
+  .nav-end { display: flex; align-items: center; gap: 16px; }
+
+  /* hero */
+  .hero { text-align: center; margin-top: 56px; }
+  .hero .label { display: inline-flex; align-items: center; gap: 8px; }
+  .hero h1 { font-weight: 200; font-size: clamp(44px, 11vw, var(--type-display)); line-height: 1; margin: 16px auto 16px; text-transform: lowercase; max-width: 12ch; }
+  .hero .lede { color: var(--text-muted); max-width: 46ch; margin: 0 auto; font-size: var(--type-lead); }
+  .hero .actions { justify-content: center; margin-top: 24px; gap: 20px; }
+  .device-wrap { position: relative; max-width: 720px; margin: 48px auto 0; text-align: left; }
+  .device { padding: 16px; display: grid; gap: 12px; }
+  .device .head { display: flex; justify-content: space-between; align-items: center; }
+  .device .screen { display: flex; flex-direction: column; gap: 12px; }
+  .device .readout { display: flex; align-items: baseline; gap: 8px; }
+  .device .controls { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .device .encoders { display: flex; gap: 12px; }
+  .device .tracks .key { flex: 1; min-width: 56px; }
+  .device-wrap .sticker { position: absolute; top: -32px; right: -8px; }
+  .bars { display: flex; align-items: flex-end; gap: 6px; height: 56px; }
   .bars span { flex: 1; background: var(--on-screen); opacity: 0.35; }
   .bars span.hi { background: var(--accent); opacity: 1; }
-  table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  .specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px 16px; max-width: 720px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid var(--rule); text-align: left; }
+  .specs .num { display: block; font: 900 40px/1 var(--font-dot); margin-bottom: 8px; }
+
+  /* 01 panel */
+  .parts { display: grid; gap: 16px; }
+  .part { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+  .part h3 { font-weight: 300; font-size: var(--type-h3); margin: 0; text-transform: lowercase; }
+  .part p { margin: 0; color: var(--text-muted); font-size: var(--type-body); }
+  .part .stage { min-height: 96px; display: flex; align-items: center; }
+  .enc-set { display: flex; gap: 16px; }
+  .enc-set figure { margin: 0; display: grid; justify-items: center; gap: 8px; }
+
+  /* 02 sessions: dashboard */
+  .dash { display: grid; gap: 16px; }
+  .dash .side { display: flex; flex-direction: column; gap: 8px; align-self: start; }
+  .dash .side .keys { flex-wrap: nowrap; }
+  .dash .side .key { flex: 1; }
+  .dash .main { padding: 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .dash .main-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .dash .main-head h3 { font-weight: 200; font-size: var(--type-h2); line-height: 1; margin: 0; text-transform: lowercase; }
+  .dash .main-head h3 .label { margin-left: 8px; vertical-align: middle; }
+  .dash .range .key { min-height: 44px; min-width: 56px; }
+  .dash .screen .bars { height: 80px; margin-top: 12px; }
+  .readouts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .readouts .card strong { display: block; font-weight: 300; font-size: 22px; line-height: 1.1; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 420px; }
   th { text-align: left; padding: 8px; border-bottom: 1px solid var(--rule); font: 500 12px/1 var(--font-sans); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
   td { padding: 10px 8px; border-bottom: 1px solid var(--rule); }
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   .status { display: inline-flex; align-items: center; gap: 6px; }
-  .status .led { background: var(--led); }
-  .status.off .led { background: var(--rule); }
 
-  /* canvases */
-  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 960px; }
+  /* 03 launch kit */
+  .kit { display: grid; gap: 24px; align-items: end; }
   .frame { container-type: inline-size; border-radius: var(--radius-panel); overflow: hidden; outline: 1px solid var(--rule); }
-  .frame-cap { margin-top: 8px; }
-  .slide { aspect-ratio: 16 / 9; background: var(--panel); color: var(--text); position: relative; padding: 5cqw; }
+  figcaption { margin-top: 10px; }
+  .slide { aspect-ratio: 16 / 9; background: var(--panel); color: var(--text); position: relative; }
   .slide .corner { position: absolute; top: 5cqw; left: 5cqw; }
   .slide .corner .key { min-width: 0; min-height: 0; width: 6.5cqw; height: 5.4cqw; padding: 0.5cqw 0.6cqw; box-shadow: 0 0.1cqw 0 var(--key-shadow); }
-  .slide .corner .k-num { font-size: 1.7cqw; } .slide .corner .k-label { font-size: 1.05cqw; letter-spacing: 0.08cqw; }
+  .slide .corner .number { font-size: 1.7cqw; } .slide .corner .label { font-size: 1.05cqw; letter-spacing: 0.08cqw; }
   .slide h3 { position: absolute; top: 13cqw; left: 5cqw; width: 40cqw; margin: 0; font-weight: 200; font-size: 4.6cqw; line-height: 1.05; text-transform: lowercase; }
   .slide .screen { position: absolute; right: 5cqw; top: 13cqw; bottom: 5cqw; width: 44cqw; padding: 3cqw; display: flex; align-items: flex-end; gap: 1cqw; box-shadow: inset 0 0 0 0.2cqw var(--screen-bezel); }
-  .slide .screen .value { font-size: 11cqw; } .slide .screen .unit { font-size: 2.6cqw; padding-bottom: 1cqw; }
+  .slide .screen .value { font-size: 15cqw; } .slide .screen .unit { font-size: 2.6cqw; padding-bottom: 1.4cqw; }
   .slide .note { position: absolute; left: 5cqw; bottom: 5cqw; width: 36cqw; font-size: 1.5cqw; color: var(--text-muted); margin: 0; }
-  .post { aspect-ratio: 4 / 5; background: var(--page); color: var(--text); position: relative; padding: 6cqw; }
+  .post { aspect-ratio: 4 / 5; background: var(--page); color: var(--text); position: relative; }
   .post .cross { position: absolute; width: 4cqw; height: 4cqw; }
   .post .cross::before, .post .cross::after { content: ""; position: absolute; background: var(--text-muted); }
   .post .cross::before { left: 50%; top: 0; bottom: 0; width: 0.25cqw; transform: translateX(-50%); }
   .post .cross::after { top: 50%; left: 0; right: 0; height: 0.25cqw; transform: translateY(-50%); }
   .post .tl { top: 4cqw; left: 4cqw; } .post .br { bottom: 4cqw; right: 4cqw; }
   .post .tech { position: absolute; top: 5cqw; right: 6cqw; font: 500 2.6cqw/1 var(--font-sans); letter-spacing: 0.14cqw; text-transform: uppercase; color: var(--text-muted); }
-  .post .big { position: absolute; left: 6cqw; top: 24cqw; font: 900 34cqw/0.9 var(--font-dot); color: var(--text); }
+  .post .big { position: absolute; left: 6cqw; top: 22cqw; font: 900 34cqw/0.9 var(--font-dot); color: var(--text); }
   .post .big .unit { font-size: 8cqw; color: var(--accent); }
-  .post p { position: absolute; left: 6cqw; right: 6cqw; bottom: 16cqw; margin: 0; font-weight: 200; font-size: 5.4cqw; line-height: 1.15; text-transform: lowercase; }
+  .post p { position: absolute; left: 6cqw; right: 6cqw; bottom: 22cqw; margin: 0; font-weight: 200; font-size: 5.4cqw; line-height: 1.15; text-transform: lowercase; }
+  .post .orn { position: absolute; left: 6cqw; bottom: 7cqw; display: flex; gap: 2cqw; }
+  .post .orn .key { min-width: 0; min-height: 0; width: 11cqw; height: 9cqw; padding: 1cqw 1.2cqw; box-shadow: 0 0.3cqw 0 var(--key-shadow); }
+  .post .orn .number { font-size: 3cqw; } .post .orn .label { font-size: 2cqw; letter-spacing: 0.15cqw; }
   .post .sticker { position: absolute; right: 6cqw; top: 14cqw; width: 18cqw; font-size: 3.2cqw; }
-  .phone { aspect-ratio: 9 / 19.5; background: var(--page); color: var(--text); display: flex; flex-direction: column; padding: 6cqw 5cqw 4cqw; gap: 4cqw; max-width: 320px; margin: 0 auto; }
+  .phone { aspect-ratio: 9 / 19.5; background: var(--page); color: var(--text); display: flex; flex-direction: column; padding: 6cqw 5cqw 4cqw; gap: 4cqw; }
   .phone .p-title { font-weight: 200; font-size: 9cqw; margin: 2cqw 0 0; text-transform: lowercase; }
   .phone .screen { padding: 5cqw; }
   .phone .screen .value { font-size: 18cqw; } .phone .screen .unit { font-size: 6cqw; }
@@ -107,158 +165,305 @@
   .phone .keys .key { flex: 1; min-width: 0; min-height: 44px; }
   .phone .spacer { flex: 1; }
   .phone .main-action { display: flex; justify-content: space-between; align-items: center; }
-  .phone .tabbar { display: flex; gap: 2cqw; }
-  .phone .tabbar .key { flex: 1; min-width: 0; min-height: 44px; }
+  .phone-fig { max-width: 300px; width: 100%; justify-self: center; }
 
-  @media (max-width: 640px) {
-    .dash { grid-template-columns: 1fr; }
-    .dash nav { flex-direction: row; flex-wrap: wrap; }
-    .dash nav .key { width: auto; flex: 1; }
+  /* order + footer */
+  .order { padding: 24px 16px; display: grid; gap: 24px; }
+  .order h2 { font-weight: 200; font-size: clamp(32px, 6vw, 48px); line-height: 1.05; margin: 8px 0 0; text-transform: lowercase; }
+  .order form { display: grid; gap: 12px; }
+  .order .keys .key { flex: 1; min-height: 56px; }
+  .order .form-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .order .form-row .field { flex: 1 1 200px; }
+  .order .note { margin: 0; min-height: 1.5em; font-size: var(--type-body); color: var(--text-muted); }
+  footer { margin-top: 72px; border-top: 1px solid var(--rule); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 20px; padding-bottom: 32px; }
+
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 24px; }
+    .specs { grid-template-columns: repeat(4, 1fr); }
+    .kit { grid-template-columns: 1.2fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
   }
-  @media (prefers-reduced-motion: reduce) { .switch .track::after { transition: none; } }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .parts { grid-template-columns: repeat(3, 1fr); }
+    .dash { grid-template-columns: 200px 1fr; }
+    .dash .side .keys { flex-direction: column; }
+    .kit { grid-template-columns: 2fr 1fr 0.72fr; }
+    .kit .slide-fig { grid-column: auto; }
+    .order { grid-template-columns: 1fr 1fr; align-items: end; padding: 32px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .switch .track::after { transition: none; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <div>
-      <div class="label">pikmi style · TP–01</div>
-      <h1>instrument panel</h1>
-      <p class="lede">Grey panels, numbered keys, a small black screen and one signal orange.</p>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">tp–01</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#panel">panel</a><a href="#sessions">sessions</a><a href="#kit">launch kit</a><a href="#order">order</a>
+    </nav>
+    <div class="nav-end">
+      <button class="switch" type="button" role="switch" aria-checked="false" id="edition-switch" aria-label="Black edition"><span class="track"></span><span class="led"></span><span>black</span></button>
+      <a class="cta small" href="#order">pre-order</a>
     </div>
-    <button class="toggle" type="button" id="theme-toggle" aria-pressed="false">black edition</button>
-  </header>
+  </div>
+</header>
 
-  <section id="components" aria-labelledby="h-components">
-    <h2 id="h-components"><span class="label">01 · </span>components</h2>
-    <div class="comp-grid">
-      <div class="panel">
-        <span class="label">keys</span>
-        <div class="keys" role="group" aria-label="Range">
-          <button class="key" type="button" aria-pressed="false"><span class="k-label">day</span><span class="k-num">01</span></button>
-          <button class="key" type="button" aria-pressed="true"><span class="k-label">week</span><span class="k-num">02</span></button>
-          <button class="key alt" type="button" aria-pressed="false"><span class="k-label">shift</span><span class="k-num">03</span></button>
-        </div>
-      </div>
-      <div class="panel">
-        <span class="label">screen</span>
-        <div class="screen"><span class="value">120</span> <span class="unit">bpm</span></div>
-      </div>
-      <div class="panel">
-        <span class="label">encoders, main button</span>
-        <div class="row">
-          <div class="encoder" role="img" aria-label="Tempo encoder"></div>
-          <div class="encoder" style="--cap: var(--signal-green)" role="img" aria-label="Swing encoder"></div>
-          <div class="encoder" style="--cap: var(--signal-yellow)" role="img" aria-label="Level encoder"></div>
-          <button class="round" type="button">rec</button>
-        </div>
-      </div>
-      <div class="panel">
-        <span class="label">switch, cta, sticker</span>
-        <div class="row">
-          <button class="switch" type="button" role="switch" aria-checked="true" id="live-switch"><span class="track"></span><span class="led"></span><span>live</span></button>
-          <a class="cta" href="#ui">open panel</a>
-          <a href="#slides">see slides</a>
-          <div class="sticker" aria-hidden="true">new</div>
-        </div>
-      </div>
+<main id="top">
+  <section class="hero wrap" aria-labelledby="h-hero">
+    <span class="label">TP–01 · field recorder <span class="kata" lang="ja">レコーダー</span></span>
+    <h1 id="h-hero">record the whole room</h1>
+    <p class="lede">A pocket recorder with eight tracks, one screen and one round button. Nothing to set up first.</p>
+    <div class="row actions">
+      <a class="cta" href="#order">pre-order</a>
+      <a class="link" href="#panel">see the panel</a>
     </div>
+
+    <div class="device-wrap">
+      <div class="panel device" role="img" aria-label="The TP–01 recorder: a small screen showing 02:47 minutes, three encoders, a round record button and four track keys">
+        <div class="head"><span class="label">TP–01</span><span class="label">take 03</span></div>
+        <div class="screen">
+          <div class="row" style="justify-content: space-between"><span class="tag">track 1 · mic</span><span class="tag">48 kHz</span></div>
+          <div class="readout"><span class="value">02:47</span><span class="unit">min</span></div>
+          <div class="bars"><span style="height:30%"></span><span style="height:55%"></span><span style="height:42%"></span><span style="height:70%"></span><span class="hi" style="height:92%"></span><span style="height:60%"></span><span style="height:38%"></span><span style="height:50%"></span><span style="height:24%"></span></div>
+        </div>
+        <div class="controls">
+          <div class="encoders">
+            <span class="encoder"></span><span class="encoder" style="--cap: var(--signal-green)"></span><span class="encoder" style="--cap: var(--signal-yellow)"></span>
+          </div>
+          <span class="round" style="display:grid;place-items:center">rec</span>
+        </div>
+        <div class="keys tracks">
+          <span class="key" aria-pressed="true"><span class="label">mic</span><span class="number">01</span></span>
+          <span class="key"><span class="label">line</span><span class="number">02</span></span>
+          <span class="key"><span class="label">usb</span><span class="number">03</span></span>
+          <span class="key alt"><span class="label">shift</span><span class="number">04</span></span>
+        </div>
+      </div>
+      <div class="sticker" aria-hidden="true">new</div>
+    </div>
+
+    <dl class="specs">
+      <div><dt class="num">08</dt><dd class="label" style="margin:0">tracks</dd></div>
+      <div><dt class="num">16</dt><dd class="label" style="margin:0">hours of battery</dd></div>
+      <div><dt class="num">48</dt><dd class="label" style="margin:0">kHz recording</dd></div>
+      <div><dt class="num">01</dt><dd class="label" style="margin:0">round button</dd></div>
+    </dl>
   </section>
 
-  <section id="ui" aria-labelledby="h-ui">
-    <h2 id="h-ui"><span class="label">02 · </span>ui · dashboard</h2>
-    <div class="dash">
-      <nav class="panel" aria-label="Dashboard sections">
-        <button class="key" type="button" aria-pressed="true"><span class="k-label">overview</span><span class="k-num">01</span></button>
-        <button class="key" type="button" aria-pressed="false"><span class="k-label">sessions</span><span class="k-num">02</span></button>
-        <button class="key" type="button" aria-pressed="false"><span class="k-label">devices</span><span class="k-num">03</span></button>
-      </nav>
-      <div class="panel" style="padding: 16px">
-        <div class="row" style="justify-content: space-between">
-          <span class="label">recording time · this week</span>
-          <div class="keys" role="group" aria-label="Range">
-            <button class="key" type="button" aria-pressed="false" style="min-height:44px"><span class="k-label">day</span></button>
-            <button class="key alt" type="button" aria-pressed="false" style="min-height:44px"><span class="k-label">week</span></button>
+  <section id="panel" class="wrap" aria-labelledby="h-panel">
+    <div class="sec-head">
+      <h2 id="h-panel"><span class="label">01 ·</span>three kinds of control</h2>
+      <p>Every control has one job. Keys choose, encoders set, the round button records.</p>
+    </div>
+    <div class="parts">
+      <article class="panel part">
+        <span class="label">keys choose</span>
+        <div class="stage">
+          <div class="keys" role="group" aria-label="Input">
+            <button class="key" type="button" aria-pressed="true"><span class="label">mic</span><span class="number">01</span></button>
+            <button class="key" type="button" aria-pressed="false"><span class="label">line</span><span class="number">02</span></button>
+            <button class="key fn" type="button" aria-label="Undo, shift for redo"><span class="top"><span class="label">undo</span><span class="number">03</span></span><span class="shift">redo</span></button>
           </div>
         </div>
-        <div class="screen" style="margin-top: 12px">
-          <span class="value">04:12</span> <span class="unit">hrs</span>
+        <h3>pick the input</h3>
+        <p>Numbered keys pick one thing at a time. Hold shift for the second job printed below the key.</p>
+      </article>
+      <article class="panel part">
+        <span class="label">encoders set</span>
+        <div class="stage">
+          <div class="enc-set">
+            <figure><span class="encoder" role="img" aria-label="Level encoder"></span><figcaption class="label">level</figcaption></figure>
+            <figure><span class="encoder" style="--cap: var(--signal-green)" role="img" aria-label="Tone encoder"></span><figcaption class="label">tone</figcaption></figure>
+            <figure><span class="encoder" style="--cap: var(--signal-yellow)" role="img" aria-label="Pan encoder"></span><figcaption class="label">pan</figcaption></figure>
+          </div>
+        </div>
+        <h3>turn to set a value</h3>
+        <p>Three encoders, one per value. The cap color tells you which one you are holding.</p>
+      </article>
+      <article class="panel part">
+        <span class="label">one button records</span>
+        <div class="stage row" style="gap: 24px">
+          <button class="round" type="button" id="rec-btn" aria-pressed="false">rec</button>
+          <button class="switch" type="button" role="switch" aria-checked="true" id="monitor-switch"><span class="track"></span><span class="led"></span><span>monitor</span></button>
+        </div>
+        <h3>press once to record</h3>
+        <p>The orange button is the only thing that starts a take. The switch turns live monitoring on and off.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="sessions" class="wrap" aria-labelledby="h-sessions">
+    <div class="sec-head">
+      <h2 id="h-sessions"><span class="label">02 ·</span>your takes, on a bigger screen</h2>
+      <p>Plug it in and every session shows up in the companion web app.</p>
+    </div>
+    <div class="dash">
+      <nav class="panel side" aria-label="App sections">
+        <div class="keys">
+          <button class="key" type="button" aria-pressed="true"><span class="label">overview</span><span class="number">01</span></button>
+          <button class="key" type="button" aria-pressed="false"><span class="label">sessions</span><span class="number">02</span></button>
+          <button class="key" type="button" aria-pressed="false"><span class="label">devices</span><span class="number">03</span></button>
+        </div>
+        <button class="switch" type="button" role="switch" aria-checked="true" id="live-switch" style="padding: 0 4px"><span class="track"></span><span class="led"></span><span>live</span></button>
+      </nav>
+      <div class="panel main">
+        <div class="main-head">
+          <h3>this week<span class="label">01 · overview</span></h3>
+          <div class="keys range" role="group" aria-label="Range">
+            <button class="key" type="button" data-range><span class="label">day</span></button>
+            <button class="key alt" type="button" data-range aria-current="true"><span class="label">week</span></button>
+            <button class="key" type="button" data-range><span class="label">month</span></button>
+          </div>
+        </div>
+        <div class="screen">
+          <span class="tag">recording time</span>
+          <div class="readout" style="display:flex;align-items:baseline;gap:8px;margin-top:8px"><span class="value">04:12</span><span class="unit">hrs</span></div>
           <div class="bars" aria-hidden="true"><span style="height:40%"></span><span style="height:62%"></span><span style="height:35%"></span><span class="hi" style="height:88%"></span><span style="height:54%"></span><span style="height:20%"></span><span style="height:46%"></span></div>
         </div>
-        <table>
-          <thead><tr><th>session</th><th>device</th><th class="num">length</th><th>status</th></tr></thead>
-          <tbody>
-            <tr><td>kitchen loop</td><td>TP–01</td><td class="num">12:40</td><td><span class="status"><span class="led"></span>live</span></td></tr>
-            <tr><td>night field</td><td>TP–02</td><td class="num">31:05</td><td><span class="status off"><span class="led"></span>saved</span></td></tr>
-          </tbody>
-        </table>
+        <div class="readouts">
+          <div class="card"><span class="label">takes</span><strong>14</strong></div>
+          <div class="card"><span class="label">longest</span><strong>31:05</strong></div>
+          <div class="card"><span class="label">devices</span><strong>2</strong></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>session</th><th>device</th><th class="num">length</th><th>status</th></tr></thead>
+            <tbody>
+              <tr><td>kitchen loop</td><td>TP–01</td><td class="num">12:40</td><td><span class="status"><span class="led on"></span>live</span></td></tr>
+              <tr><td>night field</td><td>TP–02</td><td class="num">31:05</td><td><span class="status"><span class="led"></span>saved</span></td></tr>
+              <tr><td>stairwell choir</td><td>TP–01</td><td class="num">08:22</td><td><span class="status"><span class="led"></span>saved</span></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </section>
 
-  <section aria-labelledby="h-canvases">
-    <h2 id="h-canvases"><span class="label">03 · </span>other media</h2>
-    <div class="canvases">
-      <div id="slides">
+  <section id="kit" class="wrap" aria-labelledby="h-kit">
+    <div class="sec-head">
+      <h2 id="h-kit"><span class="label">03 ·</span>one launch, every format</h2>
+      <p>The same panel, cut for a keynote, a feed post and the phone app.</p>
+    </div>
+    <div class="kit">
+      <figure class="slide-fig" style="margin:0">
         <div class="frame"><div class="slide">
-          <div class="corner"><span class="key" aria-hidden="true"><span class="k-label">part</span><span class="k-num">02</span></span></div>
-          <h3>recording got easier in march</h3>
-          <p class="note">Median time from power on to first take, field test group.</p>
-          <div class="screen"><span class="value">00:08</span> <span class="unit">sec</span></div>
+          <div class="corner"><span class="key" aria-hidden="true"><span class="label">part</span><span class="number">02</span></span></div>
+          <h3>eight tracks fit in a pocket</h3>
+          <p class="note">One take per track, mixed on the device.</p>
+          <div class="screen"><span class="value">08</span> <span class="unit">tracks</span></div>
         </div></div>
-        <p class="frame-cap label">slides · 1920 x 1080</p>
-      </div>
-      <div id="social">
+        <figcaption class="label">keynote slide · 1920 x 1080</figcaption>
+      </figure>
+      <figure style="margin:0">
         <div class="frame"><div class="post" data-theme="dark">
           <span class="cross tl" aria-hidden="true"></span><span class="cross br" aria-hidden="true"></span>
           <span class="tech">TP–01 · field</span>
           <div class="sticker" aria-hidden="true">new</div>
           <div class="big">8<span class="unit">tracks</span></div>
           <p>record the whole room, one key at a time.</p>
+          <div class="orn" aria-hidden="true">
+            <span class="key"><span class="label">mic</span><span class="number">01</span></span>
+            <span class="key"><span class="label">line</span><span class="number">02</span></span>
+            <span class="key alt"><span class="label">shift</span><span class="number">03</span></span>
+          </div>
         </div></div>
-        <p class="frame-cap label">social · 1080 x 1350 · black edition</p>
-      </div>
-      <div id="app">
-        <div class="frame" style="max-width:320px;margin:0 auto"><div class="phone">
+        <figcaption class="label">feed post · 1080 x 1350 · black edition</figcaption>
+      </figure>
+      <figure class="phone-fig" style="margin:0">
+        <div class="frame"><div class="phone">
           <span class="label">TP–01 · tape</span>
           <p class="p-title">take 03</p>
           <div class="screen"><span class="value">02:47</span> <span class="unit">min</span></div>
           <div class="keys" role="group" aria-label="Input">
-            <button class="key" type="button" aria-pressed="true"><span class="k-label">mic</span><span class="k-num">1</span></button>
-            <button class="key" type="button" aria-pressed="false"><span class="k-label">line</span><span class="k-num">2</span></button>
+            <button class="key" type="button" aria-pressed="true"><span class="label">mic</span><span class="number">1</span></button>
+            <button class="key" type="button" aria-pressed="false"><span class="label">line</span><span class="number">2</span></button>
           </div>
           <div class="spacer"></div>
           <div class="main-action"><span class="label">hold to record</span><button class="round" type="button">rec</button></div>
-          <nav class="tabbar" aria-label="App sections">
-            <button class="key" type="button" aria-pressed="true"><span class="k-label">tape</span><span class="k-num">1</span></button>
-            <button class="key" type="button" aria-pressed="false"><span class="k-label">mix</span><span class="k-num">2</span></button>
-            <button class="key" type="button" aria-pressed="false"><span class="k-label">files</span><span class="k-num">3</span></button>
+          <nav class="keys" aria-label="Phone app sections">
+            <button class="key" type="button" aria-pressed="true"><span class="label">tape</span><span class="number">1</span></button>
+            <button class="key" type="button" aria-pressed="false"><span class="label">mix</span><span class="number">2</span></button>
+            <button class="key" type="button" aria-pressed="false"><span class="label">files</span><span class="number">3</span></button>
           </nav>
         </div></div>
-        <p class="frame-cap label">app · phone</p>
-      </div>
+        <figcaption class="label">companion app · phone</figcaption>
+      </figure>
     </div>
   </section>
-</div>
+
+  <section id="order" class="wrap" aria-labelledby="h-order">
+    <div class="panel order">
+      <div>
+        <span class="label">04 · order</span>
+        <h2 id="h-order">pick an edition</h2>
+        <p class="muted" style="margin:12px 0 0">Aluminium for the studio, black for the stage. Both have the same panel.</p>
+      </div>
+      <form id="order-form">
+        <div class="keys" role="group" aria-label="Edition">
+          <button class="key" type="button" aria-pressed="true" data-edition="light"><span class="label">aluminium</span><span class="number">01</span></button>
+          <button class="key" type="button" aria-pressed="false" data-edition="dark"><span class="label">black</span><span class="number">02</span></button>
+        </div>
+        <label class="label" for="email">email for the shipping date</label>
+        <div class="form-row">
+          <input class="field" id="email" type="email" placeholder="you@example.com" required>
+          <button class="cta" type="submit">notify me</button>
+        </div>
+        <p class="note" id="order-note" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="label">TP–01 is a fictional product made for this preview</span>
+    <span class="label">pikmi style · instrument panel</span>
+  </div>
+</footer>
+
 <script>
   const html = document.documentElement;
-  const toggle = document.getElementById('theme-toggle');
-  toggle.addEventListener('click', () => {
-    const dark = html.dataset.theme !== 'dark';
+  const edSwitch = document.getElementById('edition-switch');
+  const edKeys = document.querySelectorAll('[data-edition]');
+  function setEdition(dark) {
     if (dark) html.dataset.theme = 'dark'; else delete html.dataset.theme;
-    toggle.setAttribute('aria-pressed', String(dark));
-    toggle.textContent = dark ? 'light edition' : 'black edition';
+    edSwitch.setAttribute('aria-checked', String(dark));
+    edKeys.forEach(k => k.setAttribute('aria-pressed', String((k.dataset.edition === 'dark') === dark)));
+  }
+  edSwitch.addEventListener('click', () => setEdition(html.dataset.theme !== 'dark'));
+  edKeys.forEach(k => k.addEventListener('click', () => setEdition(k.dataset.edition === 'dark')));
+
+  // one pressed key per group
+  document.querySelectorAll('[role="group"], nav.keys, .side .keys').forEach(group => {
+    const keys = group.querySelectorAll('.key[aria-pressed]:not([data-edition])');
+    keys.forEach(key => key.addEventListener('click', () => keys.forEach(k => k.setAttribute('aria-pressed', String(k === key)))));
   });
-  document.querySelectorAll('[role="group"]').forEach(group => {
-    group.querySelectorAll('.key').forEach(key => key.addEventListener('click', () => {
-      group.querySelectorAll('.key').forEach(k => k.setAttribute('aria-pressed', String(k === key)));
-    }));
+  // the active range is the alt key
+  const range = document.querySelectorAll('[data-range]');
+  range.forEach(key => key.addEventListener('click', () => range.forEach(k => {
+    k.classList.toggle('alt', k === key);
+    if (k === key) k.setAttribute('aria-current', 'true'); else k.removeAttribute('aria-current');
+  })));
+
+  document.querySelectorAll('.switch[role="switch"]:not(#edition-switch)').forEach(s =>
+    s.addEventListener('click', () => s.setAttribute('aria-checked', String(s.getAttribute('aria-checked') !== 'true'))));
+
+  const rec = document.getElementById('rec-btn');
+  rec.addEventListener('click', () => {
+    const on = rec.getAttribute('aria-pressed') !== 'true';
+    rec.setAttribute('aria-pressed', String(on));
+    rec.textContent = on ? 'stop' : 'rec';
   });
-  document.querySelectorAll('nav .key').forEach(key => key.addEventListener('click', () => {
-    key.parentElement.querySelectorAll('.key').forEach(k => k.setAttribute('aria-pressed', String(k === key)));
-  }));
-  const live = document.getElementById('live-switch');
-  live.addEventListener('click', () => live.setAttribute('aria-checked', String(live.getAttribute('aria-checked') !== 'true')));
+
+  document.getElementById('order-form').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('order-note').textContent = 'This is a preview: nothing was sent.';
+  });
 </script>
 </body>
 </html>

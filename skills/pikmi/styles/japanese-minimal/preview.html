@@ -10,133 +10,493 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--page); color: var(--text); font: 300 17px/1.9 var(--font-body); }
-  a { color: var(--link); text-underline-offset: 4px; }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 72px 24px 96px; }
-  h1, h2, h3 { font-weight: 200; letter-spacing: var(--tracking-heading); margin: 0; line-height: 1.35; }
-  h1 { font-size: clamp(34px, 6vw, 64px); max-width: 16ch; }
-  h2 { font-size: 30px; }
-  h3 { font-size: 22px; }
-  .muted { color: var(--text-muted); }
-  .small { font-size: 14px; font-weight: 400; color: var(--text-muted); letter-spacing: var(--tracking-label); }
-  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: 1px solid var(--text-muted); border-radius: var(--radius-control);
-    background: transparent; color: var(--text); font: 400 16px/1 var(--font-body); text-decoration: none; cursor: pointer; transition: background-color 500ms ease-in-out, transform 500ms ease-in-out; }
+
+  /* components (from STYLE.md) */
+  body { font: 300 17px/1.9 var(--font-body); color: var(--text); background: var(--page); }
+  h1, h2, h3 { font-weight: 200; letter-spacing: var(--tracking-heading); color: var(--text); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--space-lg);
+    border: 1px solid var(--text-muted); border-radius: var(--radius-control); background: transparent; color: var(--text);
+    font: 400 16px/1 var(--font-body); text-decoration: none; cursor: pointer;
+    transition: background-color 500ms ease-in-out, transform 500ms ease-in-out; }
   .btn:hover { background: var(--panel); transform: translateY(-1px); }
   .btn:active { opacity: 0.8; }
   .btn.fill { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-  .btn:focus-visible, .line-field input:focus-visible, a:focus-visible, .tab:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .btn:focus-visible, .line-field input:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
   .section { padding-block: var(--space-section); border-top: var(--hairline); }
   .card { background: var(--card); border: var(--hairline); border-radius: var(--radius-card); padding: var(--space-lg); }
-  .line-field { position: relative; padding-top: 22px; max-width: 360px; }
-  .line-field input { width: 100%; min-height: 44px; border: 0; border-bottom: 1px solid var(--text-muted); background: transparent; color: var(--text); font: 300 17px var(--font-body); }
-  .line-field label { position: absolute; top: 0; left: 0; font: 400 13px/1 var(--font-body); color: var(--text-muted); }
-  .branch { width: 140px; height: 90px; stroke: var(--text-muted); stroke-width: 1; fill: none; }
-  .row { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
-  .offset { margin-left: 8%; }
-  .item-img { aspect-ratio: 4 / 5; background: var(--panel); border-radius: var(--radius-card); position: relative; overflow: hidden; }
-  .item-img .disc { position: absolute; width: 44%; aspect-ratio: 1; border-radius: 50%; background: var(--accent); opacity: 0.35; right: 14%; top: 16%; }
 
-  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 48px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 900px; }
-  .canvas { container-type: inline-size; border: var(--hairline); border-radius: var(--radius-card); overflow: hidden; background: var(--page); }
-  .cap { margin-top: 12px; }
-  .slide { aspect-ratio: 16 / 9; position: relative; }
-  .slide p.line { position: absolute; left: 10cqw; top: 22cqw; width: 52cqw; margin: 0; font: 200 3.4cqw/1.45 var(--font-body); }
-  .slide .rule { position: absolute; left: 10cqw; top: 36cqw; width: 18cqw; height: 0; border-top: var(--hairline); }
-  .slide .branch { position: absolute; right: 10cqw; top: 9cqw; width: 20cqw; height: 13cqw; stroke-width: 0.6; }
-  .slide .small { position: absolute; left: 10cqw; bottom: 7cqw; font-size: 1.1cqw; }
-  .post { aspect-ratio: 4 / 5; position: relative; }
-  .post p.line { position: absolute; left: 9cqw; top: 14cqw; width: 70cqw; margin: 0; font: 200 6.4cqw/1.4 var(--font-body); }
-  .post .field { position: absolute; left: 42cqw; bottom: 22cqw; width: 34cqw; aspect-ratio: 1; border-radius: 50%; background: var(--accent); opacity: 0.3; }
-  .post .branch { position: absolute; left: 34cqw; bottom: 18cqw; width: 46cqw; height: 30cqw; stroke-width: 0.6; }
-  .post .small { position: absolute; left: 9cqw; bottom: 8cqw; font-size: 2.6cqw; }
-  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; padding: 12cqw 7cqw 5cqw; gap: 6cqw; }
-  .phone h3 { font-size: 7cqw; }
-  .phone ul { list-style: none; margin: 0; padding: 0; }
-  .phone li { display: flex; justify-content: space-between; align-items: center; min-height: 48px; border-top: var(--hairline); font-size: 4.2cqw; }
-  .phone li:last-child { border-bottom: var(--hairline); }
-  .phone .spacer { flex: 1; }
-  .phone .btn { justify-content: center; }
-  .phone nav { display: flex; justify-content: space-around; }
-  .tab { min-height: 48px; padding: 0 3cqw; background: none; border: 0; color: var(--text-muted); font: 400 3.6cqw var(--font-body); cursor: pointer; }
-  .tab[aria-pressed="true"] { color: var(--text); text-decoration: underline; text-underline-offset: 6px; text-decoration-color: var(--accent); }
-  @media (max-width: 640px) { .offset { margin-left: 0; } .section { padding-block: 88px; } }
+  .line-field { position: relative; padding-top: 20px; }
+  .line-field input { width: 100%; min-height: 44px; border: 0; border-bottom: 1px solid var(--text-muted); background: transparent;
+    color: var(--text); font: 300 17px var(--font-body); }
+  .line-field label { position: absolute; top: 0; left: 0; font: 400 13px/1 var(--font-body); color: var(--text-muted); }
+
+  .branch { width: 120px; height: 80px; stroke: var(--text-muted); stroke-width: 1; fill: none; }
   @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+
+  /* page */
+  html { scroll-padding-top: 88px; }
+  body { margin: 0; }
+  h1, h2, h3 { margin: 0; line-height: 1.4; text-wrap: balance; }
+  a { color: var(--link); text-underline-offset: 4px; }
+  .wrap { max-width: 1120px; margin-inline: auto; padding-inline: 24px; }
+  .section { padding-block: 96px; }
+  .small { font: 400 14px/1.6 var(--font-body); letter-spacing: var(--tracking-label); color: var(--text-muted); }
+  .muted { color: var(--text-muted); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  ::placeholder { color: var(--text-muted); opacity: 1; }
+  :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .sec-head { display: flex; flex-direction: column-reverse; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .sec-head h2 { font-size: var(--type-h2); }
+  .sec-head p { margin: 16px 0 0; max-width: 46ch; color: var(--text-muted); }
+  .sec-head .branch { flex: none; align-self: flex-end; width: 96px; height: 64px; margin-right: 8%; }
+  .note { margin: 0; min-height: 1.9em; font: 400 15px/1.9 var(--font-body); color: var(--text-muted); }
+  .note.err { color: var(--danger); }
+
+  /* nav */
+  .nav { position: sticky; top: 0; z-index: 5; background: var(--page); border-bottom: var(--hairline); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
+  .brand { display: inline-flex; align-items: center; min-height: 44px; font: 400 20px/1 var(--font-body); letter-spacing: 3px; color: var(--text); text-decoration: none; }
+  .nav-links { display: none; gap: 40px; }
+  .nav-links a { display: inline-flex; justify-content: center; min-width: 44px; padding: 14px 0; color: var(--text); font: 400 16px/1 var(--font-body); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
+
+  /* hero */
+  .hero { position: relative; padding-block: 80px 96px; }
+  .hero-body { max-width: 640px; }
+  .hero .small { margin: 0; }
+  .hero h1 { margin-top: 24px; max-width: 17ch; text-wrap: balance; font-size: clamp(40px, 6vw, var(--type-display)); line-height: 1.35; }
+  .hero .lede { margin: 32px 0 0; max-width: 42ch; color: var(--text-muted); }
+  .hero .btn { margin-top: 48px; }
+  .hero-branch { display: block; width: 180px; height: 116px; margin: 72px 8% 0 auto; }
+
+  /* about */
+  .scene { margin: 0; }
+  .scene-img { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--panel); border-radius: var(--radius-card); }
+  .scene-img svg { position: absolute; inset: 0; width: 100%; height: 100%; stroke: var(--text-muted); stroke-width: 1; fill: none; }
+  .scene-img .disc { position: absolute; left: 66%; top: 15%; width: 11%; aspect-ratio: 1; border-radius: 50%; background: var(--accent); }
+  .scene figcaption { margin-top: 16px; max-width: 46ch; }
+  .ways { margin-top: var(--space-xl); }
+  .ways h2 { font-size: var(--type-h2); }
+  .ways-grid { display: grid; gap: 40px; margin-top: var(--space-lg); }
+  .way h3 { font-size: var(--type-h3); }
+  .way p { margin: 12px 0 0; color: var(--text-muted); max-width: 34ch; }
+  .ways-grid .branch { justify-self: end; width: 110px; height: 110px; margin-right: 6%; }
+
+  /* teas */
+  .shop { display: grid; gap: var(--space-lg); margin-top: var(--space-xl); }
+  .tea { display: flex; flex-direction: column; }
+  .tea-img { display: grid; place-items: center; aspect-ratio: 4 / 3; background: var(--panel); border-radius: var(--radius-control); }
+  .tea-img svg { width: 30%; height: auto; stroke: var(--text-muted); stroke-width: 1; fill: none; }
+  .tea h3 { margin-top: 28px; font-size: var(--type-h3); }
+  .tea .meta { margin: 2px 0 0; color: var(--text-muted); }
+  .tea .desc { margin: 16px 0 0; }
+  .tea .buy { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: auto; padding-top: 28px; }
+  .tea .price { color: var(--text-muted); }
+  .tea .in-order { margin: 8px 0 0; min-height: 1.6em; }
+
+  /* order */
+  .order { display: grid; gap: var(--space-xl); margin-top: var(--space-xl); }
+  .order h3 { font-size: var(--type-h3); }
+  .lines { list-style: none; margin: 24px 0 0; padding: 0; border-top: var(--hairline); }
+  .lines li { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; min-height: 80px; padding: 12px 0; border-bottom: var(--hairline); }
+  .lines li[hidden] { display: none; }
+  .l-name { line-height: 1.5; }
+  .l-name .small { display: block; }
+  .qty { display: inline-flex; align-items: center; }
+  .step { width: 44px; height: 44px; border: 0; border-radius: var(--radius-control); background: transparent; color: var(--text);
+    font: 300 22px/1 var(--font-body); cursor: pointer; transition: background-color 500ms ease-in-out; }
+  .step:hover { background: var(--panel); }
+  .q { min-width: 24px; text-align: center; font-variant-numeric: tabular-nums; }
+  .l-price { min-width: 64px; text-align: right; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .empty { margin: 24px 0 0; color: var(--text-muted); }
+  .total { display: flex; justify-content: space-between; align-items: baseline; margin-top: 24px; }
+  .total output { font-size: var(--type-h3); font-weight: 300; font-variant-numeric: tabular-nums; }
+  .pickup { display: grid; gap: 40px; align-content: start; }
+  .choice-group .small { margin: 0 0 12px; }
+  .choices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .choice { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 12px; border: 1px solid var(--text-muted); border-radius: var(--radius-control);
+    background: transparent; color: var(--text); font: 400 16px/1 var(--font-body); cursor: pointer; transition: background-color 500ms ease-in-out; }
+  .choice:hover { background: var(--panel); }
+  .choice[aria-pressed="true"] { background: var(--panel); border-color: var(--text); }
+  .choice[aria-pressed="true"]::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--text); }
+  .pickup .btn { justify-self: start; }
+  .pickup .note { margin-top: -24px; }
+
+  /* harvest notes: launch kit */
+  .kit { display: grid; gap: 48px; align-items: end; margin-top: var(--space-xl); }
+  .kit figure { margin: 0; }
+  .frame { container-type: inline-size; overflow: hidden; border: var(--hairline); border-radius: var(--radius-card); background: var(--page); }
+  .kit figcaption { margin-top: 14px; }
+  .slide { position: relative; aspect-ratio: 16 / 9; }
+  .slide p { position: absolute; left: 38.2cqw; top: 16cqw; width: 50cqw; margin: 0; font: 200 3.33cqw/1.5 var(--font-body); letter-spacing: 0.03cqw; }
+  .slide .branch { position: absolute; left: 8cqw; bottom: 8cqw; width: 19cqw; height: 12.2cqw; }
+  .post { position: relative; aspect-ratio: 4 / 5; }
+  .post p { position: absolute; left: 9cqw; top: 13cqw; width: 64cqw; margin: 0; font: 200 5.93cqw/1.5 var(--font-body); }
+  .post .pastel { position: absolute; right: 15cqw; bottom: 25cqw; width: 30cqw; aspect-ratio: 1; border-radius: 50%; background: var(--accent); opacity: 0.35; }
+  .post .branch { position: absolute; right: 9cqw; bottom: 19cqw; width: 46cqw; height: 29.6cqw; }
+  .post .cap { position: absolute; left: 9cqw; bottom: 8cqw; margin: 0; font: 400 2.6cqw/1.4 var(--font-body); letter-spacing: 0.1cqw; color: var(--text-muted); }
+  .phone { display: flex; flex-direction: column; aspect-ratio: 9 / 19.5; padding: 13cqw 7cqw 4cqw; background: var(--card); }
+  .phone .p-label { margin: 0; font: 400 4.2cqw/1.4 var(--font-body); letter-spacing: 0.3cqw; color: var(--text-muted); }
+  .phone .p-title { margin: 2cqw 0 0; font: 200 9cqw/1.3 var(--font-body); }
+  .phone ul { list-style: none; margin: 9cqw 0 0; padding: 0; border-top: var(--hairline); }
+  .phone li { display: flex; justify-content: space-between; align-items: center; gap: 3cqw; min-height: 15cqw; border-bottom: var(--hairline); font-size: 4.6cqw; line-height: 1.4; }
+  .phone li span:last-child { color: var(--text-muted); }
+  .phone .p-total { display: flex; justify-content: space-between; margin-top: 5cqw; font-size: 4.6cqw; }
+  .phone .spacer { flex: 1; }
+  .phone .btn { width: 100%; padding: 0 3cqw; font-size: clamp(13px, 5cqw, 16px); }
+  .phone .note { min-height: 0; margin-top: 2cqw; font-size: 12px; line-height: 1.5; text-align: center; }
+  .phone nav { display: flex; justify-content: space-around; margin-top: 4cqw; border-top: var(--hairline); }
+  .tab { min-width: 48px; min-height: 48px; padding: 0 3cqw; border: 0; background: none; color: var(--text-muted); font: 400 clamp(12px, 4.4cqw, 15px) var(--font-body); cursor: pointer; }
+  .tab[aria-pressed="true"] { color: var(--text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
+  .phone-fig { width: 100%; max-width: 300px; justify-self: center; }
+
+  /* visit */
+  .visit { position: relative; display: grid; gap: var(--space-xl); }
+  .visit h2 { font-size: var(--type-h2); }
+  .visit .intro > p { margin: 16px 0 0; max-width: 40ch; color: var(--text-muted); }
+  .hours { margin: 40px 0 0; max-width: 440px; border-top: var(--hairline); }
+  .hours div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 24px; padding: 14px 0; border-bottom: var(--hairline); }
+  .hours dt { color: var(--text-muted); }
+  .hours dd { margin: 0; }
+  .letter { display: grid; gap: 28px; align-content: start; max-width: 440px; }
+  .letter h3 { font-size: var(--type-h3); }
+  .letter p { margin: 0; color: var(--text-muted); }
+  .letter .btn { justify-self: start; }
+  .letter .note { margin-top: -16px; }
+  .visit .branch { width: 96px; height: 96px; justify-self: end; transform: scaleX(-1); margin-right: 10%; }
+  footer { border-top: var(--hairline); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 32px; padding-bottom: 56px; }
+  footer .small { margin: 0; }
+
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 32px; }
+    .section { padding-block: var(--space-section); }
+    .hero { padding-block: 112px var(--space-section); }
+    .hero-body { margin-left: 6%; }
+    .sec-head { flex-direction: row; gap: 32px; }
+    .sec-head .branch { align-self: flex-start; width: 120px; height: 80px; margin-right: 6%; }
+    .choices { display: flex; flex-wrap: wrap; }
+    .choice { padding: 0 16px; }
+    .scene-img { aspect-ratio: 16 / 9; }
+    .scene { margin-left: 8%; }
+    .shop { grid-template-columns: repeat(2, 1fr); }
+    .kit { grid-template-columns: 1.2fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
+  }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .hero { padding-block: 152px 168px; }
+    .hero-body { margin-left: 9%; }
+    .hero-branch { position: absolute; right: 4%; bottom: 120px; width: 260px; height: 168px; margin: 0; }
+    .ways-grid { grid-template-columns: repeat(3, 1fr) 120px; gap: 56px; }
+    .ways-grid .branch { align-self: start; margin: -40px 0 0; }
+    .shop { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .shop .tea:nth-child(2) { margin-top: 64px; }
+    .order { grid-template-columns: 1.1fr 1fr; gap: 112px; }
+    .kit { grid-template-columns: 1.7fr 1fr 0.8fr; }
+    .kit .slide-fig { grid-column: auto; }
+    .visit { grid-template-columns: 1fr 1fr 120px; gap: 80px; }
+    .letter { margin-top: 72px; }
+    .visit .branch { align-self: end; margin: 0; }
+  }
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="branch" viewBox="0 0 140 90"><path d="M4 86 C 40 70, 70 46, 136 6"/><path d="M48 64 c 4 -14, 16 -20, 26 -20 c -2 10, -12 20, -26 20z"/><path d="M78 44 c 2 -12, 12 -18, 22 -18 c -2 9, -10 17, -22 18z"/><path d="M102 26 c -10 -6, -14 -14, -12 -22 c 8 2, 13 10, 12 22z"/></symbol>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="branch" viewBox="0 0 140 90">
+    <path vector-effect="non-scaling-stroke" d="M4 86 C 40 70, 70 46, 136 6"/>
+    <path vector-effect="non-scaling-stroke" d="M48 64 c 4 -14, 16 -20, 26 -20 c -2 10, -12 20, -26 20z"/>
+    <path vector-effect="non-scaling-stroke" d="M78 44 c 2 -12, 12 -18, 22 -18 c -2 9, -10 17, -22 18z"/>
+    <path vector-effect="non-scaling-stroke" d="M102 26 c -10 -6, -14 -14, -12 -22 c 8 2, 13 10, 12 22z"/>
+    <path vector-effect="non-scaling-stroke" d="M30 74 c -12 -2, -20 -10, -22 -20 c 10 0, 19 8, 22 20z"/>
+  </symbol>
+  <symbol id="sprig" viewBox="0 0 120 120">
+    <path vector-effect="non-scaling-stroke" d="M58 118 C 56 92, 62 62, 60 22"/>
+    <path vector-effect="non-scaling-stroke" d="M58 88 C 40 84, 28 70, 26 54 C 42 56, 55 70, 58 88 Z"/>
+    <path vector-effect="non-scaling-stroke" d="M60 66 C 78 64, 92 52, 96 36 C 80 36, 64 48, 60 66 Z"/>
+    <path vector-effect="non-scaling-stroke" d="M60 36 C 50 30, 46 18, 48 6 C 58 12, 62 24, 60 36 Z"/>
+  </symbol>
+  <symbol id="grass" viewBox="0 0 100 80">
+    <path vector-effect="non-scaling-stroke" d="M34 78 C 34 52, 28 30, 12 8"/>
+    <path vector-effect="non-scaling-stroke" d="M42 78 C 44 54, 50 34, 66 14"/>
+    <path vector-effect="non-scaling-stroke" d="M50 78 C 54 62, 66 50, 94 42"/>
+    <path vector-effect="non-scaling-stroke" d="M38 78 C 36 64, 30 56, 18 50"/>
+  </symbol>
 </svg>
-<div class="wrap">
-  <header>
-    <p class="small" style="margin:0 0 24px">pikmi style</p>
-    <h1 class="offset">Japanese Minimal</h1>
-    <p class="muted offset" style="max-width:46ch;margin:24px 0 36px 8%">Wide whitespace, hairline rules, light type and one soft pastel per page.</p>
-    <div class="row offset"><a class="btn" href="#components">Begin</a><a href="#slides">See the slides</a></div>
-  </header>
 
-  <section id="components" class="section" aria-labelledby="h-components">
-    <div class="row" style="justify-content:space-between;align-items:flex-start">
-      <h2 id="h-components">Components</h2>
-      <svg class="branch"><use href="#branch"/></svg>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">kiriha</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#teas">Teas</a><a href="#order">Order</a><a href="#notes">Harvest notes</a><a href="#visit">Visit</a>
+    </nav>
+    <a class="btn" href="#order">Order tea</a>
+  </div>
+</header>
+
+<main id="top" class="wrap">
+  <section class="hero" aria-labelledby="h-hero">
+    <div class="hero-body">
+      <p class="small">A tea shop on Nishi Lane</p>
+      <h1 id="h-hero">A small shop for three teas and the time to drink them.</h1>
+      <p class="lede">Kiriha keeps only sencha, hojicha and matcha. Each comes from one farm and is packed in small bags, so it is still fresh when you open it.</p>
+      <a class="btn" href="#teas">See the three teas</a>
     </div>
-    <div class="grid" style="margin-top:48px">
-      <div><p class="small">Buttons</p><div class="row"><a class="btn" href="#ui">View the collection</a><a class="btn fill" href="#app">Reserve</a></div></div>
-      <div><div class="line-field"><label for="mail">Email for the newsletter</label><input id="mail" type="email" placeholder="you@example.jp"></div></div>
-      <div class="card"><h3>A card</h3><p class="muted" style="margin:8px 0 0">Hairline border, no shadow, white surface.</p></div>
+    <svg class="branch hero-branch" aria-hidden="true"><use href="#branch"/></svg>
+  </section>
+
+  <section id="about" class="section" aria-labelledby="h-about">
+    <figure class="scene">
+      <div class="scene-img" role="img" aria-label="Line drawing of rows of tea bushes on a hillside, a pale blue sun above">
+        <span class="disc"></span>
+        <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <path vector-effect="non-scaling-stroke" d="M0 214 C 160 160, 300 166, 420 192 S 680 236, 800 176"/>
+          <path vector-effect="non-scaling-stroke" d="M-10 282 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0 a 20 12 0 0 1 40 0"/>
+          <path vector-effect="non-scaling-stroke" d="M-20 342 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0 a 30 18 0 0 1 60 0"/>
+          <path vector-effect="non-scaling-stroke" d="M-40 418 a 45 26 0 0 1 90 0 a 45 26 0 0 1 90 0 a 45 26 0 0 1 90 0 a 45 26 0 0 1 90 0 a 45 26 0 0 1 90 0 a 45 26 0 0 1 90 0 a 45 26 0 0 1 90 0 a 45 26 0 0 1 90 0 a 45 26 0 0 1 90 0 a 45 26 0 0 1 90 0"/>
+        </svg>
+      </div>
+      <figcaption class="small">Morning over the sencha farm, the week of the first harvest.</figcaption>
+    </figure>
+    <div class="ways">
+      <h2 id="h-about">We do three things, slowly</h2>
+      <div class="ways-grid">
+        <div class="way"><h3>Steam for thirty seconds</h3><p>Our sencha is steamed only briefly, so it stays green and a little grassy.</p></div>
+        <div class="way"><h3>Pack in small bags</h3><p>Fifty grams at most. A bag is finished in two weeks, before the tea fades.</p></div>
+        <div class="way"><h3>Pour before you buy</h3><p>Sit at the counter for a cup first. We brew each tea the way we would at home.</p></div>
+        <svg class="branch" aria-hidden="true"><use href="#sprig"/></svg>
+      </div>
     </div>
   </section>
 
-  <section id="ui" class="section" aria-labelledby="h-ui">
-    <h2 id="h-ui">UI · A small tea shop</h2>
-    <div class="grid" style="margin-top:56px">
-      <div><div class="item-img" aria-hidden="true"><span class="disc"></span></div><h3 style="margin-top:20px">Spring sencha</h3><p class="muted" style="margin:4px 0 0">Shizuoka · 50 g</p></div>
-      <div style="margin-top:64px"><div class="item-img" aria-hidden="true"></div><h3 style="margin-top:20px">Roasted hojicha</h3><p class="muted" style="margin:4px 0 0">Kyoto · 80 g</p></div>
-      <div><div class="item-img" aria-hidden="true"></div><h3 style="margin-top:20px">Stone-ground matcha</h3><p class="muted" style="margin:4px 0 0">Uji · 30 g</p></div>
+  <section id="teas" class="section" aria-labelledby="h-teas">
+    <div class="sec-head">
+      <div>
+        <h2 id="h-teas">Three teas</h2>
+        <p>Each from one farm, each in a small bag. Add what you like and pick it up at the counter.</p>
+      </div>
+      <svg class="branch" aria-hidden="true"><use href="#branch"/></svg>
+    </div>
+    <div class="shop">
+      <article class="card tea">
+        <div class="tea-img" aria-hidden="true">
+          <svg viewBox="0 0 120 150"><ellipse vector-effect="non-scaling-stroke" cx="60" cy="30" rx="32" ry="8"/><path vector-effect="non-scaling-stroke" d="M28 30 V 126 A 32 8 0 0 0 92 126 V 30"/><path vector-effect="non-scaling-stroke" d="M28 46 A 32 8 0 0 0 92 46"/></svg>
+        </div>
+        <h3>Spring sencha</h3>
+        <p class="meta">Shizuoka · 50 g</p>
+        <p class="desc">Picked in early May and steamed for thirty seconds. Brew it at seventy degrees.</p>
+        <div class="buy"><span class="price">¥1,600</span><button class="btn" type="button" data-add="sencha">Add to order</button></div>
+        <p class="in-order small" data-in="sencha"></p>
+      </article>
+      <article class="card tea">
+        <div class="tea-img" aria-hidden="true">
+          <svg viewBox="0 0 120 150"><path vector-effect="non-scaling-stroke" d="M26 58 H 94 L 86 128 Q 85 134 79 134 H 41 Q 35 134 34 128 Z"/><path vector-effect="non-scaling-stroke" d="M50 44 C 44 34, 56 28, 50 16"/><path vector-effect="non-scaling-stroke" d="M68 44 C 62 34, 74 28, 68 16"/></svg>
+        </div>
+        <h3>Roasted hojicha</h3>
+        <p class="meta">Kyoto · 80 g</p>
+        <p class="desc">Roasted over a low flame until the leaves turn brown. Warm and gentle, good after dinner.</p>
+        <div class="buy"><span class="price">¥1,200</span><button class="btn" type="button" data-add="hojicha">Add to order</button></div>
+        <p class="in-order small" data-in="hojicha"></p>
+      </article>
+      <article class="card tea">
+        <div class="tea-img" aria-hidden="true">
+          <svg viewBox="0 0 120 150"><path vector-effect="non-scaling-stroke" d="M14 84 H 106 C 104 112, 84 128, 60 128 C 36 128, 16 112, 14 84 Z"/><path vector-effect="non-scaling-stroke" d="M44 128 V 136 H 76 V 128"/><path vector-effect="non-scaling-stroke" d="M78 20 L 92 72 M 84 18 L 96 70 M 90 18 L 100 66"/></svg>
+        </div>
+        <h3>Stone-ground matcha</h3>
+        <p class="meta">Uji · 30 g</p>
+        <p class="desc">Shade-grown leaves, ground slowly on stone. For one bowl at a time, whisked by hand.</p>
+        <div class="buy"><span class="price">¥2,400</span><button class="btn" type="button" data-add="matcha">Add to order</button></div>
+        <p class="in-order small" data-in="matcha"></p>
+      </article>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="h-media">
-    <h2 id="h-media">Other media</h2>
-    <div class="canvases" style="margin-top:56px">
-      <div id="slides">
-        <div class="canvas"><div class="slide">
-          <svg class="branch"><use href="#branch"/></svg>
-          <p class="line">We steam the leaves for thirty seconds, no longer.</p>
-          <span class="rule"></span>
-          <span class="small">Process · 02</span>
-        </div></div>
-        <p class="cap small">slides · 1920 x 1080</p>
+  <section id="order" class="section" aria-labelledby="h-order">
+    <div class="sec-head">
+      <div>
+        <h2 id="h-order">Order for pickup</h2>
+        <p>Collect your bags at the counter, Thursday to Sunday. We weigh and seal them when you arrive.</p>
       </div>
-      <div id="social">
-        <div class="canvas"><div class="post">
-          <p class="line">The first spring harvest has arrived.</p>
-          <span class="field" aria-hidden="true"></span>
-          <svg class="branch"><use href="#branch"/></svg>
-          <span class="small">In the shop from Saturday</span>
-        </div></div>
-        <p class="cap small">social · 1080 x 1350</p>
+      <svg class="branch" aria-hidden="true"><use href="#grass"/></svg>
+    </div>
+    <form class="order" id="order-form">
+      <div class="basket">
+        <h3>Your order</h3>
+        <ul class="lines">
+          <li data-tea="sencha" data-price="1600">
+            <span class="l-name">Spring sencha<span class="small">50 g</span></span>
+            <span class="qty"><button class="step" type="button" data-step="-1" aria-label="One less Spring sencha">−</button><span class="q">1</span><button class="step" type="button" data-step="1" aria-label="One more Spring sencha">+</button></span>
+            <span class="l-price">¥1,600</span>
+          </li>
+          <li data-tea="hojicha" data-price="1200">
+            <span class="l-name">Roasted hojicha<span class="small">80 g</span></span>
+            <span class="qty"><button class="step" type="button" data-step="-1" aria-label="One less Roasted hojicha">−</button><span class="q">1</span><button class="step" type="button" data-step="1" aria-label="One more Roasted hojicha">+</button></span>
+            <span class="l-price">¥1,200</span>
+          </li>
+          <li data-tea="matcha" data-price="2400" hidden>
+            <span class="l-name">Stone-ground matcha<span class="small">30 g</span></span>
+            <span class="qty"><button class="step" type="button" data-step="-1" aria-label="One less Stone-ground matcha">−</button><span class="q">0</span><button class="step" type="button" data-step="1" aria-label="One more Stone-ground matcha">+</button></span>
+            <span class="l-price">¥0</span>
+          </li>
+        </ul>
+        <p class="empty" id="empty" hidden>Your order is empty. Add a tea from the three above.</p>
+        <div class="total"><span class="small">Total</span><output id="total" aria-live="polite">¥2,800</output></div>
       </div>
-      <div id="app">
-        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
-          <p class="small" style="margin:0">Your order</p>
-          <h3>Two teas</h3>
-          <ul><li><span>Spring sencha</span><span class="muted">1</span></li><li><span>Roasted hojicha</span><span class="muted">1</span></li></ul>
+      <div class="pickup">
+        <h3>Pickup</h3>
+        <div class="choice-group">
+          <p class="small" id="l-day">Day</p>
+          <div class="choices" role="group" aria-labelledby="l-day">
+            <button class="choice" type="button" aria-pressed="false">Thu 29</button>
+            <button class="choice" type="button" aria-pressed="true">Fri 30</button>
+            <button class="choice" type="button" aria-pressed="false">Sat 31</button>
+            <button class="choice" type="button" aria-pressed="false">Sun 1</button>
+          </div>
+        </div>
+        <div class="choice-group">
+          <p class="small" id="l-time">Time</p>
+          <div class="choices" role="group" aria-labelledby="l-time">
+            <button class="choice" type="button" aria-pressed="true">11:00 to 14:00</button>
+            <button class="choice" type="button" aria-pressed="false">14:00 to 18:00</button>
+          </div>
+        </div>
+        <div class="line-field"><label for="o-name">Name for the order</label><input id="o-name" type="text" autocomplete="name"></div>
+        <button class="btn fill" type="submit">Place order</button>
+        <p class="note" id="order-note" aria-live="polite"></p>
+      </div>
+    </form>
+  </section>
+
+  <section id="notes" class="section" aria-labelledby="h-notes">
+    <div class="sec-head">
+      <div>
+        <h2 id="h-notes">When the first harvest arrives</h2>
+        <p>One sentence for the talk at the tea market, one post for the feed, and the order screen in our app.</p>
+      </div>
+    </div>
+    <div class="kit">
+      <figure class="slide-fig">
+        <div class="frame"><div class="slide">
+          <svg class="branch" aria-hidden="true"><use href="#branch"/></svg>
+          <p>We steam the leaves for thirty seconds, no longer.</p>
+        </div></div>
+        <figcaption class="small">Talk slide · 1920 x 1080</figcaption>
+      </figure>
+      <figure>
+        <div class="frame"><div class="post">
+          <p>The first spring harvest has arrived.</p>
+          <span class="pastel" aria-hidden="true"></span>
+          <svg class="branch" aria-hidden="true"><use href="#branch"/></svg>
+          <span class="cap">In the shop from Thursday 29 October</span>
+        </div></div>
+        <figcaption class="small">Feed post · 1080 x 1350</figcaption>
+      </figure>
+      <figure class="phone-fig">
+        <div class="frame"><div class="phone">
+          <p class="p-label">Your order</p>
+          <p class="p-title">Two teas</p>
+          <ul>
+            <li><span>Spring sencha</span><span>1</span></li>
+            <li><span>Roasted hojicha</span><span>1</span></li>
+            <li><span>Pickup</span><span>Fri 30, 11:00</span></li>
+          </ul>
+          <div class="p-total"><span>Total</span><span>¥2,800</span></div>
           <div class="spacer"></div>
-          <a class="btn fill" href="#app">Place order</a>
-          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Order</button><button class="tab" type="button" aria-pressed="false">Teas</button><button class="tab" type="button" aria-pressed="false">Visit</button></nav>
+          <button class="btn fill" type="button" id="p-place">Place order</button>
+          <p class="note" id="p-note" aria-live="polite"></p>
+          <nav aria-label="Shop app sections">
+            <button class="tab" type="button" aria-pressed="true">Order</button>
+            <button class="tab" type="button" aria-pressed="false">Teas</button>
+            <button class="tab" type="button" aria-pressed="false">Visit</button>
+          </nav>
         </div></div>
-        <p class="cap small">app · phone</p>
-      </div>
+        <figcaption class="small">Shop app · phone</figcaption>
+      </figure>
     </div>
   </section>
-</div>
+
+  <section id="visit" class="section" aria-labelledby="h-visit">
+    <div class="visit">
+      <div class="intro">
+        <h2 id="h-visit">Sit for a cup</h2>
+        <p>Nishi Lane 4, on the corner by the old post box. Six stools at the counter, no booking needed.</p>
+        <dl class="hours">
+          <div><dt>Thursday to Sunday</dt><dd>11:00 to 18:00</dd></div>
+          <div><dt>Monday to Wednesday</dt><dd>Closed</dd></div>
+        </dl>
+      </div>
+      <form class="letter" id="letter-form">
+        <h3>A letter each harvest</h3>
+        <p>Four short letters a year, when a new tea comes in. Nothing else.</p>
+        <div class="line-field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" required></div>
+        <button class="btn" type="submit">Send me the letter</button>
+        <p class="note" id="letter-note" aria-live="polite"></p>
+      </form>
+      <svg class="branch" aria-hidden="true"><use href="#sprig"/></svg>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="small">Kiriha is a fictional tea shop made for this preview</p>
+    <p class="small">pikmi style · japanese minimal</p>
+  </div>
+</footer>
+
 <script>
-  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+  const $ = id => document.getElementById(id);
+  const yen = n => '¥' + n.toLocaleString('en-US');
+  const qty = { sencha: 1, hojicha: 1, matcha: 0 };
+  const rows = [...document.querySelectorAll('.lines li')];
+
+  function render() {
+    let sum = 0, count = 0;
+    rows.forEach(li => {
+      const q = qty[li.dataset.tea];
+      const line = q * Number(li.dataset.price);
+      sum += line; count += q;
+      li.hidden = q === 0;
+      li.querySelector('.q').textContent = q;
+      li.querySelector('.l-price').textContent = yen(line);
+    });
+    document.querySelectorAll('[data-in]').forEach(el => {
+      const q = qty[el.dataset.in];
+      el.textContent = q ? q + ' in your order' : '';
+    });
+    $('empty').hidden = count > 0;
+    $('total').textContent = yen(sum);
+    $('order-note').textContent = '';
+  }
+
+  document.querySelectorAll('[data-add]').forEach(b => b.addEventListener('click', () => { qty[b.dataset.add] += 1; render(); }));
+  rows.forEach(li => li.querySelectorAll('.step').forEach(b => b.addEventListener('click', () => {
+    const t = li.dataset.tea;
+    qty[t] = Math.max(0, qty[t] + Number(b.dataset.step));
+    render();
   })));
+
+  // one pressed choice per group
+  document.querySelectorAll('.choices, .phone nav').forEach(group => {
+    const opts = group.querySelectorAll('[aria-pressed]');
+    opts.forEach(o => o.addEventListener('click', () => opts.forEach(x => x.setAttribute('aria-pressed', String(x === o)))));
+  });
+
+  $('order-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const empty = Object.values(qty).every(q => q === 0);
+    const note = $('order-note');
+    note.classList.toggle('err', empty);
+    note.textContent = empty ? 'Add a tea before you place the order.' : 'This is a preview: nothing was sent.';
+  });
+  $('p-place').addEventListener('click', () => { $('p-note').textContent = 'Preview only: nothing was sent.'; });
+  $('letter-form').addEventListener('submit', e => {
+    e.preventDefault();
+    $('letter-note').textContent = 'This is a preview: nothing was sent.';
+  });
+  render();
 </script>
 </body>
 </html>

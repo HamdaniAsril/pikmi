@@ -10,163 +10,548 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--page); color: var(--text); font: 400 17px/1.7 var(--font-body); }
+  html { scroll-padding-top: 84px; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 var(--type-body)/1.7 var(--font-body); }
   a { color: var(--link); text-underline-offset: 3px; }
-  .wrap { max-width: 1160px; margin: 0 auto; padding: 32px 16px 80px; }
-  h1, h2, h3 { font-family: var(--font-display); font-weight: 800; margin: 0; line-height: 1.15; }
-  h1 { font-size: clamp(42px, 8vw, 84px); }
-  h2 { font-size: 34px; margin-bottom: 24px; }
-  h3 { font-size: 22px; }
-  section { margin-top: 72px; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 800; margin: 0; line-height: 1.2; }
+  .wrap { max-width: 1160px; margin-inline: auto; padding-inline: 16px; }
+  section { margin-top: 96px; }
+  .sec-head { margin: 0 0 36px; max-width: 62ch; }
+  .sec-head h2 { font-size: clamp(30px, 5vw, var(--type-h2)); margin-top: 14px; }
+  .sec-head p { margin: 12px 0 0; color: var(--text-muted); }
   .muted { color: var(--text-muted); }
-  .label { font: 500 13px/1 var(--font-body); letter-spacing: var(--tracking-label); color: var(--text-muted); }
-  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--outline); border-radius: var(--radius-key);
-    background: var(--accent); color: var(--on-accent); box-shadow: var(--print-shadow); font: 700 17px/1 var(--font-display); letter-spacing: 1px; text-decoration: none; cursor: pointer;
+  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  ::placeholder { color: var(--text-muted); opacity: 1; }
+  :focus-visible { outline: 3px solid var(--vermilion); outline-offset: 3px; }
+
+  /* components (from STYLE.md) */
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--space-lg);
+    border: var(--outline); border-radius: var(--radius-key); background: var(--accent); color: var(--on-accent); box-shadow: var(--print-shadow);
+    font: 700 17px/1 var(--font-display); letter-spacing: 1px; text-decoration: none; cursor: pointer;
     transition: transform 75ms linear, box-shadow 75ms linear; }
   .btn:hover { transform: translate(-2px, -2px); box-shadow: var(--print-shadow-hover); }
   .btn:active { transform: translate(4px, 4px); box-shadow: none; border-color: var(--vermilion); }
   .btn.paper { background: var(--card); color: var(--text); }
-  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 3px solid var(--vermilion); outline-offset: 3px; }
-  .block { background: var(--card); border: var(--outline); border-radius: var(--radius-card); padding: var(--space-lg); box-shadow: var(--print-shadow); }
+  .btn:focus-visible, .field:focus-visible { outline: 3px solid var(--vermilion); outline-offset: 3px; }
+
+  .block { background: var(--card); border: var(--outline); border-radius: var(--radius-card); padding: var(--space-lg);
+    box-shadow: var(--print-shadow); }
   .block.indigo { background: var(--indigo); color: var(--page); }
   .block.indigo .gold { color: var(--gold-leaf); }
-  .seal { display: inline-grid; place-items: center; width: 56px; height: 56px; background: var(--vermilion); color: #FFFFFF; font: 800 22px/1 var(--font-display); rotate: -4deg; flex: none; }
-  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: var(--outline); border-radius: var(--radius-key); background: var(--card); color: var(--text); font: 400 17px var(--font-body); }
-  label { display: block; font-weight: 500; margin-bottom: 6px; }
+
+  .seal { display: inline-grid; place-items: center; width: 56px; height: 56px; flex: none; background: var(--vermilion);
+    color: #FFFFFF; font: 800 22px/1 var(--font-display); rotate: -4deg; }
+  .label { font: 500 var(--type-label)/1 var(--font-body); letter-spacing: var(--tracking-label); color: var(--text-muted); }
+  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: var(--outline); border-radius: var(--radius-key);
+    background: var(--card); color: var(--text); font: 400 17px var(--font-body); }
+
   .waves { height: 64px; background:
     radial-gradient(circle at 50% 100%, transparent 18px, var(--indigo) 19px 21px, transparent 22px) 0 0 / 48px 32px repeat-x,
     radial-gradient(circle at 50% 100%, transparent 18px, var(--indigo) 19px 21px, transparent 22px) 24px 32px / 48px 32px repeat-x; }
-  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
-  table { width: 100%; border-collapse: collapse; border: var(--outline); background: var(--card); }
-  th, td { padding: 12px 14px; border-bottom: 1px solid var(--rule); text-align: left; }
-  th { font: 500 13px/1 var(--font-body); letter-spacing: var(--tracking-label); background: var(--panel); }
-  td.num { text-align: right; font-variant-numeric: tabular-nums; }
-
-  .hero { border: var(--outline); background: var(--card); box-shadow: var(--print-shadow); overflow: hidden; }
-  .hero .inner { padding: 48px 28px 32px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
-  .hero .sun { width: 160px; height: 160px; border-radius: 50%; background: var(--vermilion); }
-  .hero p { max-width: 48ch; margin: 18px 0 26px; font-size: 19px; }
-  .hero .waves { border-top: var(--outline); background-color: var(--panel); }
-
-  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 36px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 960px; }
-  .canvas { container-type: inline-size; border: var(--outline); box-shadow: var(--print-shadow); overflow: hidden; }
-  .cap { margin-top: 14px; }
-  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); overflow: hidden; }
-  .slide .frame { position: absolute; inset: 5cqw; border: 0.12cqw solid var(--rule); }
-  .slide h3 { position: absolute; left: 9cqw; top: 9cqw; width: 50cqw; font-size: 4.2cqw; }
-  .slide p { position: absolute; left: 9cqw; top: 22cqw; width: 40cqw; margin: 0; font-size: 1.6cqw; line-height: 1.6; }
-  .slide .big { position: absolute; right: 9cqw; top: 9cqw; font: 800 14cqw/0.9 var(--font-display); color: var(--vermilion); }
-  .slide .big small { display: block; font-size: 1.6cqw; color: var(--text); font-family: var(--font-body); font-weight: 500; letter-spacing: 0.2cqw; text-align: right; margin-top: 1cqw; }
-  .slide .wv { position: absolute; left: 0; right: 0; bottom: 0; height: 8cqw;
-    background: radial-gradient(circle at 50% 100%, transparent 2.4cqw, var(--indigo) 2.5cqw 2.75cqw, transparent 2.85cqw) 0 0 / 6cqw 4cqw repeat-x,
-      radial-gradient(circle at 50% 100%, transparent 2.4cqw, var(--indigo) 2.5cqw 2.75cqw, transparent 2.85cqw) 3cqw 4cqw / 6cqw 4cqw repeat-x; }
-  .post { aspect-ratio: 4 / 5; position: relative; background: var(--page); overflow: hidden; }
-  .post .sun { position: absolute; right: 10cqw; top: 10cqw; width: 34cqw; height: 34cqw; border-radius: 50%; background: var(--vermilion); }
-  .post .mtn { position: absolute; left: -5cqw; right: 20cqw; bottom: 30cqw; height: 40cqw; background: var(--indigo); clip-path: polygon(0 100%, 45% 0, 52% 12%, 60% 4%, 100% 100%); }
-  .post .mtn::after { content: ""; position: absolute; inset: 0; background: var(--card); clip-path: polygon(39% 13%, 45% 0, 52% 12%, 60% 4%, 64% 12%, 55% 18%, 50% 15%, 44% 20%); }
-  .post h3 { position: absolute; left: 8cqw; top: 10cqw; width: 50cqw; font-size: 10cqw; line-height: 1.05; }
-  .post .details { position: absolute; left: 8cqw; right: 8cqw; bottom: 8cqw; background: var(--card); border: 0.4cqw solid var(--rule); box-shadow: 1.2cqw 1.2cqw 0 var(--indigo); padding: 4.5cqw; font-size: 3.8cqw; line-height: 1.45; }
-  .post .seal { position: absolute; right: 8cqw; bottom: 30cqw; width: 14cqw; height: 14cqw; font-size: 6cqw; }
-  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; padding: 8cqw 5cqw 4cqw; gap: 4cqw; }
-  .phone h3 { font-size: 8cqw; }
-  .phone .item { border: 2px solid var(--rule); background: var(--card); padding: 3.5cqw 4cqw; display: flex; justify-content: space-between; align-items: center; font-size: 4.2cqw; }
-  .phone .item strong { font-family: var(--font-display); }
-  .phone .spacer { flex: 1; }
-  .phone .btn { justify-content: center; }
-  .phone nav { display: flex; gap: 2cqw; }
-  .tab { flex: 1; min-height: 48px; border: 2px solid var(--rule); border-radius: var(--radius-key); background: var(--card); color: var(--text); font: 500 3.8cqw var(--font-body); cursor: pointer; }
-  .tab[aria-pressed="true"] { background: var(--indigo); color: var(--page); }
-
-  @media (max-width: 640px) { .hero .inner { grid-template-columns: 1fr; } .hero .sun { width: 96px; height: 96px; order: -1; } }
   @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+
+  .block.indigo .label { color: var(--page); }
+  .btn.small { min-height: 44px; padding: 0 18px; font-size: 16px; }
+
+  /* nav */
+  .nav { position: sticky; top: 0; z-index: 5; background: var(--page); border-bottom: var(--outline); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; }
+  .brand { display: inline-flex; align-items: center; min-height: 44px; font: 800 24px/1 var(--font-display); letter-spacing: 1px; color: var(--text); text-decoration: none; }
+  .nav-links { display: none; gap: 32px; }
+  .nav-links a { display: inline-flex; justify-content: center; min-width: 44px; padding: 10px 0; color: var(--text); font-weight: 500; font-size: 16px; text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+
+  /* hero */
+  .hero { margin-top: 32px; }
+  .hero-print { position: relative; display: grid; padding: 0; overflow: hidden; }
+  .hero-text { position: relative; z-index: 1; padding: 32px 20px 8px; }
+  .maker { display: flex; align-items: center; gap: 16px; }
+  .maker .name { display: block; font: 800 26px/1.1 var(--font-display); }
+  .maker .label { display: block; margin-top: 8px; line-height: 1.4; }
+  .hero h1 { font-size: clamp(40px, 5.8vw, 76px); line-height: 1.12; margin: 32px 0 0; max-width: 14ch; }
+  .hero .lede { font-size: var(--type-lead); line-height: 1.6; max-width: 40ch; margin: 20px 0 0; }
+  .hero .actions { margin-top: 32px; gap: 20px 16px; }
+  .hero-art { position: relative; min-height: 150px; }
+  .sun { position: absolute; right: 12%; bottom: -84px; width: 172px; aspect-ratio: 1; border-radius: 50%; background: var(--vermilion); }
+  .hero-print .waves { grid-column: 1 / -1; position: relative; z-index: 1; border-top: var(--outline); background-color: var(--panel); }
+  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin: 36px 0 0; background: var(--rule); border: var(--outline); }
+  .facts > div { background: var(--card); padding: 14px 16px 16px; }
+  .facts dt { line-height: 1.4; }
+  .facts dd { margin: 8px 0 0; font: 700 19px/1.3 var(--font-display); }
+
+  /* menu */
+  .menu-grid { display: grid; gap: 36px; align-items: start; }
+  .table-wrap { overflow-x: auto; padding: 0 4px 4px 0; }
+  table.menu { width: 100%; border-collapse: collapse; border: var(--outline); background: var(--card); box-shadow: var(--print-shadow); }
+  .menu caption { text-align: left; }
+  .menu th:first-child { padding-left: 16px; }
+  .menu th { text-align: left; padding: 12px; background: var(--panel); border-bottom: var(--outline); font: 500 var(--type-label)/1 var(--font-body); letter-spacing: var(--tracking-label); color: var(--text-muted); }
+  .menu td { padding: 14px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .menu tr:last-child td { border-bottom: 0; }
+  .menu td.course { width: 48px; padding-left: 16px; font: 800 24px/1.3 var(--font-display); }
+  .menu td strong { display: block; font: 700 18px/1.45 var(--font-display); }
+  .menu td span { display: block; color: var(--text-muted); font-size: 15px; line-height: 1.5; margin-top: 2px; }
+  .set { display: grid; gap: 14px; }
+  .set h3 { font-size: var(--type-h3); }
+  .set .price { margin: 0; font: 800 48px/1 var(--font-display); }
+  .set .price small { font: 500 15px var(--font-body); letter-spacing: 1px; }
+  .set p { margin: 0; }
+  .set .pairing { margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--gold-leaf); font: 700 19px/1.4 var(--font-display); }
+  .set .pairing small { display: block; font: 400 15px/1.5 var(--font-body); color: var(--page); margin-top: 4px; }
+  .dishes { display: grid; gap: 28px; margin-top: 48px; }
+  .dish { position: relative; display: grid; gap: 10px; align-content: start; }
+  .dish svg { width: 96px; height: 56px; margin-bottom: 6px; }
+  .dish h3 { font-size: var(--type-h3); }
+  .dish p { margin: 0; color: var(--text-muted); }
+  .dish .seal { position: absolute; top: -20px; right: 20px; }
+
+  /* booking */
+  .booking { display: grid; gap: 32px; align-items: start; }
+  .picker { display: grid; gap: 32px; }
+  .step { display: grid; gap: 12px; }
+  .step > .label { line-height: 1.4; }
+  .opts { display: grid; gap: 8px; }
+  .days { grid-template-columns: repeat(5, 1fr); }
+  .sittings { grid-template-columns: repeat(2, 1fr); }
+  .opt { display: grid; place-content: center; gap: 4px; min-height: 64px; padding: 6px 4px; border: var(--outline); border-radius: var(--radius-key);
+    background: var(--card); color: var(--text); font: 500 14px/1.2 var(--font-body); cursor: pointer; }
+  .opt strong { font: 800 22px/1 var(--font-display); }
+  .opt small { font-size: 13px; color: var(--text-muted); }
+  .opt:hover { background: var(--panel); }
+  .opt[aria-pressed="true"] { background: var(--indigo); color: var(--page); }
+  .opt[aria-pressed="true"] small { color: var(--page); }
+  .kitchen { padding: 12px 16px; background: var(--panel); border: var(--outline); border-bottom: 0; line-height: 1.4; }
+  .plank { height: 16px; background: var(--indigo); }
+  .seats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+  .seat { aspect-ratio: 1; min-height: 44px; border: var(--outline); border-radius: var(--radius-key); background: var(--card); color: var(--text);
+    font: 800 20px/1 var(--font-display); cursor: pointer; }
+  .seat:hover:not(:disabled) { background: var(--panel); }
+  .seat[aria-pressed="true"], .seat[aria-pressed="true"]:hover { background: var(--accent); color: var(--on-accent); }
+  .seat:disabled { background: var(--panel); color: var(--text-muted); border-style: dashed; text-decoration: line-through; cursor: not-allowed; }
+  .ends { display: none; justify-content: space-between; margin-top: 10px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 15px; color: var(--text-muted); }
+  .legend li { display: flex; align-items: center; gap: 8px; }
+  .swatch { width: 18px; height: 18px; border: var(--outline); background: var(--card); }
+  .swatch.yours { background: var(--accent); }
+  .swatch.taken { background: var(--panel); border-style: dashed; }
+  .summary { display: grid; gap: 14px; background: var(--panel); }
+  .summary h3 { font-size: var(--type-h3); }
+  .sum { margin: 0; border-top: var(--outline); }
+  .sum div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .sum dt { color: var(--text-muted); }
+  .sum dd { margin: 0; font-weight: 500; text-align: right; }
+  .sum .total dd { font: 800 26px/1.2 var(--font-display); }
+  .status { margin: 0; min-height: 1.6em; font-size: 15px; line-height: 1.6; color: var(--text-muted); }
+  .status.err, .note.err { color: var(--danger); }
+  .summary .label { line-height: 1.4; margin-top: 6px; }
+  .summary .btn { margin-top: 6px; }
+  .note { margin: 0; min-height: 1.6em; font-size: 15px; line-height: 1.6; color: var(--text-muted); }
+
+  /* notices: launch kit */
+  .kit { display: grid; gap: 36px; align-items: end; }
+  .kit figure { margin: 0; }
+  .frame { container-type: inline-size; border: var(--outline); box-shadow: var(--print-shadow); overflow: hidden; }
+  .kit figcaption { margin-top: 16px; line-height: 1.4; }
+  .slide { position: relative; aspect-ratio: 16 / 9; background: var(--page); overflow: hidden; }
+  .slide .inset { position: absolute; inset: 5cqw; border: max(1px, 0.104cqw) solid var(--rule); }
+  .slide h3 { position: absolute; left: 9cqw; top: 9cqw; width: 50cqw; font-size: 3.75cqw; line-height: 1.2; }
+  .slide p { position: absolute; left: 9cqw; top: 23cqw; width: 40cqw; margin: 0; font-size: 1.56cqw; line-height: 1.6; }
+  .slide .big { position: absolute; right: 10cqw; top: 8cqw; font: 800 17cqw/0.9 var(--font-display); color: var(--vermilion); text-align: right; }
+  .slide .big small { display: block; margin-top: 1cqw; font: 500 1.25cqw/1.2 var(--font-body); letter-spacing: 0.12cqw; color: var(--text); }
+  .slide .wv { position: absolute; left: 0; right: 0; bottom: 0; height: 8.44cqw; border-top: max(1px, 0.104cqw) solid var(--rule); background:
+    radial-gradient(circle at 50% 100%, transparent 2.5cqw, var(--indigo) 2.55cqw 2.8cqw, transparent 2.85cqw) 0 0 / 6cqw 4.22cqw repeat-x,
+    radial-gradient(circle at 50% 100%, transparent 2.5cqw, var(--indigo) 2.55cqw 2.8cqw, transparent 2.85cqw) 3cqw 4.22cqw / 6cqw 4.22cqw repeat-x;
+    background-color: var(--panel); }
+  .post { position: relative; aspect-ratio: 4 / 5; background: var(--page); overflow: hidden; }
+  .post h3 { position: absolute; left: 8cqw; top: 8cqw; width: 62cqw; font-size: 9cqw; line-height: 1.1; }
+  .post .seal { position: absolute; right: 8cqw; top: 8cqw; width: 13cqw; height: 13cqw; font-size: 6cqw; }
+  .post .p-sun { position: absolute; left: 50cqw; top: 33cqw; width: 32cqw; aspect-ratio: 1; border-radius: 50%; background: var(--vermilion); }
+  .post .mtn { position: absolute; left: 0; right: 0; bottom: 38cqw; height: 46cqw; background: var(--indigo);
+    clip-path: polygon(0 100%, 0 78%, 28% 16%, 36% 3%, 42% 10%, 49% 0, 57% 13%, 100% 70%, 100% 100%); }
+  .post .mtn::after { content: ""; position: absolute; inset: 0; background: var(--card);
+    clip-path: polygon(24.8% 24%, 28% 16%, 36% 3%, 42% 10%, 49% 0, 57% 13%, 61% 18.5%, 55% 22%, 49% 16%, 43% 23%, 37% 17%, 30% 25%); }
+  .post .details { position: absolute; left: 8cqw; right: 9cqw; bottom: 8cqw; padding: 4.5cqw 5cqw; background: var(--card); color: var(--text);
+    border: 0.3cqw solid var(--rule); box-shadow: 1.1cqw 1.1cqw 0 var(--indigo); font-size: 3.8cqw; line-height: 1.45; }
+  .post .details strong { display: block; font: 800 5.2cqw/1.2 var(--font-display); margin-bottom: 1.4cqw; }
+  .phone { display: flex; flex-direction: column; gap: 3.6cqw; aspect-ratio: 9 / 19.5; padding: 9cqw 6cqw 5cqw; background: var(--page); }
+  .phone .p-title { margin: 0; font: 800 9cqw/1.15 var(--font-display); }
+  .phone .p-row { display: flex; justify-content: space-between; align-items: center; gap: 3cqw; padding: 3.6cqw 4.4cqw; border: var(--outline); background: var(--card); font-size: 4.6cqw; line-height: 1.3; }
+  .phone .p-row span:first-child { color: var(--text-muted); }
+  .phone .p-row strong { font: 700 5cqw/1.2 var(--font-display); text-align: right; }
+  .phone .p-hint { margin: 1cqw 0 0; font-size: 4.4cqw; line-height: 1.5; color: var(--text-muted); }
+  .phone .spacer { flex: 1; }
+  .phone .label { font-size: 4.2cqw; letter-spacing: 0.4cqw; line-height: 1.3; }
+  .phone .btn { width: 100%; padding: 0 3cqw; font-size: clamp(13px, 5.6cqw, 17px); }
+  .phone .note { min-height: 0; font-size: 13px; text-align: center; }
+  .phone nav { display: flex; gap: 2.5cqw; }
+  .tab { flex: 1; min-height: 48px; border: var(--outline); border-radius: var(--radius-key); background: var(--card); color: var(--text); font: 500 clamp(12px, 4.8cqw, 15px) var(--font-body); cursor: pointer; }
+  .tab[aria-pressed="true"] { background: var(--indigo); color: var(--page); }
+  .phone-fig { width: 100%; max-width: 300px; justify-self: center; }
+
+  /* visit */
+  .visit { display: grid; gap: 36px; }
+  .visit h2 { font-size: clamp(30px, 5vw, var(--type-h2)); margin-top: 14px; }
+  .visit .block.indigo p { margin: 16px 0 0; max-width: 46ch; }
+  .hours { margin: 28px 0 0; border-top: 1px solid var(--gold-leaf); }
+  .hours div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--gold-leaf); }
+  .hours dd { margin: 0; font: 700 18px/1.5 var(--font-display); }
+  .letter { display: grid; gap: 12px; align-content: start; }
+  .letter h3 { font-size: var(--type-h3); }
+  .letter p { margin: 0 0 8px; }
+  .letter .label { line-height: 1.4; }
+  .letter .btn { justify-self: start; margin-top: 6px; }
+  .foot-waves { margin-top: 112px; border-top: var(--outline); background-color: var(--panel); }
+  footer { background: var(--indigo); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-top: 24px; padding-bottom: 36px; }
+  footer .label { color: var(--page); line-height: 1.5; }
+
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 24px; }
+    .hero-text { padding: 44px 36px 12px; }
+    .hero-art { min-height: 170px; }
+    .seats { grid-template-columns: repeat(8, 1fr); }
+    .ends { display: flex; }
+    .kit { grid-template-columns: 1.2fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
+  }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .hero-print { grid-template-columns: 1.3fr 1fr; }
+    .hero-text { padding: 56px 48px 56px; }
+    .hero-art { min-height: 0; }
+    .sun { width: 340px; right: calc(50% - 150px); bottom: -130px; }
+    .facts { grid-template-columns: repeat(4, 1fr); }
+    .menu-grid { grid-template-columns: 1.55fr 1fr; gap: 44px; }
+    .dishes { grid-template-columns: repeat(3, 1fr); }
+    .booking { grid-template-columns: 1.55fr 1fr; gap: 44px; }
+    .kit { grid-template-columns: 1.7fr 1fr 0.8fr; }
+    .kit .slide-fig { grid-column: auto; }
+    .visit { grid-template-columns: 1fr 1fr; gap: 44px; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="hero">
-    <div class="inner">
-      <div>
-        <span class="label">pikmi style · rice paper</span>
-        <h1 style="margin-top:12px">Indigo Woodblock</h1>
-        <p>Indigo outlines on rice paper, flat blocks of color, a vermilion seal and a hard print shadow.</p>
-        <div class="row"><a class="btn" href="#components">See the components</a><a href="#slides">See the slides</a></div>
-      </div>
-      <div class="sun" aria-hidden="true"></div>
-    </div>
-    <div class="waves" aria-hidden="true"></div>
-  </header>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">Aonami</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#menu">Menu</a><a href="#counter">Booking</a><a href="#notices">Notices</a><a href="#visit">Visit</a>
+    </nav>
+    <a class="btn small" href="#counter">Book a seat</a>
+  </div>
+</header>
 
-  <section id="components" aria-labelledby="h-components">
-    <h2 id="h-components">Components</h2>
-    <div class="grid">
-      <div class="block"><h3>Buttons</h3><div class="row" style="margin-top:16px"><a class="btn" href="#ui">Reserve a seat</a><a class="btn paper" href="#app">Open the app</a></div></div>
-      <div class="block"><label for="guests">Guests</label><input class="field" id="guests" placeholder="2"><p class="muted" style="margin:10px 0 0;font-size:15px">Counter seats only on weekdays.</p></div>
-      <div class="block indigo"><span class="label" style="color:var(--page)">Season</span><h3 style="margin-top:8px">Autumn menu <span class="gold">now</span></h3><p style="margin:8px 0 0">Chestnut rice, grilled mackerel, persimmon.</p></div>
-      <div class="block"><div class="row"><span class="seal" aria-hidden="true">秋</span><div><h3>The seal</h3><p class="muted" style="margin:4px 0 0;font-size:15px">Marks the one featured item.</p></div></div></div>
+<main id="top">
+  <section class="hero wrap" aria-labelledby="h-hero">
+    <div class="block hero-print">
+      <div class="hero-text">
+        <div class="maker">
+          <span class="seal" aria-hidden="true">青</span>
+          <span><strong class="name">Aonami</strong><span class="label">Counter kitchen · Kawara Lane 12</span></span>
+        </div>
+        <h1 id="h-hero">Eight seats at one wooden counter</h1>
+        <p class="lede">We cook one set menu in front of you, a course at a time. It follows the morning market and changes every week.</p>
+        <div class="row actions">
+          <a class="btn" href="#counter">Book a seat</a>
+          <a class="btn paper" href="#menu">See this week's menu</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><span class="sun"></span></div>
+      <div class="waves" aria-hidden="true"></div>
     </div>
+    <dl class="facts">
+      <div><dt class="label">Open</dt><dd>Tuesday to Saturday</dd></div>
+      <div><dt class="label">Sittings</dt><dd>18:00 and 20:30</dd></div>
+      <div><dt class="label">Seats</dt><dd>Eight, all at the counter</dd></div>
+      <div><dt class="label">The set</dt><dd>Five courses, ¥9,800</dd></div>
+    </dl>
   </section>
 
-  <section id="ui" aria-labelledby="h-ui">
-    <h2 id="h-ui">UI · A small restaurant</h2>
-    <div class="grid" style="align-items:start">
-      <div class="block indigo"><span class="label" style="color:var(--page)">Tonight</span><h3 style="font-size:30px;margin-top:8px">Eight seats at the counter</h3><p style="margin:10px 0 18px">The chef cooks the autumn set in front of you, one course at a time.</p><a class="btn" href="#components">Book the counter</a></div>
-      <div>
-        <table>
-          <thead><tr><th>Course</th><th>Dish</th></tr></thead>
+  <section id="menu" class="wrap" aria-labelledby="h-menu">
+    <div class="sec-head">
+      <span class="label">Menu · week of 27 October</span>
+      <h2 id="h-menu">This week's autumn set</h2>
+      <p>Five courses, cooked in order while you watch. The fish comes off the morning boats and the vegetables from the market next door.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="table-wrap">
+        <table class="menu">
+          <caption class="sr-only">The autumn set, five courses</caption>
+          <thead><tr><th scope="col">Course</th><th scope="col">Dish</th></tr></thead>
           <tbody>
-            <tr><td>1</td><td>Chestnut rice in a clay pot</td></tr>
-            <tr><td>2</td><td>Grilled mackerel, grated radish</td></tr>
-            <tr><td>3</td><td>Persimmon with black sugar</td></tr>
+            <tr><td class="course">1</td><td><strong>Sesame tofu with fresh wasabi</strong><span>Made in the afternoon, served cool</span></td></tr>
+            <tr><td class="course">2</td><td><strong>Clear soup with mushrooms</strong><span>Kelp and bonito broth, a strip of yuzu peel</span></td></tr>
+            <tr><td class="course">3</td><td><strong>Grilled mackerel, grated radish</strong><span>From the morning boats, grilled over charcoal</span></td></tr>
+            <tr><td class="course">4</td><td><strong>Chestnut rice in a clay pot</strong><span>With miso soup and three pickles</span></td></tr>
+            <tr><td class="course">5</td><td><strong>Persimmon with black sugar</strong><span>Then roasted tea, as much as you like</span></td></tr>
           </tbody>
         </table>
-        <p class="muted" style="font-size:15px">Menu changes with the market each week.</p>
       </div>
+      <div class="block indigo set">
+        <span class="label">The autumn set</span>
+        <p class="price">¥9,800 <small>per guest</small></p>
+        <p>Five courses and tea. We cook for all eight seats at once, so please come on time.</p>
+        <p class="pairing gold">Sake pairing, three cups · ¥4,200<small>Poured with courses 2, 3 and 4.</small></p>
+      </div>
+    </div>
+
+    <div class="dishes">
+      <article class="block dish">
+        <svg viewBox="0 0 96 56" aria-hidden="true">
+          <path d="M6 28 C 20 12, 46 10, 66 28 C 46 46, 20 44, 6 28 Z" fill="var(--indigo)"/>
+          <path d="M64 28 L 90 12 L 84 28 L 90 44 Z" fill="var(--indigo)"/>
+          <path d="M26 20 C 34 16, 44 16, 52 20" stroke="var(--card)" stroke-width="2" fill="none"/>
+          <circle cx="17" cy="26" r="2.5" fill="var(--card)"/>
+        </svg>
+        <span class="label">At six in the morning</span>
+        <h3>Fish off the boats</h3>
+        <p>We buy at the harbour market before we open and plan the set around what came in.</p>
+      </article>
+      <article class="block dish">
+        <span class="seal" aria-hidden="true">秋</span>
+        <svg viewBox="0 0 96 56" aria-hidden="true">
+          <rect x="42" y="2" width="12" height="8" fill="var(--indigo)"/>
+          <path d="M24 10 H 72 L 66 18 H 30 Z" fill="var(--indigo)"/>
+          <path d="M18 20 H 78 L 72 50 H 24 Z" fill="var(--indigo)"/>
+          <rect x="34" y="50" width="28" height="4" fill="var(--indigo)"/>
+        </svg>
+        <span class="label">Only this month</span>
+        <h3>Chestnut rice in a clay pot</h3>
+        <p>Cooked at the counter for twenty minutes and served straight from the pot.</p>
+      </article>
+      <article class="block dish">
+        <svg viewBox="0 0 96 56" aria-hidden="true">
+          <circle cx="48" cy="33" r="20" fill="var(--vermilion)"/>
+          <path d="M48 15 L 34 9 L 41 17 L 32 23 L 48 19 L 64 23 L 55 17 L 62 9 Z" fill="var(--indigo)"/>
+          <rect x="46" y="4" width="4" height="10" fill="var(--indigo)"/>
+        </svg>
+        <span class="label">To finish</span>
+        <h3>Persimmon with black sugar</h3>
+        <p>Hung to dry on the back porch for three weeks, sliced thin at your seat.</p>
+      </article>
     </div>
   </section>
 
-  <section aria-labelledby="h-media">
-    <h2 id="h-media">Other media</h2>
-    <div class="canvases">
-      <div id="slides">
-        <div class="canvas"><div class="slide">
-          <div class="frame"></div>
-          <h3>Why the menu changes every week</h3>
-          <p>We buy from the morning market and plan the set around what came off the boats that day.</p>
+  <section id="counter" class="wrap" aria-labelledby="h-counter">
+    <div class="sec-head">
+      <span class="label">Booking</span>
+      <h2 id="h-counter">Pick your night and your seats</h2>
+      <p>Choose a day, a sitting and the seats you want. Seat 1 is next to the grill, seat 8 is by the window.</p>
+    </div>
+    <div class="booking">
+      <div class="block picker">
+        <div class="step">
+          <span class="label" id="l-day">Day</span>
+          <div class="opts days" role="group" aria-labelledby="l-day">
+            <button class="opt" type="button" aria-pressed="false" data-day="tue" data-name="Tuesday 27 October"><span>Tue</span><strong>27</strong></button>
+            <button class="opt" type="button" aria-pressed="false" data-day="wed" data-name="Wednesday 28 October"><span>Wed</span><strong>28</strong></button>
+            <button class="opt" type="button" aria-pressed="false" data-day="thu" data-name="Thursday 29 October"><span>Thu</span><strong>29</strong></button>
+            <button class="opt" type="button" aria-pressed="true" data-day="fri" data-name="Friday 30 October"><span>Fri</span><strong>30</strong></button>
+            <button class="opt" type="button" aria-pressed="false" data-day="sat" data-name="Saturday 31 October"><span>Sat</span><strong>31</strong><small>full</small></button>
+          </div>
+        </div>
+        <div class="step">
+          <span class="label" id="l-sitting">Sitting</span>
+          <div class="opts sittings" role="group" aria-labelledby="l-sitting">
+            <button class="opt" type="button" aria-pressed="true" data-sitting="18"><strong>18:00</strong><small data-left="18"></small></button>
+            <button class="opt" type="button" aria-pressed="false" data-sitting="20"><strong>20:30</strong><small data-left="20"></small></button>
+          </div>
+        </div>
+        <div class="step">
+          <span class="label" id="l-seats">Seats at the counter</span>
+          <div>
+            <div class="kitchen label">Kitchen · the chef cooks facing you</div>
+            <div class="plank" aria-hidden="true"></div>
+            <div class="seats" role="group" aria-labelledby="l-seats">
+              <button class="seat" type="button" data-seat="1" aria-pressed="false">1</button>
+              <button class="seat" type="button" data-seat="2" aria-pressed="false">2</button>
+              <button class="seat" type="button" data-seat="3" aria-pressed="false">3</button>
+              <button class="seat" type="button" data-seat="4" aria-pressed="false">4</button>
+              <button class="seat" type="button" data-seat="5" aria-pressed="false">5</button>
+              <button class="seat" type="button" data-seat="6" aria-pressed="false">6</button>
+              <button class="seat" type="button" data-seat="7" aria-pressed="false">7</button>
+              <button class="seat" type="button" data-seat="8" aria-pressed="false">8</button>
+            </div>
+            <div class="ends label" aria-hidden="true"><span>Grill</span><span>Window</span></div>
+            <ul class="legend" aria-hidden="true">
+              <li><span class="swatch"></span>Open</li>
+              <li><span class="swatch yours"></span>Yours</li>
+              <li><span class="swatch taken"></span>Taken</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <aside class="block summary" aria-labelledby="h-summary">
+        <h3 id="h-summary">Your booking</h3>
+        <dl class="sum">
+          <div><dt>Day</dt><dd id="s-day"></dd></div>
+          <div><dt>Sitting</dt><dd id="s-sitting"></dd></div>
+          <div><dt>Seats</dt><dd id="s-seats"></dd></div>
+          <div class="total"><dt>Total</dt><dd id="s-total"></dd></div>
+        </dl>
+        <p class="status" id="s-status" aria-live="polite"></p>
+        <label class="label" for="bk-name">Name for the booking</label>
+        <input class="field" id="bk-name" type="text" autocomplete="name" placeholder="Your name">
+        <button class="btn" type="button" id="hold">Hold these seats</button>
+        <p class="note" id="hold-note" aria-live="polite"></p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="notices" class="wrap" aria-labelledby="h-notices">
+    <div class="sec-head">
+      <span class="label">Notices</span>
+      <h2 id="h-notices">The autumn set, printed three ways</h2>
+      <p>One sheet for the talk at the market hall, one for the feed, and the booking screen in our app.</p>
+    </div>
+    <div class="kit">
+      <figure class="slide-fig">
+        <div class="frame"><div class="slide">
+          <div class="inset" aria-hidden="true"></div>
+          <h3>The menu follows the morning boats</h3>
+          <p>We buy at the market at six and plan the set around what came in that day.</p>
           <div class="big">7<small>days per menu</small></div>
           <div class="wv" aria-hidden="true"></div>
         </div></div>
-        <p class="cap label">slides · 1920 x 1080</p>
-      </div>
-      <div id="social">
-        <div class="canvas"><div class="post">
-          <div class="sun" aria-hidden="true"></div><div class="mtn" aria-hidden="true"></div>
-          <h3>Autumn set is here</h3>
+        <figcaption class="label">Talk slide · 1920 x 1080</figcaption>
+      </figure>
+      <figure>
+        <div class="frame"><div class="post">
+          <span class="p-sun" aria-hidden="true"></span>
+          <span class="mtn" aria-hidden="true"></span>
+          <h3>The autumn set is here</h3>
           <span class="seal" aria-hidden="true">秋</span>
-          <div class="details">Eight counter seats, Tuesday to Saturday. Book through the link in our profile.</div>
+          <div class="details"><strong>Eight seats, five courses</strong>Tuesday to Saturday. Book through the link in our profile.</div>
         </div></div>
-        <p class="cap label">social · 1080 x 1350</p>
-      </div>
-      <div id="app">
-        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
-          <span class="label">Friday · 19:30</span>
-          <h3>Your booking</h3>
-          <div class="item"><strong>Counter</strong><span>2 guests</span></div>
-          <div class="item"><strong>Set</strong><span>Autumn</span></div>
+        <figcaption class="label">Feed post · 1080 x 1350</figcaption>
+      </figure>
+      <figure class="phone-fig">
+        <div class="frame"><div class="phone">
+          <span class="label">Friday 30 October · 18:00</span>
+          <p class="p-title">Your booking</p>
+          <div class="p-row"><span>Seats</span><strong>3 and 4</strong></div>
+          <div class="p-row"><span>Guests</span><strong>2</strong></div>
+          <div class="p-row"><span>Set</span><strong>Autumn</strong></div>
+          <div class="p-row"><span>Total</span><strong>¥19,600</strong></div>
+          <p class="p-hint">Doors open at 17:50. Tell the chef about allergies when you sit down.</p>
           <div class="spacer"></div>
-          <a class="btn" href="#app">Confirm booking</a>
-          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Book</button><button class="tab" type="button" aria-pressed="false">Menu</button><button class="tab" type="button" aria-pressed="false">Visit</button></nav>
+          <button class="btn" type="button" id="p-confirm">Confirm booking</button>
+          <p class="note" id="p-note" aria-live="polite"></p>
+          <nav aria-label="Booking app sections">
+            <button class="tab" type="button" aria-pressed="true">Book</button>
+            <button class="tab" type="button" aria-pressed="false">Menu</button>
+            <button class="tab" type="button" aria-pressed="false">Visit</button>
+          </nav>
         </div></div>
-        <p class="cap label">app · phone</p>
-      </div>
+        <figcaption class="label">Booking app · phone</figcaption>
+      </figure>
     </div>
   </section>
-</div>
+
+  <section id="visit" class="wrap" aria-labelledby="h-visit">
+    <div class="visit">
+      <div class="block indigo">
+        <span class="label">Visit</span>
+        <h2 id="h-visit">Come and sit at the counter</h2>
+        <p>Kawara Lane 12, two minutes from the river bridge. Doors open ten minutes before each sitting.</p>
+        <dl class="hours">
+          <div><dt>Tuesday to Saturday</dt><dd class="gold">18:00 and 20:30</dd></div>
+          <div><dt>Sunday and Monday</dt><dd>Closed for the market</dd></div>
+        </dl>
+      </div>
+      <form class="block letter" id="letter-form">
+        <h3>Hear when the winter set begins</h3>
+        <p class="muted">One short letter at the start of each season, with the new menu and the first open nights.</p>
+        <label class="label" for="email">Email</label>
+        <input class="field" id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        <button class="btn" type="submit">Send me the letter</button>
+        <p class="note" id="letter-note" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<div class="waves foot-waves" aria-hidden="true"></div>
+<footer>
+  <div class="wrap">
+    <span class="label">Aonami is a fictional restaurant made for this preview</span>
+    <span class="label">pikmi style · indigo woodblock</span>
+  </div>
+</footer>
+
 <script>
-  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
-  })));
+  const PRICE = 9800;
+  const ALL = [1, 2, 3, 4, 5, 6, 7, 8];
+  const TAKEN = {
+    tue: { 18: [2, 3], 20: [6] },
+    wed: { 18: [1, 5, 6], 20: [] },
+    thu: { 18: [1, 2, 7, 8], 20: [3, 4] },
+    fri: { 18: [1, 2, 7], 20: [1, 2, 3, 4, 5, 8] },
+    sat: { 18: ALL, 20: ALL }
+  };
+  const state = { day: 'fri', dayName: 'Friday 30 October', sitting: '18', seats: new Set([3, 4]) };
+  const $ = id => document.getElementById(id);
+  const yen = n => '¥' + n.toLocaleString('en-US');
+  const seatBtns = [...document.querySelectorAll('.seat')];
+
+  function pickOne(buttons, onPick) {
+    buttons.forEach(b => b.addEventListener('click', () => {
+      buttons.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      if (onPick) onPick(b);
+    }));
+  }
+
+  function render() {
+    const taken = TAKEN[state.day][state.sitting];
+    seatBtns.forEach(b => {
+      const n = Number(b.dataset.seat);
+      const isTaken = taken.includes(n);
+      if (isTaken) state.seats.delete(n);
+      b.disabled = isTaken;
+      b.setAttribute('aria-pressed', String(state.seats.has(n)));
+      b.setAttribute('aria-label', 'Seat ' + n + (isTaken ? ', taken' : ''));
+    });
+    document.querySelectorAll('[data-left]').forEach(el => {
+      const left = 8 - TAKEN[state.day][el.dataset.left].length;
+      el.textContent = left ? left + ' open' : 'full';
+    });
+    const seats = [...state.seats].sort((a, b) => a - b);
+    $('s-day').textContent = state.dayName;
+    $('s-sitting').textContent = state.sitting === '18' ? '18:00' : '20:30';
+    $('s-seats').textContent = seats.length ? seats.join(', ') : 'None yet';
+    $('s-total').textContent = yen(seats.length * PRICE);
+    const status = $('s-status');
+    status.classList.toggle('err', taken.length === 8);
+    if (taken.length === 8) status.textContent = 'This sitting is full. Try the other sitting or another night.';
+    else if (!seats.length) status.textContent = 'No seats picked yet. Tap an open seat on the plan.';
+    else status.textContent = seats.length + (seats.length > 1 ? ' guests' : ' guest') + ', the autumn set.';
+    $('hold-note').textContent = '';
+  }
+
+  pickOne([...document.querySelectorAll('[data-day]')], b => { state.day = b.dataset.day; state.dayName = b.dataset.name; state.seats.clear(); render(); });
+  pickOne([...document.querySelectorAll('[data-sitting]')], b => { state.sitting = b.dataset.sitting; state.seats.clear(); render(); });
+  seatBtns.forEach(b => b.addEventListener('click', () => {
+    const n = Number(b.dataset.seat);
+    if (state.seats.has(n)) state.seats.delete(n); else state.seats.add(n);
+    render();
+  }));
+  $('hold').addEventListener('click', () => {
+    const note = $('hold-note');
+    const none = state.seats.size === 0;
+    note.classList.toggle('err', none);
+    note.textContent = none ? 'Pick at least one open seat first.' : 'This is a preview: nothing was booked.';
+  });
+  render();
+
+  pickOne([...document.querySelectorAll('.tab')]);
+  $('p-confirm').addEventListener('click', () => { $('p-note').textContent = 'Preview only: nothing was booked.'; });
+
+  $('letter-form').addEventListener('submit', e => {
+    e.preventDefault();
+    $('letter-note').textContent = 'This is a preview: nothing was sent.';
+  });
 </script>
 </body>
 </html>

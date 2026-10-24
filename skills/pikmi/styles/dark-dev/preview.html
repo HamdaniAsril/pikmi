@@ -10,175 +10,710 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--page); color: var(--body-text); font: 400 15px/1.65 var(--font-body); }
+  [hidden] { display: none !important; }
+  :root { color-scheme: dark; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--page); color: var(--body-text); font: 400 var(--type-body)/1.65 var(--font-body); }
   a { color: var(--link); }
-  .wrap { max-width: 1160px; margin: 0 auto; padding: 40px 16px 80px; }
-  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; color: var(--text); margin: 0; line-height: 1.15; }
-  h1 { font-size: clamp(34px, 6vw, 56px); }
-  h2 { font-size: 26px; margin-bottom: 20px; }
-  h3 { font-size: 18px; }
-  section { margin-top: 64px; }
+  [id] { scroll-margin-top: 80px; }
+  .wrap { max-width: 1160px; margin-inline: auto; padding-inline: 16px; }
+  h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 600; color: var(--text); line-height: 1.15; }
+  section { margin-top: 96px; }
+  .sec-head { margin: 0 0 28px; max-width: 640px; }
+  .sec-head h2 { font-size: var(--type-h2); letter-spacing: -0.01em; }
+  .sec-head p { margin: 8px 0 0; color: var(--text-muted); font-size: var(--type-lead); }
   .muted { color: var(--text-muted); }
-  .label { font: 500 12px/1 var(--font-body); color: var(--text-muted); }
-  code, .mono { font-family: var(--font-mono); font-size: 0.92em; }
-  .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-control); background: var(--accent); color: var(--on-accent); box-shadow: var(--inset-glow);
-    font: 500 14px/1 var(--font-body); text-decoration: none; cursor: pointer; transition: background-color 200ms ease-out, box-shadow 200ms ease-out; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  label { display: block; margin-bottom: 6px; color: var(--text); font: 500 14px/1.3 var(--font-body); }
+  .hint { margin: 6px 0 0; color: var(--text-muted); font-size: var(--type-caption); }
+  :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+  /* components (from STYLE.md) */
+  .btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; cursor: pointer;
+    min-height: 44px; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-control);
+    background: var(--accent); color: var(--on-accent); box-shadow: var(--inset-glow);
+    font: 500 14px/1 var(--font-body); transition: background-color 200ms ease-out, box-shadow 200ms ease-out; }
   .btn:hover { background: #1D4ED8; box-shadow: var(--inset-glow), 0 0 0 1px var(--link); }
   .btn:active { transform: scale(0.98); box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); }
   .btn.secondary { background: var(--panel); color: var(--text); box-shadow: inset 0 0 0 1px var(--rule); }
-  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
-  .card { display: block; background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); padding: var(--space-lg); color: inherit; text-decoration: none;
+  .btn:focus-visible, .field:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+  .card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); padding: var(--space-lg);
     transition: border-color 300ms ease-out, transform 300ms ease-out, box-shadow 300ms ease-out; }
   a.card:hover { border-color: var(--rule-hover); transform: translateY(-2px); box-shadow: var(--card-shadow); }
-  a.card .desc { color: var(--text-muted); transition: color 200ms ease-out; margin: 6px 0 0; }
+  a.card .title { color: var(--text); } a.card .desc { color: var(--text-muted); transition: color 200ms ease-out; }
   a.card:hover .desc { color: var(--body-text); }
-  .code { background: var(--page); border: 1px solid var(--rule); border-radius: var(--radius-control); padding: var(--space-md); font: 400 13px/1.7 var(--font-mono); color: var(--body-text); overflow-x: auto; margin: 0; }
-  .code .k { color: var(--link); } .code .s { color: var(--success); } .code .c { color: var(--text-muted); }
-  .field { min-height: 44px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--rule-hover); border-radius: var(--radius-control); background: var(--page); color: var(--text); font: 400 14px var(--font-body); }
-  label { display: block; margin-bottom: 6px; color: var(--text); font-weight: 500; font-size: 14px; }
-  .badge { display: inline-flex; align-items: center; gap: 6px; font: 500 12px/1 var(--font-body); }
+
+  code, .mono { font-family: var(--font-mono); font-size: 0.92em; }
+  .code { background: var(--page); border: 1px solid var(--rule); border-radius: var(--radius-control); padding: var(--space-md);
+    font: 400 13px/1.7 var(--font-mono); color: var(--body-text); overflow-x: auto; margin: 0; }
+  .field { min-height: 44px; width: 100%; padding: 0 var(--space-md); border: 1px solid var(--rule-hover); border-radius: var(--radius-control);
+    background: var(--page); color: var(--text); font: 400 14px var(--font-body); }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font: 500 12px/1 var(--font-body); white-space: nowrap; }
   .badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
   .badge.ok { color: var(--success); } .badge.bad { color: var(--danger); }
-  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-  .hero p { font-size: 17px; max-width: 46ch; margin: 16px 0 24px; }
-  .console { display: grid; grid-template-columns: 200px 1fr; border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; }
-  .console aside { background: var(--panel); border-right: 1px solid var(--rule); padding: 16px 10px; display: flex; flex-direction: column; gap: 2px; }
-  .console aside a { padding: 8px 10px; border-radius: var(--radius-control); color: var(--text-muted); text-decoration: none; font-weight: 500; }
-  .console aside a[aria-current="page"] { background: var(--page); color: var(--text); }
-  .console main { padding: 20px; min-width: 0; }
-  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
-  .metrics .card { padding: 16px; }
-  .metrics strong { display: block; font: 600 26px/1.1 var(--font-display); color: var(--text); margin-top: 6px; }
-  .tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius-card); }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th { text-align: left; font-weight: 500; color: var(--text-muted); padding: 10px 14px; border-bottom: 1px solid var(--rule); background: var(--panel); }
-  td { padding: 12px 14px; border-bottom: 1px solid var(--rule); }
-
-  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 960px; }
-  .canvas { container-type: inline-size; border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; }
-  .cap { margin-top: 10px; }
-  .slide { aspect-ratio: 16 / 9; background: var(--page); position: relative; }
-  .slide h3 { position: absolute; left: 5cqw; top: 5cqw; font-size: 2.9cqw; }
-  .slide .code { position: absolute; left: 5cqw; right: 5cqw; top: 13cqw; font-size: 1.46cqw; padding: 2cqw; border-radius: 0.6cqw; line-height: 1.8; }
-  .slide .code .hl { display: block; margin: 0 -2cqw; padding: 0 2cqw; box-shadow: inset 0.3cqw 0 0 var(--accent); background: rgba(37, 99, 235, 0.12); }
-  .slide .foot { position: absolute; left: 5cqw; bottom: 4cqw; font-size: 1.2cqw; color: var(--text-muted); }
-  .post { aspect-ratio: 4 / 5; background: var(--page); padding: 7cqw; display: flex; flex-direction: column; }
-  .post .card { flex: 1; padding: 7cqw; display: flex; flex-direction: column; }
-  .post .ver { font: 500 3cqw/1 var(--font-mono); color: var(--link); }
-  .post h3 { font-size: 8cqw; margin-top: 3cqw; }
-  .post ul { margin: 5cqw 0 0; padding-left: 4cqw; font-size: 3.6cqw; line-height: 1.5; }
-  .post .foot { margin-top: auto; font-size: 3cqw; color: var(--text-muted); }
-  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; padding: 8cqw 5cqw 4cqw; gap: 4cqw; }
-  .phone h3 { font-size: 7cqw; }
-  .phone .list { border: 1px solid var(--rule); border-radius: 4cqw; overflow: hidden; }
-  .phone .li { display: flex; justify-content: space-between; align-items: center; min-height: 48px; padding: 0 4cqw; background: var(--card); border-bottom: 1px solid var(--rule); font-size: 3.8cqw; }
-  .phone .li:last-child { border-bottom: 0; }
-  .phone .spacer { flex: 1; }
-  .phone .btn { justify-content: center; min-height: 48px; }
-  .phone nav { display: flex; justify-content: space-around; border-top: 1px solid var(--rule); padding-top: 2cqw; }
-  .tab { min-height: 44px; padding: 0 3cqw; background: none; border: 0; color: var(--text-muted); font: 500 3.6cqw var(--font-body); cursor: pointer; }
-  .tab[aria-pressed="true"] { color: var(--text); }
-  @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .console { grid-template-columns: 1fr; } .console aside { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--rule); } .metrics { grid-template-columns: 1fr; } }
   @media (prefers-reduced-motion: reduce) { .btn, .card, a.card .desc { transition: none; } }
+  /* additions in the same slate: neutral badge, destructive outline, busy button, code colors */
+  .badge.idle { color: var(--text-muted); }
+  .btn.danger { background: transparent; color: var(--danger); box-shadow: inset 0 0 0 1px var(--danger); }
+  .btn:disabled { background: var(--panel); color: var(--text-muted); box-shadow: inset 0 0 0 1px var(--rule); cursor: progress; transform: none; }
+  .code .c { color: var(--text-muted); } .code .k { color: var(--link); } .code .s { color: var(--success); } .code .e { color: var(--danger); }
+
+  /* nav */
+  .nav { position: sticky; top: 0; z-index: 10; background: var(--page); border-bottom: 1px solid var(--rule); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--text); text-decoration: none; font: 600 20px/1 var(--font-display); }
+  .brand .mark { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: var(--accent); box-shadow: var(--inset-glow); }
+  .brand .mark::after { content: ""; width: 7px; height: 7px; margin-left: -3px; border: solid var(--on-accent); border-width: 2px 2px 0 0; rotate: 45deg; }
+  .brand .ver { padding: 3px 7px; border: 1px solid var(--rule); border-radius: var(--radius-control); color: var(--text-muted); font-size: 12px; font-weight: 500; }
+  .nav-links { display: none; gap: 2px; }
+  .nav-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: var(--radius-control);
+    color: var(--text-muted); text-decoration: none; font: 500 14px var(--font-body); transition: color 200ms ease-out; }
+  .nav-links a:hover { color: var(--text); }
+
+  /* hero */
+  .hero { margin-top: 56px; display: grid; gap: 40px; align-items: center; }
+  .hero > * { min-width: 0; }
+  .release { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--body-text); text-decoration: none; font-size: 14px; transition: color 200ms ease-out; }
+  .release:hover { color: var(--text); }
+  .release .mono { padding: 3px 8px; border: 1px solid var(--rule); border-radius: var(--radius-control); color: var(--link); }
+  .hero h1 { margin: 12px 0 0; max-width: 15ch; font-size: clamp(36px, 7.5vw, 56px); line-height: 1.08; letter-spacing: -0.02em; }
+  .hero .lede { margin: 20px 0 28px; max-width: 48ch; font-size: var(--type-lead); }
+  .sample-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--rule); }
+  .tabs { display: flex; }
+  .tabs [role="tab"] { min-height: 44px; margin-bottom: -1px; padding: 0 12px; border: 0; border-bottom: 2px solid transparent; background: none;
+    color: var(--text-muted); font: 500 14px var(--font-body); cursor: pointer; transition: color 200ms ease-out, border-color 200ms ease-out; }
+  .tabs [role="tab"]:hover { color: var(--text); }
+  .tabs [role="tab"][aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+  .sample-head .btn { margin-bottom: 6px; }
+  .sample .code { min-height: 270px; }
+
+  /* features */
+  .cards { display: grid; gap: 16px; }
+  a.card { display: flex; flex-direction: column; gap: 10px; color: inherit; text-decoration: none; }
+  a.card .title { font-size: var(--type-h3); }
+  a.card .desc { margin: 0; }
+  a.card .code { margin-top: 4px; }
+  a.card .more { margin-top: auto; padding-top: 6px; color: var(--link); font-weight: 500; font-size: 14px; }
+
+  /* console */
+  .console { display: grid; border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; background: var(--page); }
+  .c-nav { display: flex; align-items: center; gap: 4px; padding: 10px; overflow-x: auto; background: var(--panel); border-bottom: 1px solid var(--rule); }
+  .c-nav .c-proj { display: none; }
+  .c-nav button { min-height: 44px; padding: 0 12px; border: 0; border-radius: var(--radius-control); background: none; color: var(--text-muted);
+    font: 500 14px var(--font-body); text-align: left; cursor: pointer; transition: color 200ms ease-out, background-color 200ms ease-out; }
+  .c-nav button:hover { color: var(--text); }
+  .c-nav button[aria-current="true"] { background: var(--page); color: var(--text); box-shadow: inset 0 0 0 1px var(--rule); }
+  .c-main { min-width: 0; padding: 16px; }
+  .c-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .c-head h3 { font-size: var(--type-h3); }
+  .c-head p { margin: 2px 0 0; color: var(--text-muted); font-size: var(--type-caption); }
+  .metrics { display: grid; gap: 8px; margin-bottom: 20px; }
+  .metrics .card { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 16px; }
+  .metrics .label { color: var(--text-muted); font-size: var(--type-caption); }
+  .metrics strong { color: var(--text); font: 600 18px/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+  .c-tools { margin-bottom: 12px; max-width: 320px; }
+  .tablewrap { border: 1px solid var(--rule); border-radius: var(--radius-card); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; padding: 10px 8px; background: var(--panel); border-bottom: 1px solid var(--rule); color: var(--text-muted); font-weight: 500; }
+  td { padding: 10px 8px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.mono { color: var(--text); white-space: nowrap; }
+  .opt { display: none; }
+  .status-cell { display: flex; flex-wrap: wrap; align-items: center; gap: 0 12px; }
+  .textbtn { min-height: 44px; padding: 0 2px; border: 0; background: none; color: var(--link); font: 500 13px var(--font-body);
+    text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .c-empty { padding: 32px 16px; text-align: center; }
+  .c-empty p { margin: 0 auto 14px; max-width: 40ch; color: var(--text-muted); }
+  .c-empty strong { color: var(--text); font-weight: 500; }
+  .c-foot { margin: 12px 0 0; color: var(--text-muted); font-size: var(--type-caption); }
+  .log { font-size: 13px; }
+  .settings { display: grid; gap: 20px; max-width: 420px; }
+  .note { min-height: 1.5em; margin: 0; color: var(--text-muted); font-size: var(--type-caption); }
+
+  /* changelog */
+  .changes { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  .changes li { display: grid; gap: 6px 32px; padding: 20px 0; border-bottom: 1px solid var(--rule); }
+  .changes .v { display: flex; gap: 12px; align-items: baseline; }
+  .changes .v .mono { color: var(--text); font-weight: 500; }
+  .changes .v span:last-child { color: var(--text-muted); font-size: var(--type-caption); }
+  .changes h3 { font-size: var(--type-lead); }
+  .changes p { margin: 4px 0 0; max-width: 65ch; }
+
+  /* docs */
+  .docs { display: grid; gap: 24px; }
+  .doc-nav { display: flex; flex-wrap: wrap; gap: 8px; align-self: start; }
+  .doc-nav a { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border: 1px solid var(--rule); border-radius: var(--radius-control);
+    color: var(--body-text); text-decoration: none; font: 500 14px var(--font-body); transition: color 200ms ease-out, border-color 200ms ease-out; }
+  .doc-nav a:hover { color: var(--text); border-color: var(--rule-hover); }
+  .doc-nav a span { color: var(--text-muted); font-size: 12px; }
+  .doc-body { display: grid; gap: 36px; min-width: 0; }
+  .step { display: grid; gap: 10px; min-width: 0; }
+  .step .n { color: var(--text-muted); font: 500 var(--type-caption) var(--font-body); }
+  .step h3 { font-size: var(--type-h3); }
+  .step p { margin: 0; max-width: 62ch; }
+
+  /* launch kit */
+  .kit { display: grid; gap: 32px; align-items: end; }
+  .kit figure { margin: 0; }
+  .frame { container-type: inline-size; overflow: hidden; border: 1px solid var(--rule); border-radius: var(--radius-card); }
+  figcaption { margin-top: 10px; color: var(--text-muted); font-size: var(--type-caption); }
+  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); }
+  .slide h3 { position: absolute; left: 5cqw; right: 5cqw; top: 5cqw; font-size: 3.4cqw; }
+  .slide .note { position: absolute; left: 5cqw; right: 5cqw; top: 41.5cqw; margin: 0; font-size: 1.46cqw; color: var(--body-text); }
+  .slide .code { position: absolute; left: 5cqw; right: 5cqw; top: 13cqw; padding: 2cqw 2.4cqw; border-radius: 0.42cqw; overflow: hidden;
+    font-size: 1.46cqw; line-height: 1.7; }
+  .slide .code .hl { display: block; margin: 0 -2.4cqw; padding: 0 2.4cqw; color: var(--text);
+    background: color-mix(in srgb, var(--accent) 16%, transparent); box-shadow: inset 0.3cqw 0 0 var(--accent); }
+  .slide .foot { position: absolute; left: 5cqw; right: 5cqw; bottom: 4.5cqw; display: flex; justify-content: space-between; color: var(--text-muted); font-size: 1.2cqw; }
+  .post { aspect-ratio: 4 / 5; display: flex; padding: 6cqw; background: var(--page); }
+  .post .card { flex: 1; display: flex; flex-direction: column; padding: 7cqw; border-radius: 1.1cqw; }
+  .post .ver { color: var(--link); font: 500 3cqw/1 var(--font-mono); }
+  .post h3 { margin-top: 3.5cqw; font-size: 6.6cqw; line-height: 1.1; }
+  .post ul { display: grid; gap: 2cqw; margin: 6cqw 0 0; padding-left: 4.4cqw; font-size: 3.33cqw; line-height: 1.4; }
+  .post .code { margin-top: 6cqw; padding: 2.6cqw 3cqw; border-radius: 0.75cqw; font-size: 3cqw; }
+  .post .foot { margin-top: auto; color: var(--link); font-size: 3cqw; }
+  .phone-fig { max-width: 300px; width: 100%; justify-self: center; }
+  .phone { aspect-ratio: 9 / 19.5; display: flex; flex-direction: column; gap: 3.5cqw; padding: 7cqw 5cqw 2cqw; background: var(--page); }
+  .ph-top { display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 3.6cqw; }
+  .ph-title { font-size: 7.5cqw; }
+  .ph-alert { display: flex; align-items: center; gap: 2.5cqw; padding: 2.5cqw 3.5cqw; border: 1px solid var(--rule); border-radius: 2.5cqw; background: var(--panel); font-size: 3.4cqw; }
+  .ph-alert .badge, .ph-list .badge { font-size: 3.2cqw; }
+  .ph-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--rule); border-radius: 3cqw; overflow: hidden; }
+  .ph-list li { display: flex; justify-content: space-between; align-items: center; gap: 2cqw; min-height: 14cqw; padding: 2.4cqw 4cqw;
+    background: var(--card); border-bottom: 1px solid var(--rule); font-size: 3.8cqw; line-height: 1.3; }
+  .ph-list li:last-child { border-bottom: 0; }
+  .ph-list .mono { color: var(--text); }
+  .ph-list .sub { display: block; color: var(--text-muted); font-size: 3.2cqw; }
+  .ph-empty { padding: 8cqw 4cqw; text-align: center; border: 1px dashed var(--rule-hover); border-radius: 3cqw; color: var(--text-muted); font-size: 3.6cqw; }
+  .ph-empty strong { display: block; margin-bottom: 1.5cqw; color: var(--text); font: 600 4.6cqw/1.2 var(--font-display); }
+  .phone .spacer { flex: 1; }
+  .phone .btn { width: 100%; min-height: 48px; font-size: 4cqw; }
+  .ph-actions { display: grid; gap: 2.5cqw; }
+  .ph-tabs { display: flex; border-top: 1px solid var(--rule); }
+  .ph-tabs button { flex: 1; min-height: 44px; padding: 0; border: 0; background: none; color: var(--text-muted); font: 500 3.6cqw var(--font-body); cursor: pointer; }
+  .ph-tabs button[aria-pressed="true"] { color: var(--text); box-shadow: inset 0 2px 0 var(--accent); }
+
+  /* start */
+  .start { display: grid; gap: 24px; }
+  .start h2 { font-size: var(--type-h2); }
+  .start p { margin: 8px 0 0; max-width: 46ch; color: var(--text-muted); }
+  .start form { display: grid; gap: 8px; align-content: end; }
+  .form-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .form-row .field { flex: 1 1 220px; }
+
+  footer { margin-top: 96px; border-top: 1px solid var(--rule); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 24px 32px; color: var(--text-muted); font-size: var(--type-caption); }
+
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 24px; }
+    .sec-head h2 { font-size: 32px; }
+    .c-main { padding: 24px; }
+    .metrics { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .metrics .card { display: block; padding: 16px; }
+    .metrics strong { display: block; margin-top: 6px; font-size: 24px; }
+    .opt { display: table-cell; }
+    th, td { padding-inline: 12px; }
+    .changes li { grid-template-columns: 180px 1fr; }
+    .kit { grid-template-columns: 1.2fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
+    .start { padding: 32px; }
+  }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .hero { grid-template-columns: 1fr 1.1fr; gap: 56px; margin-top: 88px; }
+    .cards { grid-template-columns: repeat(3, 1fr); }
+    .console { grid-template-columns: 210px 1fr; }
+    .c-nav { flex-direction: column; align-items: stretch; padding: 16px 12px; overflow: visible; border-bottom: 0; border-right: 1px solid var(--rule); }
+    .c-nav .c-proj { display: block; padding: 0 12px 12px; margin-bottom: 8px; border-bottom: 1px solid var(--rule); }
+    .c-proj span { display: block; color: var(--text-muted); font-size: 12px; }
+    .c-proj .mono { color: var(--text); font-size: 13px; }
+    .docs { grid-template-columns: 220px 1fr; gap: 56px; }
+    .doc-nav { position: sticky; top: 88px; flex-direction: column; gap: 2px; }
+    .doc-nav a { border-color: transparent; }
+    .kit { grid-template-columns: 1.7fr 1fr 0.85fr; }
+    .kit .slide-fig { grid-column: auto; }
+    .start { grid-template-columns: 1fr 1fr; align-items: end; padding: 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .release, .tabs [role="tab"], .nav-links a, .c-nav button, .doc-nav a { transition: none; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="hero" style="grid-template-columns:1fr">
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span>kelar <span class="ver mono">v2.4</span></a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#features">Features</a><a href="#console">Console</a><a href="#changelog">Changelog</a><a href="#docs">Docs</a><a href="#kit">Launch kit</a>
+    </nav>
+    <a class="btn" href="#start">Start deploying</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap" aria-labelledby="h-hero">
     <div>
-      <span class="label">pikmi style · dark only</span>
-      <h1 style="margin-top:12px">Dark Dev</h1>
-      <p>Calm slate layers, borders that light up on hover, one blue for actions and mono only for code.</p>
-      <div class="row"><a class="btn" href="#components">Read the docs</a><a class="btn secondary" href="#slides">See the slides</a></div>
-    </div>
-
-  </header>
-
-  <section id="components" aria-labelledby="h-components">
-    <h2 id="h-components">Components</h2>
-    <div class="grid">
-      <div class="card"><h3>Buttons</h3><div class="row" style="margin-top:14px"><a class="btn" href="#ui">Create API key</a><a class="btn secondary" href="#app">Cancel</a></div></div>
-      <div class="card"><label for="project">Project name</label><input class="field" id="project" placeholder="billing-service"><p class="muted" style="margin:8px 0 0;font-size:13px">Lowercase, dashes allowed.</p></div>
-      <a class="card" href="#ui"><h3 class="title">A card that lights up</h3><p class="desc">Hover to brighten the border and the secondary text.</p></a>
-      <div class="card" style="grid-column:1/-1"><h3>Code block</h3><p class="muted" style="margin:6px 0 12px">Real commands and output, no window chrome.</p><pre class="code"><span class="c"># deploy a preview of the current branch</span>
-<span class="k">$</span> shipline deploy --preview
-<span class="s">✓</span> built in 41s
-<span class="s">✓</span> preview ready at pr-218.preview.example.dev</pre></div>
-      <div class="card"><h3>Status</h3><div class="row" style="margin-top:12px"><span class="badge ok">Healthy</span><span class="badge bad">Failing</span></div></div>
-    </div>
-  </section>
-
-  <section id="ui" aria-labelledby="h-ui">
-    <h2 id="h-ui">UI · Deploy console</h2>
-    <div class="console">
-      <aside aria-label="Sections"><a href="#ui" aria-current="page">Deploys</a><a href="#components">Services</a><a href="#slides">Logs</a><a href="#app">Settings</a></aside>
-      <main>
-        <div class="row" style="justify-content:space-between"><h3 style="font-size:20px">billing-service</h3><a class="btn" href="#ui">Deploy main</a></div>
-        <div class="metrics">
-          <div class="card"><span class="label">Last deploy</span><strong>12 min ago</strong></div>
-          <div class="card"><span class="label">Build time</span><strong>41 s</strong></div>
-          <div class="card"><span class="label">Open previews</span><strong>3</strong></div>
-        </div>
-        <div class="tablewrap"><table>
-          <thead><tr><th>Deploy</th><th>Branch</th><th>Status</th></tr></thead>
-          <tbody>
-            <tr><td class="mono">d-8f21c</td><td class="mono">main</td><td><span class="badge ok">Live</span></td></tr>
-            <tr><td class="mono">d-8f1a9</td><td class="mono">fix/retry</td><td><span class="badge ok">Preview</span></td></tr>
-            <tr><td class="mono">d-8f0e2</td><td class="mono">feat/tax</td><td><span class="badge bad">Build failed</span></td></tr>
-          </tbody>
-        </table></div>
-        <p class="muted" style="font-size:13px">Sample data for the preview.</p>
-      </main>
-    </div>
-  </section>
-
-  <section aria-labelledby="h-media">
-    <h2 id="h-media">Other media</h2>
-    <div class="canvases">
-      <div id="slides">
-        <div class="canvas"><div class="slide">
-          <h3>Retries now back off on their own</h3>
-<pre class="code">client = Shipline(api_key=KEY)
-<span class="hl">client.retries = Backoff(base=0.5, max=8)</span>
-client.deploy(service="billing", ref="main")</pre>
-          <span class="foot">Release 2.4 · SDK changes</span>
-        </div></div>
-        <p class="cap label">slides · 1920 x 1080</p>
+      <a class="release" href="#changelog"><span class="mono">v2.4.0</span> Preview deploys for every branch <span aria-hidden="true">→</span></a>
+      <h1 id="h-hero">Deploy every branch to its own preview URL.</h1>
+      <p class="lede">kelar builds each push, gives it a link your team can open, and keeps production on the last build that passed. One config file, one command.</p>
+      <div class="row">
+        <a class="btn" href="#start">Start deploying</a>
+        <a class="btn secondary" href="#docs">Read the quickstart</a>
       </div>
-      <div id="social">
-        <div class="canvas"><div class="post"><div class="card">
+    </div>
+    <div class="sample">
+      <div class="sample-head">
+        <div class="tabs" role="tablist" aria-label="Code sample">
+          <button role="tab" type="button" id="t-cli" aria-controls="p-cli" aria-selected="true">Command line</button>
+          <button role="tab" type="button" id="t-toml" aria-controls="p-toml" aria-selected="false" tabindex="-1"><span class="mono">kelar.toml</span></button>
+          <button role="tab" type="button" id="t-sdk" aria-controls="p-sdk" aria-selected="false" tabindex="-1">SDK</button>
+        </div>
+        <button class="btn secondary" type="button" id="copy">Copy</button>
+      </div>
+<pre class="code" id="p-cli" role="tabpanel" aria-labelledby="t-cli" tabindex="0" data-copy="kelar deploy --preview"><span class="c"># deploy a preview of the current branch</span>
+<span class="k">$</span> kelar deploy --preview
+  building fix/retry @ a41c9e2
+  running make build
+<span class="s">✓</span> built in 41s
+<span class="s">✓</span> preview ready
+  fix-retry.billing.kelar.example
+  <span class="c">expires in 7 days</span></pre>
+<pre class="code" id="p-toml" role="tabpanel" aria-labelledby="t-toml" tabindex="0" hidden><span class="c"># kelar.toml, at the root of the repo</span>
+[service]
+name  = <span class="k">"billing-service"</span>
+build = <span class="k">"make build"</span>
+
+[previews]
+branches     = <span class="k">"*"</span>
+expire_after = <span class="k">"7d"</span>
+
+[production]
+branch = <span class="k">"main"</span></pre>
+<pre class="code" id="p-sdk" role="tabpanel" aria-labelledby="t-sdk" tabindex="0" hidden>import os
+from kelar import Client, Backoff
+
+client = Client(token=os.environ[<span class="k">"KELAR_TOKEN"</span>])
+client.retries = Backoff(base=<span class="k">0.5</span>, max=<span class="k">8</span>)
+client.deploy(service=<span class="k">"billing-service"</span>, ref=<span class="k">"main"</span>)</pre>
+      <p class="sr-only" id="copy-live" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section id="features" class="wrap" aria-labelledby="h-features">
+    <div class="sec-head">
+      <h2 id="h-features">What happens on every push</h2>
+      <p>Three things kelar does without being asked, and where to see each one.</p>
+    </div>
+    <div class="cards">
+      <a class="card" href="#console">
+        <h3 class="title">A preview for every branch</h3>
+        <p class="desc">Each push builds the branch and gives it its own link. Previews expire after seven days unless you keep them.</p>
+        <pre class="code">fix-retry.billing.kelar.example</pre>
+        <span class="more">Open the console <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="card" href="#changelog">
+        <h3 class="title">Retries that back off</h3>
+        <p class="desc">A flaky step gets three tries, waiting longer each time, before the build is marked as failed.</p>
+        <pre class="code">retries = <span class="k">"backoff"</span></pre>
+        <span class="more">Read the release note <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="card" href="#doc-rollback">
+        <h3 class="title">Rollback in one command</h3>
+        <p class="desc">Point production back at the last build that passed. Nothing is rebuilt, so it takes as long as a redirect.</p>
+        <pre class="code"><span class="k">$</span> kelar rollback</pre>
+        <span class="more">See the quickstart <span aria-hidden="true">→</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="console" class="wrap" aria-labelledby="h-console">
+    <div class="sec-head">
+      <h2 id="h-console">Every deploy on one screen</h2>
+      <p>What is live, what is building and why the last build failed. Try the filter, deploy main, or open the failed log.</p>
+    </div>
+    <div class="console">
+      <nav class="c-nav" aria-label="Console">
+        <div class="c-proj"><span>Project</span><span class="mono">billing-service</span></div>
+        <button type="button" data-view="deploys" aria-current="true">Deploys</button>
+        <button type="button" data-view="logs">Logs</button>
+        <button type="button" data-view="settings">Settings</button>
+      </nav>
+      <div class="c-main">
+        <div id="v-deploys" data-panel="deploys">
+          <div class="c-head">
+            <div><h3 tabindex="-1">billing-service</h3><p>Production follows <code>main</code></p></div>
+            <button class="btn" type="button" id="deploy-btn">Deploy main</button>
+          </div>
+          <div class="metrics">
+            <div class="card"><span class="label">Last deploy</span><strong id="m-last">12 min ago</strong></div>
+            <div class="card"><span class="label">Build time</span><strong>41 s</strong></div>
+            <div class="card"><span class="label">Open previews</span><strong id="m-prev">2</strong></div>
+          </div>
+          <div class="c-tools">
+            <label for="filter">Filter by branch</label>
+            <input class="field mono" id="filter" type="search" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="tablewrap">
+            <table id="deploy-table">
+              <thead><tr><th scope="col">Deploy</th><th scope="col">Branch</th><th class="opt" scope="col">Commit</th><th class="opt" scope="col">Age</th><th scope="col">Status</th></tr></thead>
+              <tbody id="deploy-rows">
+                <tr data-branch="main" data-live><td class="mono">d-8f21c</td><td class="mono">main</td><td class="opt">Retry webhooks with backoff</td><td class="opt">12 min</td><td><div class="status-cell"><span class="badge ok">Live</span></div></td></tr>
+                <tr data-branch="fix/retry"><td class="mono">d-8f1a9</td><td class="mono">fix/retry</td><td class="opt">Cap the backoff at 8 s</td><td class="opt">40 min</td><td><div class="status-cell"><span class="badge ok">Preview</span></div></td></tr>
+                <tr data-branch="feat/tax"><td class="mono">d-8f0e2</td><td class="mono">feat/tax</td><td class="opt">Add VAT to invoices</td><td class="opt">1 h</td><td><div class="status-cell"><span class="badge bad">Build failed</span><button class="textbtn" type="button" data-goto="logs">View log</button></div></td></tr>
+                <tr data-branch="docs/readme"><td class="mono">d-8e9b4</td><td class="mono">docs/readme</td><td class="opt">Explain preview links</td><td class="opt">3 h</td><td><div class="status-cell"><span class="badge ok">Preview</span></div></td></tr>
+                <tr data-branch="main"><td class="mono">d-8e7c4</td><td class="mono">main</td><td class="opt">Bump the SDK to 2.3.2</td><td class="opt">1 d</td><td><div class="status-cell"><span class="badge idle">Replaced</span></div></td></tr>
+              </tbody>
+            </table>
+            <div class="c-empty" id="deploy-empty" hidden>
+              <p>No deploys on a branch matching <strong id="empty-term"></strong>.</p>
+              <button class="btn secondary" type="button" id="clear-filter">Clear filter</button>
+            </div>
+          </div>
+          <p class="c-foot">Sample data for this preview.</p>
+          <p class="sr-only" id="deploy-live" aria-live="polite"></p>
+        </div>
+
+        <div id="v-logs" data-panel="logs" hidden>
+          <div class="c-head">
+            <div><h3 tabindex="-1">Build log</h3><p><span class="mono">d-8f0e2</span> on <span class="mono">feat/tax</span>, 1 h ago</p></div>
+            <span class="badge bad">Build failed</span>
+          </div>
+<pre class="code log" tabindex="0" aria-label="Build log for d-8f0e2"><span class="c">12:04:11</span>  cloning feat/tax @ 9be21f0
+<span class="c">12:04:13</span>  installing dependencies
+<span class="c">12:04:39</span>  running make build
+<span class="c">12:04:52</span>  <span class="e">error  invoice/tax:41  unknown field "vat_rate" on Invoice</span>
+<span class="c">12:04:52</span>  <span class="e">build failed after 41s, attempt 3 of 3</span>
+<span class="c">12:04:52</span>  production stays on d-8f21c</pre>
+          <div class="row" style="margin-top: 16px"><button class="btn secondary" type="button" data-goto="deploys">Back to deploys</button></div>
+        </div>
+
+        <form id="v-settings" data-panel="settings" class="settings" hidden>
+          <div class="c-head" style="margin: 0"><div><h3 tabindex="-1">Settings</h3><p>billing-service</p></div></div>
+          <div>
+            <label for="prod-branch">Production branch</label>
+            <input class="field mono" id="prod-branch" value="main" spellcheck="false">
+            <p class="hint">Pushes to this branch go live once the build passes.</p>
+          </div>
+          <div>
+            <label for="expiry">Previews expire after</label>
+            <select class="field" id="expiry"><option>3 days</option><option selected>7 days</option><option>14 days</option></select>
+          </div>
+          <div class="row"><button class="btn" type="submit">Save settings</button><p class="note" id="settings-note" aria-live="polite"></p></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="changelog" class="wrap" aria-labelledby="h-changelog">
+    <div class="sec-head">
+      <h2 id="h-changelog">What shipped lately</h2>
+      <p>Small releases. Every change to the CLI, the config and the SDK is listed here.</p>
+    </div>
+    <ol class="changes">
+      <li>
+        <div class="v"><span class="mono">v2.4.0</span><span>14 Oct</span></div>
+        <div><h3>Preview deploys for every branch</h3><p>Every push builds a preview with its own link. Previews expire after seven days; change the window with <code>expire_after</code> in <code>kelar.toml</code>.</p></div>
+      </li>
+      <li>
+        <div class="v"><span class="mono">v2.3.2</span><span>30 Sep</span></div>
+        <div><h3>Retries back off on their own</h3><p>Flaky build steps retry up to three times, waiting longer between attempts, up to 8 seconds. Set <code>retries = "off"</code> to fail fast.</p></div>
+      </li>
+      <li>
+        <div class="v"><span class="mono">v2.3.0</span><span>12 Sep</span></div>
+        <div><h3>One-command rollback</h3><p><code>kelar rollback</code> points production at the last build that passed, without building again.</p></div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="docs" class="wrap" aria-labelledby="h-docs">
+    <div class="sec-head">
+      <h2 id="h-docs">From zero to a preview link</h2>
+      <p>The whole quickstart. Four commands, one file.</p>
+    </div>
+    <div class="docs">
+      <nav class="doc-nav" aria-label="Quickstart steps">
+        <a href="#doc-login"><span>1</span>Log in</a>
+        <a href="#doc-config"><span>2</span>Add <code>kelar.toml</code></a>
+        <a href="#doc-preview"><span>3</span>Open a preview</a>
+        <a href="#doc-rollback"><span>4</span>Roll back</a>
+      </nav>
+      <div class="doc-body">
+        <article class="step" id="doc-login">
+          <span class="n">Step 1</span>
+          <h3>Log in</h3>
+          <p>The CLI opens a browser tab to confirm, then stores a token for this machine.</p>
+<pre class="code"><span class="k">$</span> kelar login
+<span class="s">✓</span> logged in as you@example.com</pre>
+        </article>
+        <article class="step" id="doc-config">
+          <span class="n">Step 2</span>
+          <h3>Add <code>kelar.toml</code></h3>
+          <p>Run <code>kelar init</code> at the root of the repo. It writes a config with your build command and production branch.</p>
+<pre class="code"><span class="k">$</span> kelar init
+<span class="s">✓</span> wrote kelar.toml (service: billing-service)</pre>
+        </article>
+        <article class="step" id="doc-preview">
+          <span class="n">Step 3</span>
+          <h3>Open a preview</h3>
+          <p>Push any branch, or deploy the one you are on. The link appears in the console and in the command output.</p>
+<pre class="code"><span class="k">$</span> kelar deploy --preview
+<span class="s">✓</span> preview ready at fix-retry.billing.kelar.example</pre>
+        </article>
+        <article class="step" id="doc-rollback">
+          <span class="n">Step 4</span>
+          <h3>Roll back</h3>
+          <p>If production breaks, point it at the last build that passed. Nothing is rebuilt.</p>
+<pre class="code"><span class="k">$</span> kelar rollback billing-service
+<span class="s">✓</span> production now serves d-8e7c4</pre>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="kit" class="wrap" aria-labelledby="h-kit">
+    <div class="sec-head">
+      <h2 id="h-kit">Release 2.4, in every format</h2>
+      <p>The same release for the team demo, the feed and the on-call phone.</p>
+    </div>
+    <div class="kit">
+      <figure class="slide-fig">
+        <div class="frame"><div class="slide">
+          <h3>Retries now back off on their own</h3>
+<pre class="code">import os
+from kelar import Client, Backoff
+
+client = Client(token=os.environ[<span class="k">"KELAR_TOKEN"</span>])
+
+<span class="c"># waits 0.5 s, 1 s, 2 s, 4 s, then 8 s between tries</span>
+<span class="hl">client.retries = Backoff(base=0.5, max=8)</span>client.deploy(service=<span class="k">"billing-service"</span>, ref=<span class="k">"main"</span>)</pre>
+          <p class="note">One line in the client. Flaky steps stop failing the whole build.</p>
+          <div class="foot"><span>Release 2.4 · SDK changes</span><span>kelar</span></div>
+        </div></div>
+        <figcaption>Demo slide · 1920 x 1080</figcaption>
+      </figure>
+      <figure>
+        <div class="frame"><div class="post"><div class="card">
           <span class="ver">v2.4.0</span>
           <h3>Preview deploys for every branch</h3>
-          <ul><li>Previews build on push</li><li>Links expire after 7 days</li><li>Retries back off on their own</li></ul>
-          <span class="foot">Read the changelog in the docs</span>
+          <ul><li>Previews build on every push</li><li>Links expire after 7 days</li><li>Retries back off on their own</li></ul>
+          <pre class="code"><span class="k">$</span> kelar deploy --preview</pre>
+          <span class="foot">kelar.example/changelog</span>
         </div></div></div>
-        <p class="cap label">social · 1080 x 1350</p>
-      </div>
-      <div id="app">
-        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
-          <span class="label">billing-service</span>
-          <h3>Recent deploys</h3>
-          <div class="list">
-            <div class="li"><span class="mono">d-8f21c</span><span class="badge ok">Live</span></div>
-            <div class="li"><span class="mono">d-8f1a9</span><span class="badge ok">Preview</span></div>
-            <div class="li"><span class="mono">d-8f0e2</span><span class="badge bad">Failed</span></div>
+        <figcaption>Release post · 1080 x 1350</figcaption>
+      </figure>
+      <figure class="phone-fig">
+        <div class="frame"><div class="phone">
+          <div class="ph-top"><span class="mono">billing-service</span><span>main</span></div>
+          <div class="ph-view" data-view="deploys">
+            <h3 class="ph-title">Deploys</h3>
+            <div class="ph-alert" id="ph-alert" style="margin: 3cqw 0"><span class="badge bad">Failed</span><span>feat/tax, 1 h ago</span></div>
+            <ul class="ph-list" id="ph-list">
+              <li data-live><span><span class="mono">d-8f21c</span><span class="sub">main</span></span><span class="badge ok">Live</span></li>
+              <li><span><span class="mono">d-8f1a9</span><span class="sub">fix/retry</span></span><span class="badge ok">Preview</span></li>
+              <li id="ph-failed"><span><span class="mono">d-8f0e2</span><span class="sub">feat/tax</span></span><span class="badge bad">Failed</span></li>
+              <li><span><span class="mono">d-8e9b4</span><span class="sub">docs/readme</span></span><span class="badge ok">Preview</span></li>
+              <li><span><span class="mono">d-8e7c4</span><span class="sub">main</span></span><span class="badge idle">Replaced</span></li>
+            </ul>
+          </div>
+          <div class="ph-view" data-view="alerts" hidden>
+            <h3 class="ph-title">Alerts</h3>
+            <ul class="ph-list" style="margin-top: 3cqw">
+              <li><span>Build on feat/tax<span class="sub mono">d-8f0e2 · 1 h ago</span></span><span class="badge bad">Failed</span></li>
+              <li><span>Deploy on main<span class="sub mono">d-8f21c · 12 min ago</span></span><span class="badge ok">Live</span></li>
+            </ul>
+          </div>
+          <div class="ph-view" data-view="keys" hidden>
+            <h3 class="ph-title">Deploy keys</h3>
+            <div class="ph-empty" style="margin-top: 3cqw"><strong>No keys yet</strong>Create one in the console to deploy from a CI job.</div>
           </div>
           <div class="spacer"></div>
-          <a class="btn" href="#app">Roll back to d-8f1a9</a>
-          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Deploys</button><button class="tab" type="button" aria-pressed="false">Alerts</button><button class="tab" type="button" aria-pressed="false">Keys</button></nav>
+          <div class="ph-actions" data-view-actions="deploys">
+            <button class="btn" type="button" id="ph-deploy">Deploy main</button>
+            <button class="btn danger" type="button" id="ph-delete">Delete failed build</button>
+          </div>
+          <nav class="ph-tabs" aria-label="Phone app sections">
+            <button type="button" data-view="deploys" aria-pressed="true">Deploys</button>
+            <button type="button" data-view="alerts" aria-pressed="false">Alerts</button>
+            <button type="button" data-view="keys" aria-pressed="false">Keys</button>
+          </nav>
         </div></div>
-        <p class="cap label">app · phone</p>
-      </div>
+        <figcaption>On-call app · phone</figcaption>
+      </figure>
     </div>
   </section>
-</div>
+
+  <section id="start" class="wrap" aria-labelledby="h-start">
+    <div class="card start">
+      <div>
+        <h2 id="h-start">Deploy your first branch</h2>
+        <p>Leave a work email and we send the CLI and a starter <code>kelar.toml</code>. Free for one project.</p>
+      </div>
+      <form id="start-form">
+        <label for="email">Work email</label>
+        <div class="form-row">
+          <input class="field" id="email" type="email" autocomplete="email" required>
+          <button class="btn" type="submit">Send me the CLI</button>
+        </div>
+        <p class="note" id="start-note" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>kelar is a fictional product made for this preview</span>
+    <span>pikmi style · dark dev</span>
+  </div>
+</footer>
+
 <script>
-  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
-  })));
+  // code sample tabs
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  function selectTab(tab, focus) {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectTab(t));
+    t.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      selectTab(tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length], true);
+    });
+  });
+  const copyBtn = document.getElementById('copy');
+  const copyLive = document.getElementById('copy-live');
+  copyBtn.addEventListener('click', async () => {
+    const tab = tabs.find(t => t.getAttribute('aria-selected') === 'true');
+    const panel = document.getElementById(tab.getAttribute('aria-controls'));
+    try {
+      await navigator.clipboard.writeText(panel.dataset.copy || panel.textContent);
+      copyBtn.textContent = 'Copied';
+    } catch (err) {
+      copyBtn.textContent = 'Copy failed';
+    }
+    copyLive.textContent = copyBtn.textContent;
+    setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+  });
+
+  // console views
+  const panels = document.querySelectorAll('[data-panel]');
+  const navBtns = document.querySelectorAll('.c-nav [data-view]');
+  function showView(view, moveFocus) {
+    navBtns.forEach(b => { if (b.dataset.view === view) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+    panels.forEach(p => { p.hidden = p.dataset.panel !== view; });
+    // the button that was clicked is now hidden, so hand focus to the new view's heading
+    if (moveFocus) document.querySelector('[data-panel="' + view + '"] h3').focus();
+  }
+  navBtns.forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
+  document.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', () => showView(b.dataset.goto, true)));
+
+  // filter by branch, with an empty state
+  const filter = document.getElementById('filter');
+  const rows = document.getElementById('deploy-rows');
+  const table = document.getElementById('deploy-table');
+  const empty = document.getElementById('deploy-empty');
+  function applyFilter() {
+    const q = filter.value.trim().toLowerCase();
+    let shown = 0;
+    rows.querySelectorAll('tr').forEach(r => { const on = !q || r.dataset.branch.includes(q); r.hidden = !on; if (on) shown++; });
+    table.hidden = shown === 0;
+    empty.hidden = shown > 0;
+    document.getElementById('empty-term').textContent = filter.value.trim();
+  }
+  filter.addEventListener('input', applyFilter);
+  document.getElementById('clear-filter').addEventListener('click', () => { filter.value = ''; applyFilter(); filter.focus(); });
+
+  // deploy main: a building row (loading state) that goes live
+  const deployBtn = document.getElementById('deploy-btn');
+  const deployLive = document.getElementById('deploy-live');
+  const mLast = document.getElementById('m-last');
+  const newId = () => 'd-' + Math.random().toString(16).slice(2, 7);
+  function setBadge(badge, cls, text) { badge.className = 'badge ' + cls; badge.textContent = text; }
+  deployBtn.addEventListener('click', () => {
+    const id = newId();
+    deployBtn.disabled = true;
+    deployBtn.textContent = 'Building…';
+    mLast.textContent = 'building…';
+    const tr = document.createElement('tr');
+    tr.dataset.branch = 'main';
+    [['mono', id], ['mono', 'main'], ['opt', 'Log each retry attempt'], ['opt', 'just now']].forEach(([cls, text]) => {
+      const td = document.createElement('td'); td.className = cls; td.textContent = text; tr.append(td);
+    });
+    const td = document.createElement('td');
+    td.innerHTML = '<div class="status-cell"><span class="badge idle">Building</span></div>';
+    tr.append(td);
+    rows.prepend(tr);
+    applyFilter();
+    deployLive.textContent = 'Deploy ' + id + ' started on main.';
+    setTimeout(() => {
+      const prev = rows.querySelector('tr[data-live]');
+      if (prev) { setBadge(prev.querySelector('.badge'), 'idle', 'Replaced'); prev.removeAttribute('data-live'); }
+      setBadge(tr.querySelector('.badge'), 'ok', 'Live');
+      tr.setAttribute('data-live', '');
+      mLast.textContent = 'just now';
+      deployBtn.textContent = 'Deploy main';
+      deployBtn.disabled = false;
+      deployLive.textContent = 'Deploy ' + id + ' is live.';
+    }, 2600);
+  });
+
+  document.getElementById('v-settings').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('settings-note').textContent = 'This is a preview: nothing was saved.';
+  });
+
+  // phone app
+  const phTabs = document.querySelectorAll('.ph-tabs [data-view]');
+  const phViews = document.querySelectorAll('.ph-view');
+  const phActions = document.querySelector('[data-view-actions]');
+  phTabs.forEach(t => t.addEventListener('click', () => {
+    phTabs.forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+    phViews.forEach(v => { v.hidden = v.dataset.view !== t.dataset.view; });
+    phActions.hidden = t.dataset.view !== 'deploys';
+  }));
+  const phList = document.getElementById('ph-list');
+  const phDeploy = document.getElementById('ph-deploy');
+  phDeploy.addEventListener('click', () => {
+    const id = newId();
+    const li = document.createElement('li');
+    li.innerHTML = '<span><span class="mono"></span><span class="sub">main</span></span><span class="badge idle">Building</span>';
+    li.querySelector('.mono').textContent = id;
+    phList.prepend(li);
+    phDeploy.disabled = true;
+    phDeploy.textContent = 'Building…';
+    setTimeout(() => {
+      const prev = phList.querySelector('li[data-live]');
+      if (prev) { setBadge(prev.querySelector('.badge'), 'idle', 'Replaced'); prev.removeAttribute('data-live'); }
+      setBadge(li.querySelector('.badge'), 'ok', 'Live');
+      li.setAttribute('data-live', '');
+      if (phList.children.length > 5) phList.lastElementChild.remove();
+      phDeploy.disabled = false;
+      phDeploy.textContent = 'Deploy main';
+    }, 2600);
+  });
+  const phDelete = document.getElementById('ph-delete');
+  phDelete.addEventListener('click', () => {
+    const failed = document.getElementById('ph-failed');
+    if (failed) failed.remove();
+    document.getElementById('ph-alert').remove();
+    phDelete.disabled = true;
+    phDelete.textContent = 'Failed build deleted';
+  });
+
+  document.getElementById('start-form').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('start-note').textContent = 'This is a preview: nothing was sent.';
+  });
 </script>
 </body>
 </html>

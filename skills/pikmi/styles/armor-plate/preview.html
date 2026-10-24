@@ -10,151 +10,582 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
   body { margin: 0; background: var(--page); color: var(--text); font: 400 16px/1.6 var(--font-body); }
-  a { color: var(--link); }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 80px; }
+  a { color: var(--link); text-underline-offset: 3px; }
+  p { margin: 0; }
+  .wrap { max-width: 1200px; margin-inline: auto; padding-inline: 16px; }
+  section { margin-top: 104px; }
   h1, h2, h3 { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: var(--tracking-display); line-height: 0.95; margin: 0; }
-  h1 { font-size: clamp(48px, 10vw, 104px); }
-  h2 { font-size: 34px; margin-bottom: 24px; }
-  h3 { font-size: 24px; }
-  section { margin-top: 64px; }
+  .label { font: 500 var(--type-label)/1.3 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
   .muted { color: var(--text-muted); }
-  .mono { font-family: var(--font-mono); }
-  .label { font: 500 12px/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
-  .plate-wrap { filter: drop-shadow(var(--plate-shadow)); }
+  .row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  :focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+  .ticks { height: 10px; border-top: 1px solid var(--text-muted); background: repeating-linear-gradient(90deg, var(--text-muted) 0 1px, transparent 1px 12px) 0 0 / 100% 6px no-repeat; opacity: 0.7; }
+  .sec-head { margin: 0 0 40px; }
+  .sec-mark { display: flex; align-items: center; gap: 14px; }
+  .sec-mark .ticks { flex: 1; max-width: 220px; }
+  .sec-head h2 { font-size: clamp(38px, 8vw, var(--type-h1)); margin-top: 14px; max-width: 16ch; }
+  .sec-head p { margin-top: 14px; color: var(--text-muted); max-width: 60ch; }
+  .mark { display: inline-grid; place-items: center; width: 26px; height: 26px; flex: none; border: 2px solid var(--text);
+    font: 500 13px/1 var(--font-mono); letter-spacing: 0; vertical-align: middle; }
+
+  /* components (from STYLE.md) */
   .plate { background: var(--panel); clip-path: var(--plate-cut); padding: var(--space-lg); position: relative; }
+  .plate-wrap { filter: drop-shadow(var(--plate-shadow)); }
+  /* clip-path cuts box-shadow, so the shadow sits on a wrapper as a drop-shadow */
+  .plate .unit { position: absolute; top: var(--space-sm); right: var(--space-lg); font: 500 var(--type-label)/1 var(--font-mono);
+    letter-spacing: var(--tracking-label); color: var(--text-muted); }
   .plate.green { background: var(--armor-green); }
-  .plate .unit { position: absolute; top: 10px; right: var(--space-lg); font: 500 12px/1 var(--font-mono); letter-spacing: var(--tracking-label); color: var(--text-muted); }
-  .plate.green .unit { color: var(--text); }
-  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: 0; clip-path: var(--plate-cut);
-    background: var(--accent); color: var(--on-accent); font: 700 16px/1 var(--font-display); letter-spacing: var(--tracking-label); text-transform: uppercase; text-decoration: none; cursor: pointer; transition: transform 120ms linear; }
+  .plate.green .unit, .plate.green .label, .plate.green .muted { color: var(--text); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; cursor: pointer;
+    min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: 0; clip-path: var(--plate-cut);
+    background: var(--accent); color: var(--on-accent); font: 700 16px/1 var(--font-display); letter-spacing: var(--tracking-label);
+    text-transform: uppercase; transition: transform 120ms linear; }
   .btn:hover { transform: translateX(2px); }
   .btn:active { transform: translate(3px, 3px); }
   .btn.ghost { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); clip-path: none; }
-  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+  .btn:focus-visible, .field:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
   .btn:focus-visible { clip-path: none; }
-  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 2px solid var(--text-muted); border-radius: 0; background: var(--card); color: var(--text); font: 400 16px var(--font-mono); }
-  .field:focus { border-color: var(--accent); }
-  label { display: block; margin-bottom: 8px; }
-  .status { display: inline-flex; align-items: center; gap: var(--space-sm); font: 500 13px/1 var(--font-mono); text-transform: uppercase; }
-  .status::before { content: ""; width: 10px; height: 10px; background: currentColor; }
-  .status.ok { color: var(--text); } .status.warn { color: var(--hazard-yellow); } .status.bad { color: var(--danger); }
-  .hazard { height: 12px; background: var(--hazard-stripes); }
-  .grid-surface { background-color: var(--card); background: var(--tech-grid), var(--card); }
-  .row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
-  .spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; }
-  .spec strong { display: block; font: 500 40px/1 var(--font-mono); }
-  .ticks { height: 10px; background: repeating-linear-gradient(90deg, var(--text-muted) 0 1px, transparent 1px 12px); opacity: 0.6; }
+  /* clip-path also clips the outline, so a focused button drops its cut corners */
 
-  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; align-items: start; }
-  #slides { grid-column: 1 / -1; max-width: 960px; }
-  .canvas { container-type: inline-size; filter: drop-shadow(var(--plate-shadow)); }
-  .cap { margin-top: 12px; }
-  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); clip-path: polygon(0 0, calc(100% - 3cqw) 0, 100% 3cqw, 100% 100%, 0 100%); }
-  .slide .frame { position: absolute; inset: 5cqw; border: 0.12cqw solid var(--rule); }
-  .slide .unit { position: absolute; top: 2.4cqw; right: 6cqw; font: 500 1.2cqw/1 var(--font-mono); letter-spacing: 0.2cqw; color: var(--text-muted); }
-  .slide h3 { position: absolute; left: 8cqw; top: 9cqw; width: 50cqw; font-size: 4.6cqw; }
-  .slide .readout { position: absolute; right: 8cqw; bottom: 9cqw; text-align: right; }
-  .slide .readout strong { display: block; font: 500 11cqw/0.9 var(--font-mono); }
-  .slide .readout span { font: 500 1.3cqw/1 var(--font-mono); letter-spacing: 0.2cqw; color: var(--accent); }
-  .slide p { position: absolute; left: 8cqw; bottom: 9cqw; width: 38cqw; margin: 0; font-size: 1.6cqw; color: var(--text-muted); }
-  .post { aspect-ratio: 4 / 5; position: relative; background: var(--page); clip-path: polygon(0 0, calc(100% - 6cqw) 0, 100% 6cqw, 100% 100%, 6cqw 100%, 0 calc(100% - 6cqw)); }
-  .post .lab { position: absolute; top: 6cqw; left: 7cqw; font: 500 2.6cqw/1 var(--font-mono); letter-spacing: 0.4cqw; color: var(--text-muted); }
-  .post .big { position: absolute; left: 7cqw; top: 14cqw; font: 700 30cqw/0.82 var(--font-display); text-transform: uppercase; }
-  .post .big span { color: var(--accent); }
-  .post .info { position: absolute; left: 7cqw; right: 7cqw; bottom: 7cqw; background: var(--armor-green); clip-path: polygon(0 0, calc(100% - 4cqw) 0, 100% 4cqw, 100% 100%, 0 100%); padding: 5cqw; }
-  .post .info h3 { font-size: 7cqw; }
-  .post .info p { margin: 1.5cqw 0 0; font-size: 3.6cqw; }
-  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; padding: 8cqw 5cqw 4cqw; gap: 4cqw; }
-  .phone h3 { font-size: 9cqw; }
-  .phone .rowi { display: flex; justify-content: space-between; align-items: center; min-height: 48px; border-bottom: 1px solid var(--rule); font-size: 4.2cqw; }
-  .phone .spacer { flex: 1; }
-  .phone .btn { justify-content: center; }
-  .phone nav { display: flex; }
-  .tab { flex: 1; min-height: 48px; background: var(--panel); border: 0; color: var(--text-muted); font: 600 3.8cqw var(--font-display); letter-spacing: 0.3cqw; text-transform: uppercase; cursor: pointer; }
-  .tab[aria-pressed="true"] { color: var(--text); box-shadow: inset 0 3px 0 var(--accent); }
+  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 2px solid var(--text-muted); border-radius: 0;
+    background: var(--card); color: var(--text); font: 400 16px var(--font-mono); }
+  .field:focus { border-color: var(--accent); }
+  .field::placeholder { color: var(--text-muted); opacity: 1; }
+
+  .status { display: inline-flex; align-items: center; gap: var(--space-sm); font: 500 13px/1 var(--font-mono); text-transform: uppercase; }
+  .status::before { content: ""; width: 10px; height: 10px; flex: none; background: currentColor; }
+  .status.ok { color: var(--text); } .status.warn { color: var(--hazard-yellow); } .status.bad { color: var(--danger); }
+
+  .hazard { height: 12px; background: var(--hazard-stripes); }
+  /* the token carries position and size per layer, which only the background shorthand accepts */
+  .grid-surface { background: var(--tech-grid), var(--card); }
   @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+
+  /* picker keys: yellow marks the selected item */
+  .picks { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pick { min-height: 48px; min-width: 48px; padding: 0 16px; border: 2px solid var(--text-muted); border-radius: 0; background: transparent; color: var(--text);
+    font: 600 15px/1 var(--font-display); letter-spacing: var(--tracking-label); text-transform: uppercase; cursor: pointer;
+    transition: background-color 120ms linear, border-color 120ms linear; }
+  .pick:hover { border-color: var(--text); }
+  .pick:active { transform: translate(2px, 2px); }
+  .pick[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+  /* nav */
+  .nav { position: sticky; top: 0; z-index: 5; background: var(--page); border-bottom: 2px solid var(--rule); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; color: var(--text); text-decoration: none;
+    font: 700 28px/1 var(--font-display); letter-spacing: var(--tracking-display); text-transform: uppercase; }
+  .nav-links { display: none; gap: 32px; }
+  .nav-links a { padding: 16px 0; color: var(--text); text-decoration: none; font: 600 16px/1 var(--font-display);
+    letter-spacing: var(--tracking-label); text-transform: uppercase; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* hero */
+  .hero { margin-top: 40px; }
+  .hero-plate { padding: 48px 20px 28px; }
+  .hero-grid { display: grid; gap: 32px; align-items: center; }
+  .hero h1 { font-size: clamp(54px, 14vw, var(--type-display)); line-height: 0.9; margin-top: 16px; max-width: 9ch; }
+  .hero .lede { font-size: var(--type-lead); color: var(--text-muted); max-width: 44ch; margin: 20px 0 28px; }
+  .schematic { margin: 0; justify-self: center; width: 100%; max-width: 320px; display: grid; gap: 16px; }
+  .schematic figcaption { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .mech { --armor: var(--armor-green); width: 100%; height: auto; display: block; }
+  .mech[data-set="urban"] { --armor: var(--text-muted); }
+  .mech .fr { fill: var(--page); stroke: var(--text-muted); stroke-width: 1.5; }
+  .mech .ar { fill: var(--armor); stroke: var(--page); stroke-width: 2; transition: fill 120ms linear; }
+  .mech .ln { fill: none; stroke: var(--page); stroke-width: 2; }
+  .mech .visor { fill: var(--text); }
+  .mech .base { fill: var(--panel); stroke: var(--text-muted); stroke-width: 1.5; }
+  .mech .dim path { fill: none; stroke: var(--text-muted); stroke-width: 1; }
+  .mech .dim text { font: 500 10px var(--font-mono); letter-spacing: 2px; fill: var(--text-muted); text-anchor: middle; }
+  .mech .mk path { fill: none; stroke: var(--text-muted); stroke-width: 1; }
+  .mech .mk rect { fill: var(--page); stroke: var(--text); stroke-width: 1.5; }
+  .mech .mk text { font: 500 11px var(--font-mono); fill: var(--text); text-anchor: middle; }
+  .spec-plate { padding: 44px 20px 24px; }
+  .specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px 16px; margin: 0; }
+  .specs div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 8px; }
+  .specs dd { margin: 0; font: 500 clamp(32px, 8vw, 44px)/1 var(--font-mono); }
+  .specs-wrap { margin-top: 28px; }
+
+  /* sec 01 frame */
+  .parts { display: grid; gap: 28px; }
+  .part { display: flex; flex-direction: column; gap: 16px; height: 100%; padding-top: 48px; }
+  .part h3 { display: flex; align-items: center; gap: 12px; font-size: var(--type-h3); }
+  .part > p { color: var(--text-muted); }
+  .plate.green > p { color: var(--text); }
+  .part .ticks { margin-top: auto; }
+  .plate.green .ticks { border-color: var(--text); background-image: repeating-linear-gradient(90deg, var(--text) 0 1px, transparent 1px 12px); }
+  .plate.green .mark { border-color: var(--text); }
+  .mini { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 0; }
+  .mini div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 6px; }
+  .mini dd { margin: 0; font: 500 30px/1 var(--font-mono); }
+
+  /* sec 02 build log */
+  .console { display: grid; gap: 28px; }
+  .screen { display: grid; gap: 18px; padding-top: 44px; height: 100%; align-content: start; }
+  .count { font: 500 clamp(64px, 18vw, 104px)/0.9 var(--font-mono); font-variant-numeric: tabular-nums; }
+  .count .of { font-size: 0.38em; color: var(--text-muted); }
+  .cells { display: grid; grid-template-columns: repeat(16, 1fr); gap: 4px; }
+  .cells span { aspect-ratio: 1; border: 1px solid var(--text-muted); }
+  .cells .done { background: var(--text); border-color: var(--text); }
+  .cells .now { background: var(--accent); border-color: var(--accent); }
+  .cells .fault { background: var(--hazard-red); border-color: var(--hazard-red); }
+  .screen .row { gap: 10px 20px; }
+  .blocks-plate { display: flex; flex-direction: column; gap: 12px; padding-top: 44px; height: 100%; }
+  .blocks-plate h3 { font-size: var(--type-h3); }
+  .blocks { list-style: none; margin: 0; padding: 0; }
+  .blocks li { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; min-height: 56px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .blocks .name { display: inline-flex; align-items: center; gap: 12px; font-weight: 500; }
+  .blocks-plate .ticks { margin-top: auto; }
+  .steps-plate { padding-top: 44px; min-width: 0; }
+  .steps-head { display: grid; gap: 16px; }
+  .steps-head h3 { font-size: var(--type-h3); }
+  .steps-tools { display: grid; gap: 16px; }
+  .steps-tools label { display: block; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  th { text-align: left; padding: 10px 8px; border-bottom: 2px solid var(--rule); font: 500 var(--type-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
+  td { padding: 12px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  td.code { font: 500 15px/1.6 var(--font-mono); }
+  td .task { display: block; font-weight: 500; }
+  td .parts-code { display: block; margin-top: 2px; font: 400 13px/1.4 var(--font-mono); color: var(--text-muted); }
+  tr[aria-current="step"] td:first-child { box-shadow: inset 4px 0 0 var(--accent); color: var(--accent); padding-left: 14px; }
+  .opt { display: none; }
+  .empty { margin-top: 16px; padding: 16px; border: 2px dashed var(--rule); color: var(--text-muted); }
+
+  /* sec 03 launch kit */
+  .kit { display: grid; gap: 32px; align-items: end; }
+  .kit figure { margin: 0; }
+  .canvas { container-type: inline-size;
+    /* four 1px drop-shadows trace the cut outline, then the hard plate shadow */
+    filter: drop-shadow(1px 0 0 var(--rule)) drop-shadow(-1px 0 0 var(--rule)) drop-shadow(0 1px 0 var(--rule)) drop-shadow(0 -1px 0 var(--rule)) drop-shadow(var(--plate-shadow)); }
+  .kit figcaption { margin-top: 14px; }
+  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); clip-path: polygon(0 0, calc(100% - 3cqw) 0, 100% 3cqw, 100% 100%, 0 100%); }
+  .slide .plate-line { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .slide .plate-line polygon { fill: none; stroke: var(--rule); stroke-width: 2px; vector-effect: non-scaling-stroke; }
+  .slide .unit { position: absolute; top: 6.6cqw; right: 9cqw; font: 500 1.04cqw/1 var(--font-mono); letter-spacing: 0.2cqw; color: var(--text-muted); }
+  .slide h3 { position: absolute; left: 9cqw; top: 10cqw; width: 46cqw; font-size: 3.75cqw; }
+  .slide .s-ticks { position: absolute; left: 9cqw; top: 22cqw; width: 26cqw; height: 0.9cqw; border-top: max(1px, 0.08cqw) solid var(--text-muted);
+    background: repeating-linear-gradient(90deg, var(--text-muted) 0 max(1px, 0.08cqw), transparent 0 1.2cqw) 0 0 / 100% 0.6cqw no-repeat; opacity: 0.7; }
+  .slide .s-read { position: absolute; right: 9cqw; bottom: 8.5cqw; text-align: right; }
+  .slide .s-read strong { display: block; font: 500 10.4cqw/0.9 var(--font-mono); }
+  .slide .s-read span { font: 500 1.04cqw/1 var(--font-mono); letter-spacing: 0.2cqw; text-transform: uppercase; color: var(--accent); }
+  .slide p { position: absolute; left: 9cqw; bottom: 9cqw; width: 36cqw; font-size: 1.46cqw; line-height: 1.35; color: var(--text-muted); }
+  .post { aspect-ratio: 4 / 5; position: relative; background: var(--page); clip-path: polygon(0 0, calc(100% - 6cqw) 0, 100% 6cqw, 100% 100%, 6cqw 100%, 0 calc(100% - 6cqw)); }
+  .post .tk { position: absolute; width: 10cqw; height: 10cqw; border: 0 solid var(--text-muted);
+    border-top-width: max(1px, 0.25cqw); border-left-width: max(1px, 0.25cqw);
+    background: repeating-linear-gradient(90deg, var(--text-muted) 0 max(1px, 0.25cqw), transparent 0 2cqw) 0 0 / 100% 1.6cqw no-repeat; }
+  .post .tl { top: 4cqw; left: 4cqw; }
+  .post .tr { top: 4cqw; right: 4cqw; transform: rotate(90deg); }
+  .post .br { bottom: 4cqw; right: 4cqw; transform: rotate(180deg); }
+  .post .bl { bottom: 4cqw; left: 4cqw; transform: rotate(270deg); }
+  .post .lab { position: absolute; top: 6cqw; left: 17cqw; font: 500 2.6cqw/1 var(--font-mono); letter-spacing: 0.4cqw; color: var(--text-muted); }
+  .post .big { position: absolute; left: 7cqw; top: 17cqw; font: 700 30cqw/0.82 var(--font-display); text-transform: uppercase; letter-spacing: 0.1cqw; }
+  .post .big span { color: var(--accent); }
+  .post .info { position: absolute; left: 7cqw; right: 7cqw; bottom: 17cqw; background: var(--armor-green); clip-path: polygon(0 0, calc(100% - 4cqw) 0, 100% 4cqw, 100% 100%, 0 100%); padding: 5cqw; }
+  .post .info h3 { font-size: 7cqw; }
+  .post .info p { margin-top: 1.5cqw; font-size: 4.4cqw; line-height: 1.3; }
+  .post .foot { position: absolute; left: 17cqw; bottom: 6cqw; font: 500 2.6cqw/1 var(--font-mono); letter-spacing: 0.4cqw; color: var(--text-muted); }
+  .phone { aspect-ratio: 9 / 19.5; background: var(--page); display: flex; flex-direction: column; padding: 8cqw 5cqw 3cqw; gap: 4cqw; }
+  .phone .label { font-size: 3.6cqw; letter-spacing: 0.6cqw; }
+  .phone h3 { font-size: 10cqw; }
+  .phone .p-group { filter: drop-shadow(1.2cqw 1.2cqw 0 #0B1120); }
+  .phone .p-plate { background: var(--panel); clip-path: polygon(0 0, calc(100% - 4cqw) 0, 100% 4cqw, 100% 100%, 4cqw 100%, 0 calc(100% - 4cqw)); padding: 3cqw 4cqw; }
+  .phone .rowi { display: flex; justify-content: space-between; align-items: center; gap: 2cqw; min-height: 48px; border-bottom: 1px solid var(--rule); font-size: 4.4cqw; }
+  .phone .rowi:last-child { border-bottom: 0; }
+  .phone .status { font-size: 3.4cqw; gap: 1.8cqw; }
+  .phone .status::before { width: 2.4cqw; height: 2.4cqw; }
+  .phone .p-count { font: 500 4cqw/1 var(--font-mono); letter-spacing: 0.3cqw; text-transform: uppercase; color: var(--text-muted); }
+  .phone .p-count strong { font-size: 9cqw; font-weight: 500; color: var(--text); letter-spacing: 0; }
+  .phone .spacer { flex: 1; }
+  .phone .btn { width: 100%; font-size: 5cqw; }
+  .phone nav { display: flex; gap: 1cqw; }
+  .tab { flex: 1; min-height: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.6cqw;
+    background: var(--panel); border: 0; color: var(--text-muted); cursor: pointer;
+    font: 600 3.8cqw/1 var(--font-display); letter-spacing: 0.3cqw; text-transform: uppercase; }
+  .tab::before { content: ""; width: 2.4cqw; height: 2.4cqw; background: var(--text-muted); }
+  .tab[aria-pressed="true"] { color: var(--text); box-shadow: inset 0 3px 0 var(--accent); }
+  .tab[aria-pressed="true"]::before { background: var(--text); }
+  .phone-fig { max-width: 300px; width: 100%; justify-self: center; }
+
+  /* sec 04 order + footer */
+  .order { display: grid; gap: 28px; padding: 48px 20px 28px; }
+  .order h2 { font-size: clamp(38px, 8vw, var(--type-h1)); margin-top: 14px; max-width: 14ch; }
+  .order .muted { margin-top: 14px; max-width: 46ch; }
+  .price { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-top: 24px; }
+  .price strong { font: 500 44px/1 var(--font-mono); }
+  .order form { display: grid; gap: 14px; align-content: end; }
+  .order .warning { margin: 0 0 12px; line-height: 1.4; }
+  .form-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .form-row .field { flex: 1 1 220px; }
+  .order .note { min-height: 1.6em; color: var(--text-muted); }
+  footer { margin-top: 88px; border-top: 2px solid var(--rule); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-top: 22px; padding-bottom: 36px; }
+
+  @media (min-width: 640px) {
+    .wrap { padding-inline: 24px; }
+    .specs { grid-template-columns: repeat(4, 1fr); }
+    .specs div + div { border-left: 2px solid var(--rule); padding-left: 20px; }
+    .specs div:nth-child(3) { border-left: 0; padding-left: 0; }
+    .steps-tools { grid-template-columns: auto minmax(200px, 280px); align-items: end; justify-content: space-between; }
+    .opt { display: table-cell; }
+    .kit { grid-template-columns: 1.2fr 0.8fr; }
+    .kit .slide-fig { grid-column: 1 / -1; }
+    .order { padding: 56px 32px 32px; }
+  }
+  @media (min-width: 1024px) {
+    .nav-links { display: flex; }
+    .hero-plate { padding: 64px 48px 40px; }
+    .hero-grid { grid-template-columns: 1.25fr 1fr; }
+    .schematic { max-width: 380px; }
+    .spec-plate { padding: 44px 48px 28px; }
+    .specs div:nth-child(3) { border-left: 2px solid var(--rule); padding-left: 20px; }
+    .parts { grid-template-columns: repeat(3, 1fr); }
+    .console { grid-template-columns: repeat(12, 1fr); }
+    .c-screen { grid-column: span 5; }
+    .c-blocks { grid-column: span 7; }
+    .c-steps { grid-column: 1 / -1; }
+    .steps-head { grid-template-columns: auto 1fr; align-items: end; }
+    .steps-tools { justify-content: end; }
+    .kit { grid-template-columns: 2fr 1fr 0.72fr; }
+    .kit .slide-fig { grid-column: auto; }
+    .order { grid-template-columns: 1fr 1fr; padding: 64px 48px 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .pick, .mech .ar { transition: none; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="plate-wrap"><header class="plate grid-surface" style="padding:40px 28px">
-    <span class="unit">UNIT-07 · HANGAR 3</span>
-    <span class="label">pikmi style · dark only</span>
-    <h1 style="margin-top:14px">Armor Plate</h1>
-    <p class="muted" style="max-width:52ch;margin:16px 0 26px">Armored navy and military-green plates, cut corners, hazard yellow and unit numbers in mono. No glow.</p>
-    <div class="row"><a class="btn" href="#components">Open the hangar</a><a class="btn ghost" href="#slides">See the slides</a></div>
-  </header></div>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">HF-07 <span class="label">1:100</span></a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#frame">Frame</a><a href="#build">Build log</a><a href="#kit">Launch kit</a><a href="#order">Order</a>
+    </nav>
+    <a class="btn" href="#order">Pre-order</a>
+  </div>
+</header>
 
-  <section id="components" aria-labelledby="h-components">
-    <h2 id="h-components">Components</h2>
-    <div class="grid">
-      <div class="plate-wrap"><div class="plate"><span class="unit">SYS-A</span><h3>Buttons</h3><div class="row" style="margin-top:16px"><a class="btn" href="#ui">Deploy unit</a><a class="btn ghost" href="#app">Hold</a></div></div></div>
-      <div class="plate-wrap"><div class="plate"><span class="unit">SYS-B</span><label class="label" for="callsign">Pilot callsign</label><input class="field" id="callsign" placeholder="KESTREL-2"></div></div>
-      <div class="plate-wrap"><div class="plate"><span class="unit">SYS-C</span><h3>Status</h3><div class="row" style="margin-top:14px"><span class="status ok">Armor</span><span class="status warn">Coolant</span><span class="status bad">Left arm</span></div></div></div>
-      <div class="plate-wrap"><div class="plate green"><span class="unit">SYS-D</span><h3>Green plate</h3><p style="margin:8px 0 0">Secondary plates carry light text.</p></div></div>
+<main id="top">
+  <section class="hero wrap" aria-labelledby="h-hero">
+    <div class="plate-wrap">
+      <div class="plate grid-surface hero-plate">
+        <span class="unit">UNIT-07 · HANGAR 3</span>
+        <div class="hero-grid">
+          <div>
+            <span class="label">HF-07 · field type · 1:100 model kit</span>
+            <h1 id="h-hero">Heavy frame, field type</h1>
+            <p class="lede">A snap-fit model kit with a poseable inner frame and two sets of armor plates that swap by hand.</p>
+            <div class="row">
+              <a class="btn" href="#order">Pre-order the kit</a>
+              <a class="btn ghost" href="#frame">Inspect the frame</a>
+            </div>
+          </div>
+          <figure class="schematic">
+            <svg class="mech" id="mech" data-set="field" viewBox="0 0 320 392" role="img" aria-labelledby="mech-title">
+              <title id="mech-title">HF-07 schematic: a heavy robot 180 mm tall, armor on the head, chest, shoulders, forearms, skirt and shins, standing on a hangar base. A marks the inner frame, B the armor, C the base.</title>
+              <g class="dim">
+                <path d="M30 8v344M24 8h12M24 352h12M30 42h5M30 76h5M30 110h5M30 144h5M30 178h5M30 212h5M30 246h5M30 280h5M30 314h5"/>
+                <text x="16" y="180" transform="rotate(-90 16 180)">180 MM</text>
+              </g>
+              <g class="fr">
+                <rect x="160" y="68" width="20" height="14"/>
+                <polygon points="124,80 216,80 230,96 224,150 204,168 136,168 116,150 110,96"/>
+                <rect x="80" y="122" width="28" height="48"/><rect x="232" y="122" width="28" height="48"/>
+                <rect x="82" y="224" width="24" height="22"/><rect x="234" y="224" width="24" height="22"/>
+                <polygon points="138,166 202,166 210,188 130,188"/>
+                <rect x="132" y="212" width="30" height="46"/><rect x="178" y="212" width="30" height="46"/>
+              </g>
+              <g class="ar">
+                <polygon points="164,28 176,28 172,10 168,10"/>
+                <polygon points="152,28 188,28 196,40 196,60 184,70 156,70 144,60 144,40"/>
+                <polygon points="134,88 206,88 216,100 210,136 196,148 144,148 130,136 124,100"/>
+                <polygon points="72,82 118,82 124,94 124,124 80,124 66,104"/><polygon points="268,82 222,82 216,94 216,124 260,124 274,104"/>
+                <polygon points="74,168 112,168 116,180 112,226 78,226 70,212"/><polygon points="266,168 228,168 224,180 228,226 262,226 270,212"/>
+                <polygon points="120,186 166,186 166,214 128,214 116,200"/><polygon points="220,186 174,186 174,214 212,214 224,200"/>
+                <polygon points="124,256 166,256 170,268 166,330 128,330 120,318"/><polygon points="216,256 174,256 170,268 174,330 212,330 220,318"/>
+                <polygon points="118,330 166,330 168,352 108,352"/><polygon points="174,330 222,330 232,352 172,352"/>
+              </g>
+              <path class="ln" d="M170 88v60M146 112h16M178 112h16M146 120h16M178 120h16M78 104h42M220 104h42M80 196h30M230 196h30M132 292h30M178 292h30"/>
+              <rect class="visor" x="154" y="44" width="32" height="7"/>
+              <g class="base">
+                <polygon points="70,358 270,358 286,374 54,374"/>
+                <rect x="54" y="374" width="232" height="10"/>
+              </g>
+              <g class="mk">
+                <path d="M246 146H292M262 100H292M278 366H292"/>
+                <rect x="292" y="138" width="18" height="18"/><text x="301" y="151">A</text>
+                <rect x="292" y="91" width="18" height="18"/><text x="301" y="104">B</text>
+                <rect x="292" y="357" width="18" height="18"/><text x="301" y="370">C</text>
+              </g>
+            </svg>
+            <figcaption>
+              <span class="label">armor set</span>
+              <span class="picks" role="group" aria-label="Armor set shown">
+                <button class="pick" type="button" aria-pressed="true" data-set="field">Field</button>
+                <button class="pick" type="button" aria-pressed="false" data-set="urban">Urban</button>
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+    <div class="plate-wrap specs-wrap">
+      <div class="plate spec-plate">
+        <span class="unit">SPEC SHEET · HF-07</span>
+        <dl class="specs">
+          <div><dt class="label">scale</dt><dd>1:100</dd></div>
+          <div><dt class="label">parts</dt><dd>210</dd></div>
+          <div><dt class="label">height</dt><dd>180 mm</dd></div>
+          <div><dt class="label">armor sets</dt><dd>02</dd></div>
+        </dl>
+      </div>
     </div>
   </section>
 
-  <section id="ui" aria-labelledby="h-ui">
-    <h2 id="h-ui">UI · Build kit page</h2>
-    <div class="plate-wrap"><div class="plate" style="padding:32px 28px">
-      <span class="unit">KIT-RX / 1:100</span>
-      <h3 style="font-size:clamp(32px,6vw,56px)">Heavy frame, field type</h3>
-      <p class="muted" style="max-width:56ch">A snap-fit model kit with a poseable inner frame and swappable armor plates.</p>
-      <div class="ticks" style="margin:20px 0"></div>
-      <div class="spec">
-        <div><strong>1:100</strong><span class="label">scale</span></div>
-        <div><strong>210</strong><span class="label">parts</span></div>
-        <div><strong>18 cm</strong><span class="label">height</span></div>
-      </div>
-      <div class="hazard" style="margin:28px 0 12px"></div>
-      <p class="status warn" style="margin:0 0 20px">Small parts. Not for children under 8.</p>
-      <a class="btn" href="#components">Add kit to cart</a>
-    </div></div>
+  <section id="frame" class="wrap" aria-labelledby="h-frame">
+    <div class="sec-head">
+      <div class="sec-mark"><span class="label">SEC 01 / FRAME</span><span class="ticks" aria-hidden="true"></span></div>
+      <h2 id="h-frame">Three blocks in one box</h2>
+      <p>Build the frame, clip on a set of armor, stand it on the base. Each block has its own runners and its own pages in the guide.</p>
+    </div>
+    <div class="parts">
+      <article class="plate-wrap"><div class="plate part">
+        <span class="unit">BLOCK A · RUNNERS A1–A4</span>
+        <h3><span class="mark" aria-hidden="true">A</span>Inner frame</h3>
+        <p>A poseable skeleton with ball joints at the neck, shoulders, elbows, hips, knees and ankles. Every plate clips onto it.</p>
+        <span class="ticks" aria-hidden="true"></span>
+        <dl class="mini"><div><dt class="label">parts</dt><dd>70</dd></div><div><dt class="label">joints</dt><dd>14</dd></div></dl>
+      </div></article>
+      <article class="plate-wrap"><div class="plate green part">
+        <span class="unit">BLOCK B · RUNNERS B1–B6</span>
+        <h3><span class="mark" aria-hidden="true">B</span>Armor plates</h3>
+        <p>Two full sets, field green and urban grey. Plates come off by hand, so you can swap sets without glue or tools.</p>
+        <span class="ticks" aria-hidden="true"></span>
+        <dl class="mini"><div><dt class="label">parts</dt><dd>112</dd></div><div><dt class="label">sets</dt><dd>02</dd></div></dl>
+      </div></article>
+      <article class="plate-wrap"><div class="plate part">
+        <span class="unit">BLOCK C · RUNNERS C1–C2</span>
+        <h3><span class="mark" aria-hidden="true">C</span>Hangar base</h3>
+        <p>A display base with a stand arm for flight poses and a tray that holds the spare armor set.</p>
+        <span class="ticks" aria-hidden="true"></span>
+        <dl class="mini"><div><dt class="label">parts</dt><dd>28</dd></div><div><dt class="label">base</dt><dd>01</dd></div></dl>
+      </div></article>
+    </div>
   </section>
 
-  <section aria-labelledby="h-media">
-    <h2 id="h-media">Other media</h2>
-    <div class="canvases">
-      <div id="slides">
-        <div class="canvas"><div class="slide">
-          <div class="frame"></div><span class="unit">SEC 2 / BAY 4</span>
-          <h3>Assembly time dropped with the new frame</h3>
-          <p>Average build time in the test group. Replace with real figures.</p>
-          <div class="readout"><strong>[n]</strong><span>HOURS PER KIT</span></div>
-        </div></div>
-        <p class="cap label">slides · 1920 x 1080</p>
+  <section id="build" class="wrap" aria-labelledby="h-build">
+    <div class="sec-head">
+      <div class="sec-mark"><span class="label">SEC 02 / BUILD LOG</span><span class="ticks" aria-hidden="true"></span></div>
+      <h2 id="h-build">Every step, logged</h2>
+      <p>The kit comes with a build log for the browser and the phone. Tick off steps, look up a part by its runner code and see what is left before the first pose.</p>
+    </div>
+    <div class="console">
+      <div class="plate-wrap c-screen">
+        <div class="plate grid-surface screen">
+          <span class="unit">UNIT-07 · LOG</span>
+          <span class="label">steps done</span>
+          <p class="count">15<span class="of"> / 32</span></p>
+          <div class="cells" id="cells" aria-hidden="true"></div>
+          <div class="row">
+            <span class="status warn">step 16 in progress</span>
+            <span class="status bad">1 fault</span>
+          </div>
+        </div>
       </div>
-      <div id="social">
+      <div class="plate-wrap c-blocks">
+        <div class="plate blocks-plate">
+          <span class="unit">BLOCKS A–C</span>
+          <h3>Blocks</h3>
+          <ul class="blocks">
+            <li><span class="name"><span class="mark" aria-hidden="true">A</span>Inner frame</span><span class="status ok">done · 13 of 13</span></li>
+            <li><span class="name"><span class="mark" aria-hidden="true">B</span>Armor plates</span><span class="status warn">step 3 of 12</span></li>
+            <li><span class="name"><span class="mark" aria-hidden="true">C</span>Hangar base</span><span class="status muted">not started</span></li>
+          </ul>
+          <span class="ticks" aria-hidden="true"></span>
+          <span class="label">guide pages 01–48</span>
+        </div>
+      </div>
+      <div class="plate-wrap c-steps">
+        <div class="plate steps-plate">
+          <span class="unit">STEPS 13–20</span>
+          <div class="steps-head">
+            <h3>Next steps</h3>
+            <div class="steps-tools">
+              <div class="picks" role="group" aria-label="Show steps" id="step-filter">
+                <button class="pick" type="button" aria-pressed="true" data-filter="all">All</button>
+                <button class="pick" type="button" aria-pressed="false" data-filter="open">Open</button>
+                <button class="pick" type="button" aria-pressed="false" data-filter="fault">Faults</button>
+              </div>
+              <div>
+                <label class="label" for="part-search">Find a part</label>
+                <input class="field" id="part-search" placeholder="B2-11" autocomplete="off" spellcheck="false">
+              </div>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Step</th><th>Task</th><th class="opt">Block</th><th>Status</th></tr></thead>
+            <tbody id="step-rows">
+              <tr data-state="done"><td class="code">13</td><td><span class="task">Hip block</span><span class="parts-code">A4-01 · A4-02</span></td><td class="opt">A</td><td><span class="status ok">done</span></td></tr>
+              <tr data-state="done"><td class="code">14</td><td><span class="task">Chest armor</span><span class="parts-code">B1-01 · B1-02</span></td><td class="opt">B</td><td><span class="status ok">done</span></td></tr>
+              <tr data-state="done"><td class="code">15</td><td><span class="task">Collar plate</span><span class="parts-code">B1-05</span></td><td class="opt">B</td><td><span class="status ok">done</span></td></tr>
+              <tr data-state="open" aria-current="step"><td class="code">16</td><td><span class="task">Left shoulder plate</span><span class="parts-code">B2-11 · B2-12</span></td><td class="opt">B</td><td><span class="status warn">in progress</span></td></tr>
+              <tr data-state="fault"><td class="code">17</td><td><span class="task">Right shoulder plate</span><span class="parts-code">B2-13 · B2-14</span></td><td class="opt">B</td><td><span class="status bad">B2-14 missing</span></td></tr>
+              <tr data-state="open"><td class="code">18</td><td><span class="task">Left shin armor</span><span class="parts-code">B3-01 · B3-02</span></td><td class="opt">B</td><td><span class="status muted">open</span></td></tr>
+              <tr data-state="open"><td class="code">19</td><td><span class="task">Right shin armor</span><span class="parts-code">B3-03 · B3-04</span></td><td class="opt">B</td><td><span class="status muted">open</span></td></tr>
+              <tr data-state="open"><td class="code">20</td><td><span class="task">Skirt plates</span><span class="parts-code">B4-01 · B4-02 · B4-03</span></td><td class="opt">B</td><td><span class="status muted">open</span></td></tr>
+            </tbody>
+          </table>
+          <p class="empty" id="step-empty" hidden>No step in this view uses that part. Check the runner letter and number, like B2-11.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kit" class="wrap" aria-labelledby="h-kit">
+    <div class="sec-head">
+      <div class="sec-mark"><span class="label">SEC 03 / LAUNCH KIT</span><span class="ticks" aria-hidden="true"></span></div>
+      <h2 id="h-kit">The reveal, in every format</h2>
+      <p>The announcement deck, the first feed post and the build log app, cut from the same plates.</p>
+    </div>
+    <div class="kit">
+      <figure class="slide-fig">
+        <div class="canvas"><div class="slide">
+          <svg class="plate-line" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true"><polygon points="96,96 1776,96 1824,144 1824,984 96,984"/></svg>
+          <span class="unit">SEC 2 / BAY 4</span>
+          <h3>Two armor sets share one frame</h3>
+          <span class="s-ticks" aria-hidden="true"></span>
+          <p>Field and urban plates clip onto the same 70-part inner frame. Swap them by hand.</p>
+          <div class="s-read"><strong>02</strong><span>armor sets</span></div>
+        </div></div>
+        <figcaption class="label">reveal slide · 1920 x 1080</figcaption>
+      </figure>
+      <figure>
         <div class="canvas"><div class="post">
+          <span class="tk tl" aria-hidden="true"></span><span class="tk tr" aria-hidden="true"></span><span class="tk br" aria-hidden="true"></span><span class="tk bl" aria-hidden="true"></span>
           <span class="lab">UNIT-07 · 01 / 03</span>
           <div class="big">Field<br><span>type</span></div>
-          <div class="info"><h3>Preorders open</h3><p>Ships with two armor sets and a hangar base.</p></div>
+          <div class="info"><h3>Pre-orders open</h3><p>Ships with two armor sets and a hangar base.</p></div>
+          <span class="foot">HF-07 · 1:100 · 210 PARTS</span>
         </div></div>
-        <p class="cap label">social · 1080 x 1350</p>
-      </div>
-      <div id="app">
-        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
-          <span class="label">UNIT-07</span>
+        <figcaption class="label">feed post · 1080 x 1350</figcaption>
+      </figure>
+      <figure class="phone-fig">
+        <div class="canvas"><div class="phone">
+          <span class="label">UNIT-07 · HF-07</span>
           <h3>Build log</h3>
-          <div class="rowi"><span>Inner frame</span><span class="status ok">done</span></div>
-          <div class="rowi"><span>Leg armor</span><span class="status warn">step 4</span></div>
-          <div class="rowi"><span>Decals</span><span class="mono muted">not started</span></div>
+          <div class="p-group"><div class="p-plate">
+            <div class="rowi"><span>Inner frame</span><span class="status ok">done</span></div>
+            <div class="rowi"><span>Armor plates</span><span class="status warn" id="phone-b">step 3 / 12</span></div>
+            <div class="rowi"><span>Hangar base</span><span class="status muted">not started</span></div>
+          </div></div>
+          <p class="p-count"><strong id="phone-done">15</strong> / 32 steps</p>
           <div class="spacer"></div>
-          <a class="btn" href="#app">Next step</a>
-          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Log</button><button class="tab" type="button" aria-pressed="false">Parts</button><button class="tab" type="button" aria-pressed="false">Guide</button></nav>
+          <button class="btn" type="button" id="next-step">Next step</button>
+          <nav role="group" aria-label="Build log app sections">
+            <button class="tab" type="button" aria-pressed="true">Log</button>
+            <button class="tab" type="button" aria-pressed="false">Parts</button>
+            <button class="tab" type="button" aria-pressed="false">Guide</button>
+          </nav>
         </div></div>
-        <p class="cap label">app · phone</p>
+        <figcaption class="label">build log app · phone</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="order" class="wrap" aria-labelledby="h-order">
+    <div class="plate-wrap">
+      <div class="plate order">
+        <span class="unit">SEC 04 / ORDER</span>
+        <div>
+          <span class="label">HF-07 · first run</span>
+          <h2 id="h-order">Reserve a kit from the first run</h2>
+          <p class="muted">Both armor sets, the hangar base, a decal sheet and the build log, in one box.</p>
+          <p class="price"><strong>$64</strong><span class="label">per kit · ships after the reveal</span></p>
+        </div>
+        <form id="order-form">
+          <div class="hazard" aria-hidden="true"></div>
+          <p class="status warn warning">Small parts. Not for children under 8.</p>
+          <label class="label" for="email">Email for the pre-order date</label>
+          <div class="form-row">
+            <input class="field" id="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+            <button class="btn" type="submit">Notify me</button>
+          </div>
+          <p class="note" id="order-note" aria-live="polite"></p>
+        </form>
       </div>
     </div>
   </section>
-</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="label">HF-07 is a fictional model kit made for this preview</span>
+    <span class="label">pikmi style · armor plate</span>
+  </div>
+</footer>
+
 <script>
-  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
-  })));
+  // one pressed key per group
+  document.querySelectorAll('.picks, nav[role="group"]').forEach(group => {
+    const keys = group.querySelectorAll('button');
+    keys.forEach(k => k.addEventListener('click', () => keys.forEach(x => x.setAttribute('aria-pressed', String(x === k)))));
+  });
+
+  // armor set repaints the schematic
+  const mech = document.getElementById('mech');
+  document.querySelectorAll('[data-set]').forEach(k => {
+    if (k.tagName === 'BUTTON') k.addEventListener('click', () => { mech.dataset.set = k.dataset.set; });
+  });
+
+  // progress cells: 15 done, step 16 in progress, step 17 has a fault
+  const cells = document.getElementById('cells');
+  for (let i = 1; i <= 32; i++) {
+    const c = document.createElement('span');
+    if (i <= 15) c.className = 'done'; else if (i === 16) c.className = 'now'; else if (i === 17) c.className = 'fault';
+    cells.appendChild(c);
+  }
+
+  // step filter + part search, with an empty state
+  const rows = document.querySelectorAll('#step-rows tr');
+  const search = document.getElementById('part-search');
+  const empty = document.getElementById('step-empty');
+  let filter = 'all';
+  function applySteps() {
+    const q = search.value.trim().toLowerCase();
+    let shown = 0;
+    rows.forEach(r => {
+      const state = r.dataset.state;
+      const okFilter = filter === 'all' || state === filter;
+      const okSearch = !q || r.textContent.toLowerCase().includes(q);
+      r.hidden = !(okFilter && okSearch);
+      if (!r.hidden) shown++;
+    });
+    empty.hidden = shown > 0;
+  }
+  document.querySelectorAll('#step-filter button').forEach(k => k.addEventListener('click', () => { filter = k.dataset.filter; applySteps(); }));
+  search.addEventListener('input', applySteps);
+
+  // phone: next step moves block B forward
+  const next = document.getElementById('next-step');
+  const phoneB = document.getElementById('phone-b');
+  const phoneDone = document.getElementById('phone-done');
+  let step = 3, done = 15;
+  next.addEventListener('click', () => {
+    if (step > 12) return;
+    step++; done++;
+    phoneDone.textContent = done;
+    if (step > 12) { phoneB.className = 'status ok'; phoneB.textContent = 'done'; next.textContent = 'Block B done'; }
+    else phoneB.textContent = 'step ' + step + ' / 12';
+  });
+
+  document.getElementById('order-form').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('order-note').textContent = 'This is a preview: nothing was sent.';
+  });
 </script>
 </body>
 </html>
