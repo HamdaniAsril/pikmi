@@ -182,55 +182,6 @@
       "brand_terms": []
     },
     {
-      "id": "pastoral-storybook",
-      "name": "Pastoral Storybook",
-      "summary": "Warm cream paper, sage and sky, soft rounded shapes and gentle hand-drawn nature: the calm of an animated countryside film.",
-      "keywords": {
-        "en": [
-          "storybook",
-          "pastoral",
-          "anime",
-          "whimsical",
-          "cozy",
-          "nature",
-          "fairy tale",
-          "healing",
-          "warm",
-          "countryside",
-          "ghibli",
-          "studio ghibli",
-          "totoro"
-        ],
-        "id": [
-          "dongeng",
-          "hangat",
-          "alam",
-          "adem",
-          "healing",
-          "lucu",
-          "pedesaan",
-          "kayak film anime jepang",
-          "ghibli"
-        ]
-      },
-      "media": [
-        "ui",
-        "slides",
-        "social",
-        "app"
-      ],
-      "themes": [
-        "light"
-      ],
-      "preview": "styles/pastoral-storybook/preview.html",
-      "brand_terms": [
-        "ghibli",
-        "studio ghibli",
-        "totoro",
-        "miyazaki"
-      ]
-    },
-    {
       "id": "islamic-geometric",
       "name": "Islamic Geometric",
       "summary": "Lapis blue, ivory and gold with eight-point star patterns used as frames and dividers, symmetrical and calm; ivory by day, deep blue by night.",

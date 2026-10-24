@@ -1,6 +1,6 @@
 ---
 name: pikmi
-description: Pick and apply a visual design style for web UI, slides, social media posts and apps. Use when the user starts a new design or asks to change how something looks, names a mood or aesthetic (industrial, cyberpunk, brutalist, glassmorphism, watercolor, Japanese minimal, bento, dark developer, corporate, Islamic geometric, ukiyo-e, mecha, storybook), asks to "make it look like ...", or says it in Indonesian ("ganti tampilan", "bikin desain", "ala ...", "kayak ..."). Offers 2 to 4 matching styles with previews and lets the user choose; continues a style already marked in the project. Not for small edits to a project that already has its own look.
+description: Pick and apply a visual design style for web UI, slides, social media posts and apps. Use when the user starts a new design or asks to change how something looks, names a mood or aesthetic (industrial, cyberpunk, brutalist, glassmorphism, watercolor, Japanese minimal, bento, dark developer, corporate, Islamic geometric, ukiyo-e, mecha), asks to "make it look like ...", or says it in Indonesian ("ganti tampilan", "bikin desain", "ala ...", "kayak ..."). Offers 2 to 4 matching styles with previews and lets the user choose; continues a style already marked in the project. Not for small edits to a project that already has its own look.
 ---
 
 # pikmi
@@ -34,7 +34,7 @@ pricing page", "fix this button"). Do not offer styles then.
 - Medium: `ui`, `slides`, `social` or `app`; a request can need more than one. When it is unsaid, infer it
   from context: open files, or words like "slide", "deck", "post", "story", "feed", "screen", "app".
 - Mood words: every adjective, aesthetic name or reference ("like a synthesizer", "kayak game", "ala
-  Ghibli"), plus any theme wish (dark, light).
+  Muji"), plus any theme wish (dark, light).
 
 ### 2. A named style
 
@@ -42,7 +42,7 @@ Skip the offer only when the user names a style directly:
 
 - by its catalog `name` or `id`, or a clear short form of it ("cyberpunk", "watercolor", "bento"), or
 - by a brand, product or work listed in that style's `brand_terms` and in no other style's `brand_terms`
-  ("ala teenage engineering", "like a Ghibli movie"). A brand listed under two styles goes to step 3
+  ("ala teenage engineering", "like a Blade Runner movie"). A brand listed under two styles goes to step 3
   with both styles first.
 
 Then use that style and say in one line which one you picked. Mood words, topics and occasions
