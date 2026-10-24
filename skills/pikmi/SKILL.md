@@ -1,6 +1,6 @@
 ---
 name: pikmi
-description: Pick and apply a visual design style for web UI, slides, social media posts and apps. Use when the user starts a new design or asks to change how something looks, names a mood or aesthetic (industrial, cyberpunk, brutalist, glassmorphism, watercolor, Japanese minimal, bento, dark developer, corporate, Islamic geometric, ukiyo-e, mecha), asks to "make it look like ...", or says it in Indonesian ("ganti tampilan", "bikin desain", "ala ...", "kayak ..."). Offers up to 3 matching styles with previews, or to continue without pikmi, and lets the user choose; continues a style already marked in the project. Not for small edits to a project that already has its own look.
+description: Pick and apply a visual design style for web UI, slides, social media posts and apps. Use when the user starts a new design or asks to change how something looks, names a mood or aesthetic (industrial, cyberpunk, brutalist, glassmorphism, watercolor, Japanese minimal, dark developer, corporate, Islamic geometric, ukiyo-e, mecha), asks to "make it look like ...", or says it in Indonesian ("ganti tampilan", "bikin desain", "ala ...", "kayak ..."). Offers up to 3 matching styles with previews, or to continue without pikmi, and lets the user choose; continues a style already marked in the project. Not for small edits to a project that already has its own look.
 ---
 
 # pikmi
@@ -26,7 +26,8 @@ when they name a style (step 2) or ask for pikmi again.
 ### 0. Check for an existing look
 
 - Look for a `tokens.css` in the project whose first line is `/* pikmi: <id> */`. If it exists and the
-  user is not asking for a new look, continue with that style: go to step 6.
+  user is not asking for a new look, continue with that style: go to step 6. If that id is not in
+  `catalog.json`, the style was removed or renamed: say so in one line and follow the project's own look.
 - If the project has its own design system or stylesheet without that marker, and the user is not asking
   for a new look, do not use pikmi. Follow the project's own look.
 - If the user asks to change the look ("ganti tampilan jadi ...", "restyle this"), go on to step 1 even
@@ -43,7 +44,7 @@ when they name a style (step 2) or ask for pikmi again.
 
 Skip the offer only when the user names a style directly:
 
-- by its catalog `name` or `id`, or a clear short form of it ("woodblock", "lattice", "bento"), or
+- by its catalog `name` or `id`, or a clear short form of it ("woodblock", "lattice", "nocturne"), or
 - by a brand, product or work listed in that style's `brand_terms` and in no other style's `brand_terms`
   ("ala teenage engineering", "like a Blade Runner movie"). A brand listed under two styles goes to step 3
   with both styles first.
