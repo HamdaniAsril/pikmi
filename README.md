@@ -16,8 +16,6 @@ In Claude Code:
 /plugin install pikmi@pikmi
 ```
 
-The repository is private for now, so installing needs a GitHub account with access to it.
-
 ## How it works
 
 1. You ask for a new design, or ask to change how something looks.

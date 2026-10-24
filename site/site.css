@@ -219,7 +219,6 @@ svg { flex: none; }
 .cmd .copy { flex-direction: row; align-items: center; gap: 6px; height: 28px; padding: 0 12px; flex: none; }
 .cmd .copy .k-label { align-self: auto; font-size: 10px; }
 .cmd .copy .k-num { font-size: 13px; }
-.note { color: var(--text-muted); font-size: 15px; margin: 16px 0 0; }
 
 .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; padding-block: 56px 32px; color: var(--text-muted); font-size: 15px; }
 .foot-end { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }

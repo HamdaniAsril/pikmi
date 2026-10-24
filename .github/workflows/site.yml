@@ -1,0 +1,40 @@
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # The landing page sits at the site root and reads the catalog from skills/pikmi/,
+      # so every style in the repo shows up without editing the page.
+      - name: Assemble the site
+        run: |
+          mkdir -p dist/skills/pikmi
+          cp -R site/. dist/
+          cp skills/pikmi/catalog.json dist/skills/pikmi/
+          cp -R skills/pikmi/styles dist/skills/pikmi/
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

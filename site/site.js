@@ -1,6 +1,6 @@
 // pikmi landing page: reads the catalog so the page follows whatever styles the repo ships.
 
-const SKILL = 'skills/pikmi/';
+const SKILL = '../skills/pikmi/';
 const $ = (selector) => document.querySelector(selector);
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
