@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Primary Riot · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 17px/1.5 var(--font-body); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 80px; overflow-x: clip; }
+  h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; line-height: 0.9; }
+  h1 { font-size: clamp(56px, 14vw, 128px); rotate: -3deg; transform-origin: left; }
+  h2 { font-size: clamp(32px, 6vw, 56px); margin-bottom: 24px; }
+  section { margin-top: 72px; }
+  p { max-width: 60ch; }
+  .block { background: var(--card); border: var(--border-heavy); border-right-width: 10px; border-bottom-width: 10px; box-shadow: var(--hard-shadow); padding: var(--space-lg); }
+  .block.yellow { background: var(--panel); }
+  .block.blue { background: var(--clash-blue); color: #FFFFFF; }
+  .block.blue a { color: #FFFFFF; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--border-heavy); border-radius: 0;
+    background: var(--accent); color: var(--on-accent); box-shadow: var(--hard-shadow-sm); font: 900 18px/1 var(--font-body); text-transform: uppercase; text-decoration: none; cursor: pointer; transition: none; }
+  .btn:hover { background: var(--clash-yellow); }
+  .btn:active { box-shadow: none; transform: translate(4px, 4px); }
+  .btn.blue { background: var(--clash-blue); color: #FFFFFF; }
+  .btn.blue:hover { background: var(--clash-yellow); color: var(--text); }
+  .btn:focus-visible, .field:focus-visible, .link:focus-visible, .tab:focus-visible { outline: var(--border-focus); outline-offset: 2px; }
+  .block.blue :focus-visible { outline-color: var(--clash-yellow); }
+  .field { min-height: 48px; width: 100%; border: var(--border-heavy); border-radius: 0; padding: 0 var(--space-md); background: var(--card); color: var(--text); font: 700 18px var(--font-body); }
+  label { display: block; font: 900 14px/1 var(--font-body); text-transform: uppercase; margin-bottom: 8px; }
+  .sticker { display: inline-block; padding: var(--space-sm) var(--space-md); background: var(--clash-magenta); border: 4px solid var(--text); rotate: 5deg; font: 900 16px/1 var(--font-body); text-transform: uppercase; }
+  .link { color: var(--link); text-decoration: underline; text-decoration-thickness: 3px; font-weight: 700; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
+  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .num { font: 400 64px/0.9 var(--font-display); }
+
+  .hero { position: relative; padding: 24px 0 8px; }
+  .hero .sticker { position: absolute; right: 4%; top: 0; }
+  .hero p { font-size: 22px; font-weight: 700; margin: 28px 0 24px; }
+  .bands { display: grid; gap: 32px; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+  .steps .block { padding: 20px; }
+  .steps .num { display: block; margin-bottom: 8px; }
+  .quote { font: 400 clamp(28px, 5vw, 48px)/1 var(--font-display); text-transform: uppercase; }
+
+  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; align-items: start; }
+  #slides { grid-column: 1 / -1; max-width: 960px; }
+  .canvas { container-type: inline-size; border: 4px solid var(--text); overflow: hidden; }
+  .cap { margin-top: 10px; font: 900 13px/1 var(--font-body); text-transform: uppercase; }
+  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--panel); }
+  .slide .frame { position: absolute; inset: 5cqw; border: 0.32cqw solid var(--text); }
+  .slide .shout { position: absolute; left: 8cqw; top: 9cqw; font: 400 13cqw/0.85 var(--font-display); text-transform: uppercase; rotate: -3deg; transform-origin: left; }
+  .slide .shout span { color: var(--accent); -webkit-text-stroke: 0.25cqw var(--text); }
+  .slide p { position: absolute; left: 8cqw; bottom: 8cqw; margin: 0; width: 50cqw; font: 700 1.9cqw/1.3 var(--font-body); }
+  .slide .sticker { position: absolute; right: 9cqw; bottom: 9cqw; font-size: 1.8cqw; padding: 1cqw 1.6cqw; border-width: 0.3cqw; }
+  .post { aspect-ratio: 4 / 5; position: relative; background: var(--clash-blue); color: #FFFFFF; }
+  .post .shout { position: absolute; left: 6cqw; right: 6cqw; top: 9cqw; font: 400 19cqw/0.84 var(--font-display); text-transform: uppercase; rotate: -3deg; }
+  .post .info { position: absolute; left: 6cqw; right: 12cqw; bottom: 8cqw; background: var(--card); color: var(--text); border: 0.8cqw solid var(--text); box-shadow: 1.6cqw 1.6cqw 0 var(--text); padding: 4cqw; font: 700 3.6cqw/1.25 var(--font-body); }
+  .post .sticker { position: absolute; right: 6cqw; top: 58cqw; font-size: 3.6cqw; padding: 1.6cqw 2.6cqw; border-width: 0.6cqw; color: var(--text); }
+  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; padding: 7cqw 5cqw 4cqw; gap: 4cqw; }
+  .phone h3 { font-size: 11cqw; rotate: -2deg; }
+  .phone .item { border: 4px solid var(--text); padding: 3.5cqw; display: flex; justify-content: space-between; font-weight: 700; font-size: 4.4cqw; }
+  .phone .item.on { background: var(--panel); }
+  .phone .spacer { flex: 1; }
+  .phone .btn { justify-content: center; }
+  .phone .tabs { display: flex; gap: 2cqw; }
+  .tab { flex: 1; min-height: 44px; border: 4px solid var(--text); background: var(--card); font: 900 3.6cqw/1 var(--font-body); text-transform: uppercase; cursor: pointer; }
+  .tab[aria-pressed="true"] { background: var(--panel); }
+
+  @media (max-width: 640px) {
+    h1 { rotate: -2deg; }
+    .hero .sticker { position: static; margin: 0 0 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="sticker">pikmi style</span>
+    <h1>Primary<br>riot</h1>
+    <p>Thick black borders, hard shadows, pure primaries that clash on purpose and type that collides.</p>
+    <div class="row"><a class="btn" href="#components">Make some noise</a><a class="link" href="#slides">See the slides</a></div>
+  </header>
+
+  <section id="components" aria-labelledby="h-components">
+    <h2 id="h-components">Components</h2>
+    <div class="grid">
+      <div class="block"><label>Buttons</label>
+        <div class="row"><a class="btn" href="#ui">Buy a ticket</a><a class="btn blue" href="#app">Get the app</a></div>
+      </div>
+      <div class="block yellow"><label for="email">Email</label><input class="field" id="email" type="email" placeholder="you@zine.mail"></div>
+      <div class="block blue"><span class="num">12</span><p style="margin:8px 0 0;font-weight:700">bands, one night, no seats.</p></div>
+      <div class="block"><span class="sticker">sold out soon</span><p style="margin:24px 0 0"><a class="link" href="#social">A blue link, underlined hard</a></p></div>
+    </div>
+  </section>
+
+  <section id="ui" aria-labelledby="h-ui">
+    <h2 id="h-ui">UI · Event page</h2>
+    <div class="bands">
+      <div class="block yellow">
+        <h3 style="font-size:clamp(40px,8vw,88px);rotate:-2deg">Loud fest</h3>
+        <p style="font-size:20px;font-weight:700">A one-night zine fair and show in a parking garage. Bring cash, bring ears.</p>
+        <a class="btn" href="#components">Get a wristband</a>
+      </div>
+      <div class="steps">
+        <div class="block"><span class="num">01</span><strong>Pick a night.</strong> Friday or Saturday, doors at eight.</div>
+        <div class="block"><span class="num">02</span><strong>Print your own zine</strong> or buy one at the door.</div>
+        <div class="block"><span class="num">03</span><strong>Stay loud.</strong> Last band plays at two.</div>
+      </div>
+      <div class="block blue"><p class="quote" style="margin:0">No stage. No barrier. Just the floor.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-media">
+    <h2 id="h-media">Other media</h2>
+    <div class="canvases">
+      <div id="slides">
+        <div class="canvas"><div class="slide">
+          <div class="frame"></div>
+          <div class="shout">Print <span>it</span><br>yourself</div>
+          <p>Every zine at the fair is made by the people selling it. Bring yours.</p>
+          <span class="sticker">part 02</span>
+        </div></div>
+        <p class="cap">slides · 1920 x 1080 · red, yellow, blue + magenta</p>
+      </div>
+      <div id="social">
+        <div class="canvas"><div class="post">
+          <div class="shout">Loud fest</div>
+          <span class="sticker">fri + sat</span>
+          <div class="info">Parking garage, level minus two. Doors at 8. Cash only.</div>
+        </div></div>
+        <p class="cap">social · 1080 x 1350</p>
+      </div>
+      <div id="app">
+        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
+          <h3>Lineup</h3>
+          <div class="item on"><span>The Staplers</span><span>21:00</span></div>
+          <div class="item"><span>Photocopy</span><span>22:30</span></div>
+          <div class="item"><span>Cut and Paste</span><span>00:15</span></div>
+          <div class="spacer"></div>
+          <a class="btn" href="#app">Save my night</a>
+          <nav class="tabs" aria-label="App sections" role="group">
+            <button class="tab" type="button" aria-pressed="true">Lineup</button>
+            <button class="tab" type="button" aria-pressed="false">Map</button>
+            <button class="tab" type="button" aria-pressed="false">Zines</button>
+          </nav>
+        </div></div>
+        <p class="cap">app · phone</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('.tabs').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+  })));
+</script>
+</body>
+</html>

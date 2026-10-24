@@ -1,0 +1,49 @@
+/* pikmi: primary-riot */
+/* Primary Riot. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;700;900&display=swap */
+
+:root {
+  --font-display: "Archivo Black", Impact, sans-serif;
+  --font-body: "Archivo", system-ui, sans-serif;
+
+  --type-label: 13px;
+  --type-caption: 14px;
+  --type-body: 17px;
+  --type-lead: 22px;
+  --type-h3: 28px;
+  --type-h2: 44px;
+  --type-h1: 72px;
+  --type-display: 128px;
+
+  --radius-key: 0px;
+  --radius-panel: 0px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 32px;
+  --space-xl: 64px;
+
+  --clash-blue: #0000FF;
+  --clash-yellow: #FFFF00;
+  --clash-magenta: #FF00FF;
+  --clash-cyan: #00FFFF;
+  --clash-green: #00FF00;
+
+  --hard-shadow: 8px 8px 0 #000000;
+  --hard-shadow-sm: 4px 4px 0 #000000;
+  --border-heavy: 6px solid #000000;
+  --border-focus: 8px solid #0000FF;
+
+  /* light */
+  --page: #FFFFFF;
+  --panel: #FFFF00;
+  --card: #FFFFFF;
+  --rule: #000000;
+  --text: #000000;
+  --text-muted: #000000;
+  --accent: #FF0000;
+  --on-accent: #000000;
+  --link: #0000FF;
+  --danger: #CC0000;
+}

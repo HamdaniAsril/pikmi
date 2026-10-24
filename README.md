@@ -36,14 +36,14 @@ it. Web projects built with a pikmi style carry a marker (`/* pikmi: <id> */`) a
 | Style | What it looks like | Themes |
 | --- | --- | --- |
 | [Instrument Panel](skills/pikmi/styles/instrument-panel/preview.html) | Grey hardware panels, numbered keys, a small black screen and one signal orange: a pocket synthesizer turned into an interface. | light, dark |
-| [Cyberpunk Neon](skills/pikmi/styles/cyberpunk-neon/preview.html) | Near-black night surfaces, cyan and magenta neon, hard thin strokes and HUD readouts; louder and more electric than Mecha. | dark |
-| [Anti-Design](skills/pikmi/styles/anti-design/preview.html) | Loud neo-brutalism: thick black borders, hard offset shadows, clashing primary colors, square corners and type sizes that collide on purpose. | light |
-| [Corporate Clean](skills/pikmi/styles/corporate-clean/preview.html) | Trustworthy enterprise UI with an identity: ledger hairlines, tabular numbers, ink-blue headings and one confident blue for actions. | light |
-| [Islamic Geometric](skills/pikmi/styles/islamic-geometric/preview.html) | Lapis blue, ivory and gold with eight-point star patterns used as frames and dividers, symmetrical and calm; ivory by day, deep blue by night. | light, dark |
-| [Ukiyo-e Print](skills/pikmi/styles/ukiyo-e-print/preview.html) | Japanese woodblock print as an interface: indigo outlines on rice paper, flat color blocks, vermilion stamps, wave motifs and hard print shadows. | light |
+| [Night Circuit](skills/pikmi/styles/night-circuit/preview.html) | Near-black night surfaces, cyan and magenta neon, hard thin strokes and HUD readouts; louder and more electric than Armor Plate. | dark |
+| [Primary Riot](skills/pikmi/styles/primary-riot/preview.html) | Loud neo-brutalism: thick black borders, hard offset shadows, clashing primary colors, square corners and type sizes that collide on purpose. | light |
+| [Ledger Blue](skills/pikmi/styles/ledger-blue/preview.html) | Trustworthy enterprise UI with an identity: ledger hairlines, tabular numbers, ink-blue headings and one confident blue for actions. | light |
+| [Lapis Lattice](skills/pikmi/styles/lapis-lattice/preview.html) | Lapis blue, ivory and gold with eight-point star patterns used as frames and dividers, symmetrical and calm; ivory by day, deep blue by night. | light, dark |
+| [Indigo Woodblock](skills/pikmi/styles/indigo-woodblock/preview.html) | Japanese woodblock print as an interface: indigo outlines on rice paper, flat color blocks, vermilion stamps, wave motifs and hard print shadows. | light |
 | [Japanese Minimal](skills/pikmi/styles/japanese-minimal/preview.html) | Extreme whitespace, hairline rules, light-weight type and a single soft pastel: quiet, airy and unhurried, built on the idea of ma. | light |
-| [Mecha](skills/pikmi/styles/mecha/preview.html) | Armored control panels in navy and military green, cut corners, hazard yellow and red, unit numbers in mono; heavier and more military than Cyberpunk Neon, with no glow. | dark |
-| [Watercolor](skills/pikmi/styles/watercolor/preview.html) | Soft washes of peach, teal and rose bleeding into warm paper, blue-grey ink, italic serif headings and slow, painterly motion. | light |
+| [Armor Plate](skills/pikmi/styles/armor-plate/preview.html) | Armored control panels in navy and military green, cut corners, hazard yellow and red, unit numbers in mono; heavier and more military than Night Circuit, with no glow. | dark |
+| [Soft Wash](skills/pikmi/styles/soft-wash/preview.html) | Soft washes of peach, teal and rose bleeding into warm paper, blue-grey ink, italic serif headings and slow, painterly motion. | light |
 | [Nocturne Glass](skills/pikmi/styles/nocturne-glass/preview.html) | A deep ink night scene with soft moonlit light wells, solid night-steel surfaces and one or two pieces of colorless frosted glass, lit by a single champagne accent. | dark |
 | [Bento](skills/pikmi/styles/bento/preview.html) | A modular grid of widget-like cards in different sizes, sized by importance, on neutral zinc surfaces with soft tints and one tangerine accent. | light, dark |
 | [Dark Dev](skills/pikmi/styles/dark-dev/preview.html) | Calm slate dark mode for developer tools: low-contrast layers, borders that light up on hover, one blue for actions and mono only for code. | dark |

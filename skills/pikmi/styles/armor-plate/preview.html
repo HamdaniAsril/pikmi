@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Armor Plate · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=Saira:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 16px/1.6 var(--font-body); }
+  a { color: var(--link); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 80px; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: var(--tracking-display); line-height: 0.95; margin: 0; }
+  h1 { font-size: clamp(48px, 10vw, 104px); }
+  h2 { font-size: 34px; margin-bottom: 24px; }
+  h3 { font-size: 24px; }
+  section { margin-top: 64px; }
+  .muted { color: var(--text-muted); }
+  .mono { font-family: var(--font-mono); }
+  .label { font: 500 12px/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); }
+  .plate-wrap { filter: drop-shadow(var(--plate-shadow)); }
+  .plate { background: var(--panel); clip-path: var(--plate-cut); padding: var(--space-lg); position: relative; }
+  .plate.green { background: var(--armor-green); }
+  .plate .unit { position: absolute; top: 10px; right: var(--space-lg); font: 500 12px/1 var(--font-mono); letter-spacing: var(--tracking-label); color: var(--text-muted); }
+  .plate.green .unit { color: var(--text); }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: 0; border-radius: 0; clip-path: var(--plate-cut);
+    background: var(--accent); color: var(--on-accent); font: 700 16px/1 var(--font-display); letter-spacing: var(--tracking-label); text-transform: uppercase; text-decoration: none; cursor: pointer; transition: transform 120ms linear; }
+  .btn:hover { transform: translateX(2px); }
+  .btn:active { transform: translate(3px, 3px); }
+  .btn.ghost { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); clip-path: none; }
+  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+  .btn:focus-visible { clip-path: none; }
+  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: 2px solid var(--text-muted); border-radius: 0; background: var(--card); color: var(--text); font: 400 16px var(--font-mono); }
+  .field:focus { border-color: var(--accent); }
+  label { display: block; margin-bottom: 8px; }
+  .status { display: inline-flex; align-items: center; gap: var(--space-sm); font: 500 13px/1 var(--font-mono); text-transform: uppercase; }
+  .status::before { content: ""; width: 10px; height: 10px; background: currentColor; }
+  .status.ok { color: var(--text); } .status.warn { color: var(--hazard-yellow); } .status.bad { color: var(--danger); }
+  .hazard { height: 12px; background: var(--hazard-stripes); }
+  .grid-surface { background-color: var(--card); background: var(--tech-grid), var(--card); }
+  .row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
+  .spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; }
+  .spec strong { display: block; font: 500 40px/1 var(--font-mono); }
+  .ticks { height: 10px; background: repeating-linear-gradient(90deg, var(--text-muted) 0 1px, transparent 1px 12px); opacity: 0.6; }
+
+  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; align-items: start; }
+  #slides { grid-column: 1 / -1; max-width: 960px; }
+  .canvas { container-type: inline-size; filter: drop-shadow(var(--plate-shadow)); }
+  .cap { margin-top: 12px; }
+  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); clip-path: polygon(0 0, calc(100% - 3cqw) 0, 100% 3cqw, 100% 100%, 0 100%); }
+  .slide .frame { position: absolute; inset: 5cqw; border: 0.12cqw solid var(--rule); }
+  .slide .unit { position: absolute; top: 2.4cqw; right: 6cqw; font: 500 1.2cqw/1 var(--font-mono); letter-spacing: 0.2cqw; color: var(--text-muted); }
+  .slide h3 { position: absolute; left: 8cqw; top: 9cqw; width: 50cqw; font-size: 4.6cqw; }
+  .slide .readout { position: absolute; right: 8cqw; bottom: 9cqw; text-align: right; }
+  .slide .readout strong { display: block; font: 500 11cqw/0.9 var(--font-mono); }
+  .slide .readout span { font: 500 1.3cqw/1 var(--font-mono); letter-spacing: 0.2cqw; color: var(--accent); }
+  .slide p { position: absolute; left: 8cqw; bottom: 9cqw; width: 38cqw; margin: 0; font-size: 1.6cqw; color: var(--text-muted); }
+  .post { aspect-ratio: 4 / 5; position: relative; background: var(--page); clip-path: polygon(0 0, calc(100% - 6cqw) 0, 100% 6cqw, 100% 100%, 6cqw 100%, 0 calc(100% - 6cqw)); }
+  .post .lab { position: absolute; top: 6cqw; left: 7cqw; font: 500 2.6cqw/1 var(--font-mono); letter-spacing: 0.4cqw; color: var(--text-muted); }
+  .post .big { position: absolute; left: 7cqw; top: 14cqw; font: 700 30cqw/0.82 var(--font-display); text-transform: uppercase; }
+  .post .big span { color: var(--accent); }
+  .post .info { position: absolute; left: 7cqw; right: 7cqw; bottom: 7cqw; background: var(--armor-green); clip-path: polygon(0 0, calc(100% - 4cqw) 0, 100% 4cqw, 100% 100%, 0 100%); padding: 5cqw; }
+  .post .info h3 { font-size: 7cqw; }
+  .post .info p { margin: 1.5cqw 0 0; font-size: 3.6cqw; }
+  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; padding: 8cqw 5cqw 4cqw; gap: 4cqw; }
+  .phone h3 { font-size: 9cqw; }
+  .phone .rowi { display: flex; justify-content: space-between; align-items: center; min-height: 48px; border-bottom: 1px solid var(--rule); font-size: 4.2cqw; }
+  .phone .spacer { flex: 1; }
+  .phone .btn { justify-content: center; }
+  .phone nav { display: flex; }
+  .tab { flex: 1; min-height: 48px; background: var(--panel); border: 0; color: var(--text-muted); font: 600 3.8cqw var(--font-display); letter-spacing: 0.3cqw; text-transform: uppercase; cursor: pointer; }
+  .tab[aria-pressed="true"] { color: var(--text); box-shadow: inset 0 3px 0 var(--accent); }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="plate-wrap"><header class="plate grid-surface" style="padding:40px 28px">
+    <span class="unit">UNIT-07 · HANGAR 3</span>
+    <span class="label">pikmi style · dark only</span>
+    <h1 style="margin-top:14px">Armor Plate</h1>
+    <p class="muted" style="max-width:52ch;margin:16px 0 26px">Armored navy and military-green plates, cut corners, hazard yellow and unit numbers in mono. No glow.</p>
+    <div class="row"><a class="btn" href="#components">Open the hangar</a><a class="btn ghost" href="#slides">See the slides</a></div>
+  </header></div>
+
+  <section id="components" aria-labelledby="h-components">
+    <h2 id="h-components">Components</h2>
+    <div class="grid">
+      <div class="plate-wrap"><div class="plate"><span class="unit">SYS-A</span><h3>Buttons</h3><div class="row" style="margin-top:16px"><a class="btn" href="#ui">Deploy unit</a><a class="btn ghost" href="#app">Hold</a></div></div></div>
+      <div class="plate-wrap"><div class="plate"><span class="unit">SYS-B</span><label class="label" for="callsign">Pilot callsign</label><input class="field" id="callsign" placeholder="KESTREL-2"></div></div>
+      <div class="plate-wrap"><div class="plate"><span class="unit">SYS-C</span><h3>Status</h3><div class="row" style="margin-top:14px"><span class="status ok">Armor</span><span class="status warn">Coolant</span><span class="status bad">Left arm</span></div></div></div>
+      <div class="plate-wrap"><div class="plate green"><span class="unit">SYS-D</span><h3>Green plate</h3><p style="margin:8px 0 0">Secondary plates carry light text.</p></div></div>
+    </div>
+  </section>
+
+  <section id="ui" aria-labelledby="h-ui">
+    <h2 id="h-ui">UI · Build kit page</h2>
+    <div class="plate-wrap"><div class="plate" style="padding:32px 28px">
+      <span class="unit">KIT-RX / 1:100</span>
+      <h3 style="font-size:clamp(32px,6vw,56px)">Heavy frame, field type</h3>
+      <p class="muted" style="max-width:56ch">A snap-fit model kit with a poseable inner frame and swappable armor plates.</p>
+      <div class="ticks" style="margin:20px 0"></div>
+      <div class="spec">
+        <div><strong>1:100</strong><span class="label">scale</span></div>
+        <div><strong>210</strong><span class="label">parts</span></div>
+        <div><strong>18 cm</strong><span class="label">height</span></div>
+      </div>
+      <div class="hazard" style="margin:28px 0 12px"></div>
+      <p class="status warn" style="margin:0 0 20px">Small parts. Not for children under 8.</p>
+      <a class="btn" href="#components">Add kit to cart</a>
+    </div></div>
+  </section>
+
+  <section aria-labelledby="h-media">
+    <h2 id="h-media">Other media</h2>
+    <div class="canvases">
+      <div id="slides">
+        <div class="canvas"><div class="slide">
+          <div class="frame"></div><span class="unit">SEC 2 / BAY 4</span>
+          <h3>Assembly time dropped with the new frame</h3>
+          <p>Average build time in the test group. Replace with real figures.</p>
+          <div class="readout"><strong>[n]</strong><span>HOURS PER KIT</span></div>
+        </div></div>
+        <p class="cap label">slides · 1920 x 1080</p>
+      </div>
+      <div id="social">
+        <div class="canvas"><div class="post">
+          <span class="lab">UNIT-07 · 01 / 03</span>
+          <div class="big">Field<br><span>type</span></div>
+          <div class="info"><h3>Preorders open</h3><p>Ships with two armor sets and a hangar base.</p></div>
+        </div></div>
+        <p class="cap label">social · 1080 x 1350</p>
+      </div>
+      <div id="app">
+        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
+          <span class="label">UNIT-07</span>
+          <h3>Build log</h3>
+          <div class="rowi"><span>Inner frame</span><span class="status ok">done</span></div>
+          <div class="rowi"><span>Leg armor</span><span class="status warn">step 4</span></div>
+          <div class="rowi"><span>Decals</span><span class="mono muted">not started</span></div>
+          <div class="spacer"></div>
+          <a class="btn" href="#app">Next step</a>
+          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Log</button><button class="tab" type="button" aria-pressed="false">Parts</button><button class="tab" type="button" aria-pressed="false">Guide</button></nav>
+        </div></div>
+        <p class="cap label">app · phone</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+  })));
+</script>
+</body>
+</html>

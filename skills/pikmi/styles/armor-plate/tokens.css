@@ -1,0 +1,50 @@
+/* pikmi: armor-plate */
+/* Armor Plate. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=Saira:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap */
+
+:root {
+  --font-display: "Saira Condensed", system-ui, sans-serif;
+  --font-body: "Saira", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --type-label: 12px;
+  --type-caption: 13px;
+  --type-body: 16px;
+  --type-lead: 18px;
+  --type-h3: 24px;
+  --type-h2: 36px;
+  --type-h1: 60px;
+  --type-display: 104px;
+
+  --tracking-label: 2.5px;
+  --tracking-display: 1px;
+
+  --radius-none: 0px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+
+  --armor-green: #4A5C3A;
+  --hazard-yellow: #FBBF24;
+  --hazard-red: #EF4444;
+
+  --plate-shadow: 4px 4px 0 #0B1120;
+  --hazard-stripes: repeating-linear-gradient(-45deg, #FBBF24 0 10px, #141E33 10px 20px);
+  --plate-cut: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  --tech-grid: linear-gradient(rgba(169, 179, 196, 0.08) 1px, transparent 1px) 0 0 / 24px 24px, linear-gradient(90deg, rgba(169, 179, 196, 0.08) 1px, transparent 1px) 0 0 / 24px 24px;
+
+  /* dark */
+  --page: #141E33;
+  --panel: #1A2744;
+  --card: #1F2D4D;
+  --rule: #4A5C3A;
+  --text: #E6E9EF;
+  --text-muted: #A9B3C4;
+  --accent: #FBBF24;
+  --on-accent: #141E33;
+  --link: #FBBF24;
+  --danger: #F87171;
+}

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indigo Woodblock · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@700;800&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--text); font: 400 17px/1.7 var(--font-body); }
+  a { color: var(--link); text-underline-offset: 3px; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 32px 16px 80px; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 800; margin: 0; line-height: 1.15; }
+  h1 { font-size: clamp(42px, 8vw, 84px); }
+  h2 { font-size: 34px; margin-bottom: 24px; }
+  h3 { font-size: 22px; }
+  section { margin-top: 72px; }
+  .muted { color: var(--text-muted); }
+  .label { font: 500 13px/1 var(--font-body); letter-spacing: var(--tracking-label); color: var(--text-muted); }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--outline); border-radius: var(--radius-key);
+    background: var(--accent); color: var(--on-accent); box-shadow: var(--print-shadow); font: 700 17px/1 var(--font-display); letter-spacing: 1px; text-decoration: none; cursor: pointer;
+    transition: transform 75ms linear, box-shadow 75ms linear; }
+  .btn:hover { transform: translate(-2px, -2px); box-shadow: var(--print-shadow-hover); }
+  .btn:active { transform: translate(4px, 4px); box-shadow: none; border-color: var(--vermilion); }
+  .btn.paper { background: var(--card); color: var(--text); }
+  .btn:focus-visible, .field:focus-visible, a:focus-visible, .tab:focus-visible { outline: 3px solid var(--vermilion); outline-offset: 3px; }
+  .block { background: var(--card); border: var(--outline); border-radius: var(--radius-card); padding: var(--space-lg); box-shadow: var(--print-shadow); }
+  .block.indigo { background: var(--indigo); color: var(--page); }
+  .block.indigo .gold { color: var(--gold-leaf); }
+  .seal { display: inline-grid; place-items: center; width: 56px; height: 56px; background: var(--vermilion); color: #FFFFFF; font: 800 22px/1 var(--font-display); rotate: -4deg; flex: none; }
+  .field { min-height: 48px; width: 100%; padding: 0 var(--space-md); border: var(--outline); border-radius: var(--radius-key); background: var(--card); color: var(--text); font: 400 17px var(--font-body); }
+  label { display: block; font-weight: 500; margin-bottom: 6px; }
+  .waves { height: 64px; background:
+    radial-gradient(circle at 50% 100%, transparent 18px, var(--indigo) 19px 21px, transparent 22px) 0 0 / 48px 32px repeat-x,
+    radial-gradient(circle at 50% 100%, transparent 18px, var(--indigo) 19px 21px, transparent 22px) 24px 32px / 48px 32px repeat-x; }
+  .row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
+  table { width: 100%; border-collapse: collapse; border: var(--outline); background: var(--card); }
+  th, td { padding: 12px 14px; border-bottom: 1px solid var(--rule); text-align: left; }
+  th { font: 500 13px/1 var(--font-body); letter-spacing: var(--tracking-label); background: var(--panel); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .hero { border: var(--outline); background: var(--card); box-shadow: var(--print-shadow); overflow: hidden; }
+  .hero .inner { padding: 48px 28px 32px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
+  .hero .sun { width: 160px; height: 160px; border-radius: 50%; background: var(--vermilion); }
+  .hero p { max-width: 48ch; margin: 18px 0 26px; font-size: 19px; }
+  .hero .waves { border-top: var(--outline); background-color: var(--panel); }
+
+  .canvases { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 36px; align-items: start; }
+  #slides { grid-column: 1 / -1; max-width: 960px; }
+  .canvas { container-type: inline-size; border: var(--outline); box-shadow: var(--print-shadow); overflow: hidden; }
+  .cap { margin-top: 14px; }
+  .slide { aspect-ratio: 16 / 9; position: relative; background: var(--page); overflow: hidden; }
+  .slide .frame { position: absolute; inset: 5cqw; border: 0.12cqw solid var(--rule); }
+  .slide h3 { position: absolute; left: 9cqw; top: 9cqw; width: 50cqw; font-size: 4.2cqw; }
+  .slide p { position: absolute; left: 9cqw; top: 22cqw; width: 40cqw; margin: 0; font-size: 1.6cqw; line-height: 1.6; }
+  .slide .big { position: absolute; right: 9cqw; top: 9cqw; font: 800 14cqw/0.9 var(--font-display); color: var(--vermilion); }
+  .slide .big small { display: block; font-size: 1.6cqw; color: var(--text); font-family: var(--font-body); font-weight: 500; letter-spacing: 0.2cqw; text-align: right; margin-top: 1cqw; }
+  .slide .wv { position: absolute; left: 0; right: 0; bottom: 0; height: 8cqw;
+    background: radial-gradient(circle at 50% 100%, transparent 2.4cqw, var(--indigo) 2.5cqw 2.75cqw, transparent 2.85cqw) 0 0 / 6cqw 4cqw repeat-x,
+      radial-gradient(circle at 50% 100%, transparent 2.4cqw, var(--indigo) 2.5cqw 2.75cqw, transparent 2.85cqw) 3cqw 4cqw / 6cqw 4cqw repeat-x; }
+  .post { aspect-ratio: 4 / 5; position: relative; background: var(--page); overflow: hidden; }
+  .post .sun { position: absolute; right: 10cqw; top: 10cqw; width: 34cqw; height: 34cqw; border-radius: 50%; background: var(--vermilion); }
+  .post .mtn { position: absolute; left: -5cqw; right: 20cqw; bottom: 30cqw; height: 40cqw; background: var(--indigo); clip-path: polygon(0 100%, 45% 0, 52% 12%, 60% 4%, 100% 100%); }
+  .post .mtn::after { content: ""; position: absolute; inset: 0; background: var(--card); clip-path: polygon(39% 13%, 45% 0, 52% 12%, 60% 4%, 64% 12%, 55% 18%, 50% 15%, 44% 20%); }
+  .post h3 { position: absolute; left: 8cqw; top: 10cqw; width: 50cqw; font-size: 10cqw; line-height: 1.05; }
+  .post .details { position: absolute; left: 8cqw; right: 8cqw; bottom: 8cqw; background: var(--card); border: 0.4cqw solid var(--rule); box-shadow: 1.2cqw 1.2cqw 0 var(--indigo); padding: 4.5cqw; font-size: 3.8cqw; line-height: 1.45; }
+  .post .seal { position: absolute; right: 8cqw; bottom: 30cqw; width: 14cqw; height: 14cqw; font-size: 6cqw; }
+  .phone { aspect-ratio: 9 / 19.5; max-width: 320px; margin: 0 auto; background: var(--page); display: flex; flex-direction: column; padding: 8cqw 5cqw 4cqw; gap: 4cqw; }
+  .phone h3 { font-size: 8cqw; }
+  .phone .item { border: 2px solid var(--rule); background: var(--card); padding: 3.5cqw 4cqw; display: flex; justify-content: space-between; align-items: center; font-size: 4.2cqw; }
+  .phone .item strong { font-family: var(--font-display); }
+  .phone .spacer { flex: 1; }
+  .phone .btn { justify-content: center; }
+  .phone nav { display: flex; gap: 2cqw; }
+  .tab { flex: 1; min-height: 48px; border: 2px solid var(--rule); border-radius: var(--radius-key); background: var(--card); color: var(--text); font: 500 3.8cqw var(--font-body); cursor: pointer; }
+  .tab[aria-pressed="true"] { background: var(--indigo); color: var(--page); }
+
+  @media (max-width: 640px) { .hero .inner { grid-template-columns: 1fr; } .hero .sun { width: 96px; height: 96px; order: -1; } }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="inner">
+      <div>
+        <span class="label">pikmi style · rice paper</span>
+        <h1 style="margin-top:12px">Indigo Woodblock</h1>
+        <p>Indigo outlines on rice paper, flat blocks of color, a vermilion seal and a hard print shadow.</p>
+        <div class="row"><a class="btn" href="#components">See the components</a><a href="#slides">See the slides</a></div>
+      </div>
+      <div class="sun" aria-hidden="true"></div>
+    </div>
+    <div class="waves" aria-hidden="true"></div>
+  </header>
+
+  <section id="components" aria-labelledby="h-components">
+    <h2 id="h-components">Components</h2>
+    <div class="grid">
+      <div class="block"><h3>Buttons</h3><div class="row" style="margin-top:16px"><a class="btn" href="#ui">Reserve a seat</a><a class="btn paper" href="#app">Open the app</a></div></div>
+      <div class="block"><label for="guests">Guests</label><input class="field" id="guests" placeholder="2"><p class="muted" style="margin:10px 0 0;font-size:15px">Counter seats only on weekdays.</p></div>
+      <div class="block indigo"><span class="label" style="color:var(--page)">Season</span><h3 style="margin-top:8px">Autumn menu <span class="gold">now</span></h3><p style="margin:8px 0 0">Chestnut rice, grilled mackerel, persimmon.</p></div>
+      <div class="block"><div class="row"><span class="seal" aria-hidden="true">秋</span><div><h3>The seal</h3><p class="muted" style="margin:4px 0 0;font-size:15px">Marks the one featured item.</p></div></div></div>
+    </div>
+  </section>
+
+  <section id="ui" aria-labelledby="h-ui">
+    <h2 id="h-ui">UI · A small restaurant</h2>
+    <div class="grid" style="align-items:start">
+      <div class="block indigo"><span class="label" style="color:var(--page)">Tonight</span><h3 style="font-size:30px;margin-top:8px">Eight seats at the counter</h3><p style="margin:10px 0 18px">The chef cooks the autumn set in front of you, one course at a time.</p><a class="btn" href="#components">Book the counter</a></div>
+      <div>
+        <table>
+          <thead><tr><th>Course</th><th>Dish</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Chestnut rice in a clay pot</td></tr>
+            <tr><td>2</td><td>Grilled mackerel, grated radish</td></tr>
+            <tr><td>3</td><td>Persimmon with black sugar</td></tr>
+          </tbody>
+        </table>
+        <p class="muted" style="font-size:15px">Menu changes with the market each week.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-media">
+    <h2 id="h-media">Other media</h2>
+    <div class="canvases">
+      <div id="slides">
+        <div class="canvas"><div class="slide">
+          <div class="frame"></div>
+          <h3>Why the menu changes every week</h3>
+          <p>We buy from the morning market and plan the set around what came off the boats that day.</p>
+          <div class="big">7<small>days per menu</small></div>
+          <div class="wv" aria-hidden="true"></div>
+        </div></div>
+        <p class="cap label">slides · 1920 x 1080</p>
+      </div>
+      <div id="social">
+        <div class="canvas"><div class="post">
+          <div class="sun" aria-hidden="true"></div><div class="mtn" aria-hidden="true"></div>
+          <h3>Autumn set is here</h3>
+          <span class="seal" aria-hidden="true">秋</span>
+          <div class="details">Eight counter seats, Tuesday to Saturday. Book through the link in our profile.</div>
+        </div></div>
+        <p class="cap label">social · 1080 x 1350</p>
+      </div>
+      <div id="app">
+        <div class="canvas" style="max-width:320px;margin:0 auto"><div class="phone">
+          <span class="label">Friday · 19:30</span>
+          <h3>Your booking</h3>
+          <div class="item"><strong>Counter</strong><span>2 guests</span></div>
+          <div class="item"><strong>Set</strong><span>Autumn</span></div>
+          <div class="spacer"></div>
+          <a class="btn" href="#app">Confirm booking</a>
+          <nav role="group" aria-label="App sections"><button class="tab" type="button" aria-pressed="true">Book</button><button class="tab" type="button" aria-pressed="false">Menu</button><button class="tab" type="button" aria-pressed="false">Visit</button></nav>
+        </div></div>
+        <p class="cap label">app · phone</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  document.querySelectorAll('nav[role="group"]').forEach(g => g.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    g.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t)));
+  })));
+</script>
+</body>
+</html>

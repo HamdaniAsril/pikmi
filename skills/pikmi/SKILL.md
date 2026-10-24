@@ -40,7 +40,7 @@ pricing page", "fix this button"). Do not offer styles then.
 
 Skip the offer only when the user names a style directly:
 
-- by its catalog `name` or `id`, or a clear short form of it ("cyberpunk", "watercolor", "bento"), or
+- by its catalog `name` or `id`, or a clear short form of it ("woodblock", "lattice", "bento"), or
 - by a brand, product or work listed in that style's `brand_terms` and in no other style's `brand_terms`
   ("ala teenage engineering", "like a Blade Runner movie"). A brand listed under two styles goes to step 3
   with both styles first.

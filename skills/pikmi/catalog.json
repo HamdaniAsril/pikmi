@@ -56,9 +56,9 @@
       ]
     },
     {
-      "id": "cyberpunk-neon",
-      "name": "Cyberpunk Neon",
-      "summary": "Near-black night surfaces, cyan and magenta neon, hard thin strokes and HUD readouts; louder and more electric than Mecha.",
+      "id": "night-circuit",
+      "name": "Night Circuit",
+      "summary": "Near-black night surfaces, cyan and magenta neon, hard thin strokes and HUD readouts; louder and more electric than Armor Plate.",
       "keywords": {
         "en": [
           "cyberpunk",
@@ -92,15 +92,15 @@
       "themes": [
         "dark"
       ],
-      "preview": "styles/cyberpunk-neon/preview.html",
+      "preview": "styles/night-circuit/preview.html",
       "brand_terms": [
         "cyberpunk 2077",
         "blade runner"
       ]
     },
     {
-      "id": "anti-design",
-      "name": "Anti-Design",
+      "id": "primary-riot",
+      "name": "Primary Riot",
       "summary": "Loud neo-brutalism: thick black borders, hard offset shadows, clashing primary colors, square corners and type sizes that collide on purpose.",
       "keywords": {
         "en": [
@@ -136,12 +136,12 @@
       "themes": [
         "light"
       ],
-      "preview": "styles/anti-design/preview.html",
+      "preview": "styles/primary-riot/preview.html",
       "brand_terms": []
     },
     {
-      "id": "corporate-clean",
-      "name": "Corporate Clean",
+      "id": "ledger-blue",
+      "name": "Ledger Blue",
       "summary": "Trustworthy enterprise UI with an identity: ledger hairlines, tabular numbers, ink-blue headings and one confident blue for actions.",
       "keywords": {
         "en": [
@@ -178,12 +178,12 @@
       "themes": [
         "light"
       ],
-      "preview": "styles/corporate-clean/preview.html",
+      "preview": "styles/ledger-blue/preview.html",
       "brand_terms": []
     },
     {
-      "id": "islamic-geometric",
-      "name": "Islamic Geometric",
+      "id": "lapis-lattice",
+      "name": "Lapis Lattice",
       "summary": "Lapis blue, ivory and gold with eight-point star patterns used as frames and dividers, symmetrical and calm; ivory by day, deep blue by night.",
       "keywords": {
         "en": [
@@ -223,12 +223,12 @@
         "light",
         "dark"
       ],
-      "preview": "styles/islamic-geometric/preview.html",
+      "preview": "styles/lapis-lattice/preview.html",
       "brand_terms": []
     },
     {
-      "id": "ukiyo-e-print",
-      "name": "Ukiyo-e Print",
+      "id": "indigo-woodblock",
+      "name": "Indigo Woodblock",
       "summary": "Japanese woodblock print as an interface: indigo outlines on rice paper, flat color blocks, vermilion stamps, wave motifs and hard print shadows.",
       "keywords": {
         "en": [
@@ -260,7 +260,7 @@
       "themes": [
         "light"
       ],
-      "preview": "styles/ukiyo-e-print/preview.html",
+      "preview": "styles/indigo-woodblock/preview.html",
       "brand_terms": []
     },
     {
@@ -308,9 +308,9 @@
       ]
     },
     {
-      "id": "mecha",
-      "name": "Mecha",
-      "summary": "Armored control panels in navy and military green, cut corners, hazard yellow and red, unit numbers in mono; heavier and more military than Cyberpunk Neon, with no glow.",
+      "id": "armor-plate",
+      "name": "Armor Plate",
+      "summary": "Armored control panels in navy and military green, cut corners, hazard yellow and red, unit numbers in mono; heavier and more military than Night Circuit, with no glow.",
       "keywords": {
         "en": [
           "mecha",
@@ -346,15 +346,15 @@
       "themes": [
         "dark"
       ],
-      "preview": "styles/mecha/preview.html",
+      "preview": "styles/armor-plate/preview.html",
       "brand_terms": [
         "gundam",
         "evangelion"
       ]
     },
     {
-      "id": "watercolor",
-      "name": "Watercolor",
+      "id": "soft-wash",
+      "name": "Soft Wash",
       "summary": "Soft washes of peach, teal and rose bleeding into warm paper, blue-grey ink, italic serif headings and slow, painterly motion.",
       "keywords": {
         "en": [
@@ -391,7 +391,7 @@
       "themes": [
         "light"
       ],
-      "preview": "styles/watercolor/preview.html",
+      "preview": "styles/soft-wash/preview.html",
       "brand_terms": []
     },
     {
