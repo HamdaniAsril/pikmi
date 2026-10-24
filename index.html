@@ -109,35 +109,48 @@
 
   <section class="section wrap" id="how" aria-labelledby="h-how">
     <h2 id="h-how">01 · how it works</h2>
-    <p class="section-lede">Three steps, one question. pikmi stays quiet when your project already has its own look.</p>
-    <ol class="steps">
+    <p class="section-lede">You describe a feeling, pikmi suggests a few styles, and your agent builds with the one you pick.</p>
+    <ol class="flow">
       <li class="panel step">
-        <span class="key corner-key" aria-hidden="true"><span class="k-label">mood</span><span class="k-num">01</span></span>
-        <h3>say the mood</h3>
-        <p>Start a new design or ask for a new look, in English or Indonesian. pikmi matches your mood words against every style in its catalog.</p>
-        <div class="screen step-screen">
-          <p>“make it calm and airy”</p>
-          <p>“bikin kayak poster punk”</p>
-        </div>
+        <div class="step-head"><span class="step-num">1</span><span class="label">you</span></div>
+        <h3>Describe the mood</h3>
+        <p class="step-text">Tell your agent how it should feel, in English or Indonesian. No style names needed.</p>
+        <div class="lcd"><div class="lcd-screen">
+          <div class="lcd-bar"><span>in · mood</span><span class="lcd-state">rec</span></div>
+          <p class="lcd-line"><span class="lcd-num lcd-blue">01</span><span>“make it calm and airy”</span></p>
+          <p class="lcd-line"><span class="lcd-num lcd-orange">02</span><span>“bikin kayak poster punk”</span></p>
+          <div class="wave" id="wave" aria-hidden="true"></div>
+        </div></div>
       </li>
       <li class="panel step">
-        <span class="key corner-key" aria-hidden="true"><span class="k-label">pick</span><span class="k-num">02</span></span>
-        <h3>pick one of three</h3>
-        <p>It opens the previews and offers up to three styles, each with a one-line reason and a card of its palette and fonts. Or you carry on without pikmi.</p>
-        <div class="screen step-screen offer">
-          <p class="offer-title"><span id="offer-name">Night Circuit</span> · <span id="offer-themes">dark</span></p>
-          <p><span class="on-screen-label">palette</span><span id="offer-palette">#0A0A0F page · #F2F7FA text · #00F0FF accent</span></p>
-          <p><span class="on-screen-label">fonts</span><span id="offer-fonts">Chakra Petch / Share Tech Mono</span></p>
-        </div>
+        <div class="step-head"><span class="step-num">2</span><span class="label">pikmi</span></div>
+        <h3>Pick one of three</h3>
+        <p class="step-text">pikmi suggests up to three matching styles with a short reason. You choose one, or skip.</p>
+        <div class="lcd"><div class="lcd-screen">
+          <div class="lcd-bar"><span id="sel-title">sel · 3 matches</span><span class="lcd-state" id="sel-state">1/3</span></div>
+          <p class="lcd-option on" data-style="japanese-minimal"><span class="lcd-num">07</span><span>japanese minimal</span><span class="lcd-cursor" aria-hidden="true">◀</span></p>
+          <p class="lcd-option" data-style="soft-wash"><span class="lcd-num">09</span><span>soft wash</span></p>
+          <p class="lcd-option" data-style="ledger-blue"><span class="lcd-num">04</span><span>ledger blue</span></p>
+          <div class="lcd-foot">
+            <div class="lcd-head"><span>match</span><span class="lcd-orange">92%</span></div>
+            <div class="meter" id="meter" aria-hidden="true"></div>
+          </div>
+        </div></div>
       </li>
       <li class="panel step">
-        <span class="key corner-key" aria-hidden="true"><span class="k-label">build</span><span class="k-num">03</span></span>
-        <h3>build with one</h3>
-        <p>Your agent loads only the chosen style and the rules for your medium, builds, then checks the result against the style’s checklist. Web projects keep a marker so later sessions continue the look.</p>
-        <div class="screen step-screen">
-          <p class="on-screen-label">tokens.css</p>
-          <p><code id="marker">/* pikmi: night-circuit */</code></p>
-        </div>
+        <div class="step-head"><span class="step-num">3</span><span class="label">your agent</span></div>
+        <h3>Build with that style</h3>
+        <p class="step-text">Your agent uses only the chosen style, builds the design, then checks it against the style’s rules.</p>
+        <div class="lcd"><div class="lcd-screen">
+          <div class="lcd-bar"><span>run · build</span><span class="lcd-state">ok</span></div>
+          <p class="lcd-line"><span class="lcd-key">load</span><span>japanese minimal</span><span class="lcd-ok">✓</span></p>
+          <p class="lcd-line"><span class="lcd-key">build</span><span>page · slides · app</span><span class="lcd-ok">✓</span></p>
+          <p class="lcd-line"><span class="lcd-key">check</span><span>style rules</span><span class="lcd-ok">✓</span></p>
+          <div class="lcd-foot">
+            <div class="lcd-head"><span>out</span><span class="lcd-marker">pikmi: japanese-minimal</span></div>
+            <div class="tiles"><span class="on">web</span><span>sld</span><span>soc</span><span>app</span></div>
+          </div>
+        </div></div>
       </li>
     </ol>
   </section>

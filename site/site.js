@@ -69,11 +69,6 @@ function palette(style) {
   return [['page', theme.page], ['text', theme.text], ['accent', theme.accent]].filter(([, hex]) => hex);
 }
 
-function fonts(style) {
-  const families = Object.values(style.tokens?.fonts ?? {}).map((font) => font.family);
-  return [...new Set(families)];
-}
-
 function el(tag, props = {}, children = []) {
   const node = Object.assign(document.createElement(tag), props);
   node.append(...children);
@@ -159,14 +154,6 @@ function select(index) {
   setStatus('loading', false);
   frame.title = `Preview of the ${style.name} style`;
   frame.src = style.href;
-
-  // the offer card and marker in "how it works" follow the picked style
-  $('#offer-name').textContent = style.name;
-  $('#offer-themes').textContent = style.themes.join(', ');
-  const colors = palette(style);
-  $('#offer-palette').textContent = colors.length ? colors.map(([role, hex]) => `${hex.toUpperCase()} ${role}`).join(' · ') : 'see tokens.json';
-  $('#offer-fonts').textContent = fonts(style).join(' / ') || 'see tokens.json';
-  $('#marker').textContent = `/* pikmi: ${style.id} */`;
 }
 
 function randomFrom(indexes) {
@@ -279,6 +266,32 @@ function renderCards() {
   $('#style-cards').replaceChildren(...cards, randomCard);
 }
 
+// how it works: drawn bars, and catalog numbers on the "pick one of three" screen
+const WAVE = [4, 10, 18, 8, 26, 14, 6, 20, 30, 12, 22, 8, 16, 4, 12, 24, 10, 6, 18, 8, 14, 28, 10, 4, 16, 8];
+$('#wave').replaceChildren(...WAVE.map((h, i) => {
+  const bar = el('span', { className: i < 12 ? '' : 'quiet' });
+  bar.style.height = `${h}px`;
+  return bar;
+}));
+const METER = [4, 4, 5, 5, 6, 6, 7, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 11, 12, 12, 13, 13, 14, 14];
+$('#meter').replaceChildren(...METER.map((h, i) => {
+  const seg = el('span', { className: i < 22 ? '' : 'off' });
+  seg.style.height = `${h}px`;
+  return seg;
+}));
+
+function renderStory() {
+  const rows = [...document.querySelectorAll('.lcd-option[data-style]')];
+  rows.forEach((row) => {
+    const style = state.styles.find((s) => s.id === row.dataset.style);
+    if (style) row.querySelector('.lcd-num').textContent = style.number;
+    else row.remove();
+  });
+  const left = document.querySelectorAll('.lcd-option[data-style]').length;
+  $('#sel-title').textContent = `sel · ${left} ${left === 1 ? 'match' : 'matches'}`;
+  $('#sel-state').textContent = `1/${left}`;
+}
+
 // toolbar
 $('#style-search').addEventListener('input', (event) => {
   state.query = event.target.value;
@@ -317,6 +330,7 @@ readCatalog().then((styles) => {
   renderSpecs();
   renderKeys();
   renderCards();
+  renderStory();
   // open on a random style other than the one this page wears
   const others = styles.map((s, i) => i).filter((i) => styles[i].id !== 'instrument-panel');
   select(others.length ? randomFrom(others) : 0);

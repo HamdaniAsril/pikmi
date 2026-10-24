@@ -146,19 +146,48 @@ svg { flex: none; }
 .section h2 { font-size: var(--type-h2); line-height: 1.1; margin: 0 0 8px; }
 .section-lede { color: var(--text-muted); max-width: 60ch; margin: 0 0 28px; }
 
-.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
-.step { display: flex; flex-direction: column; gap: 12px; padding: 8px 8px 16px; }
-.step .corner-key { width: 72px; min-height: 60px; cursor: default; }
-.step .corner-key:active { transform: none; box-shadow: var(--key-travel) var(--key-shadow); }
-.step h3, .step > p { margin: 0; padding-inline: 8px; }
-.step h3 { font-size: var(--type-h3); line-height: 1.2; margin-top: 8px; }
-.step > p { color: var(--text-muted); }
-.step-screen { margin: auto 8px 0; padding: 16px; display: flex; flex-direction: column; gap: 8px; min-height: 120px; justify-content: center; }
-.step-screen p { margin: 0; overflow-wrap: anywhere; }
-.step-screen code { font: 400 16px/1.5 var(--font-sans); }
-.offer p { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; font-size: 14px; }
-.offer .offer-title { display: block; font-size: 16px; font-weight: 400; }
-.offer .on-screen-label { width: 64px; flex: none; }
+/* how it works: three panels, each with a small screen, joined by arrows */
+.flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 40px; }
+.step { position: relative; display: flex; flex-direction: column; gap: 14px; padding: 24px; }
+.step + .step::before { content: ""; position: absolute; left: 0; right: 0; top: -40px; height: 40px; background: var(--accent);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 16'%3E%3Cpath d='M6 1v14m-5-5l5 5 5-5' fill='none' stroke='black' stroke-width='1.8'/%3E%3C/svg%3E") center / 12px 16px no-repeat; }
+.step-head { display: flex; align-items: center; gap: 10px; }
+.step-num { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--text); color: var(--page); font: 500 13px/1 var(--font-sans); }
+.step h3 { margin: 0; font-size: 24px; font-weight: 300; line-height: 1.2; }
+.step-text { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.55; }
+
+/* the small screens are drawn hardware, so they keep their own dark palette in both editions */
+.lcd { --lcd: #000000; --lcd-bezel: #2a2930; --lcd-rule: #1f1f24; --lcd-dim: #7a7a82; --lcd-quiet: #5a5a62; --lcd-blue: #3d8bff;
+  flex: 1; display: flex; min-height: 208px; padding: 6px; border-radius: 10px; background: var(--lcd-bezel); box-shadow: inset 0 1px 3px #00000080; }
+.lcd-screen { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 10px 12px; border-radius: 5px;
+  background: var(--lcd); color: var(--on-screen); font: 400 12px/1.3 "JetBrains Mono", ui-monospace, monospace; }
+.lcd-screen p { margin: 0; }
+.lcd-bar, .lcd-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lcd-dim); }
+.lcd-bar { padding-bottom: 10px; border-bottom: 1px solid var(--lcd-rule); }
+.lcd-state { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); }
+.lcd-state::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.lcd-line, .lcd-option { display: flex; align-items: center; gap: 10px; }
+.lcd-num { font-size: 11px; color: var(--lcd-dim); }
+.lcd-blue { color: var(--lcd-blue); }
+.lcd-orange { color: var(--accent); }
+.wave { flex: 1; display: flex; align-items: center; justify-content: center; gap: 3px; min-height: 40px; }
+.wave span { width: 3px; border-radius: 1px; background: var(--lcd-blue); }
+.wave span.quiet { background: var(--lcd-quiet); }
+.lcd-option { padding: 5px 6px; border-radius: 3px; }
+.lcd-option.on { background: var(--accent); color: var(--on-accent); }
+.lcd-option.on .lcd-num { color: var(--on-accent); }
+.lcd-cursor { margin-left: auto; font-size: 11px; }
+.lcd-foot { margin-top: auto; display: grid; gap: 6px; }
+.meter { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
+.meter span { flex: 1; background: var(--accent); }
+.meter span.off { background: var(--lcd-rule); }
+.lcd-key { min-width: 6ch; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--lcd-blue); }
+.lcd-ok { margin-left: auto; font-size: 11px; color: var(--led); }
+.lcd-marker { color: var(--led); letter-spacing: 0.5px; text-transform: none; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.tiles span { display: grid; place-items: center; height: 26px; border: 1px solid var(--lcd-bezel); border-radius: 3px;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--lcd-dim); }
+.tiles span.on { background: var(--led); border-color: var(--led); color: var(--on-accent); }
 
 .style-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .scard { display: flex; flex-direction: column; gap: 10px; padding: 16px; min-height: 196px; }
@@ -215,7 +244,10 @@ svg { flex: none; }
   .viewport { aspect-ratio: 1088 / 445; }
   .key-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .stat { padding: 20px 24px; }
-  .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .flow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .step + .step::before { left: -40px; right: auto; top: 0; bottom: 0; width: 40px; height: auto;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 12'%3E%3Cpath d='M1 6h14m-5-5l5 5-5 5' fill='none' stroke='black' stroke-width='1.8'/%3E%3C/svg%3E");
+    mask-size: 16px 12px; }
   .style-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
