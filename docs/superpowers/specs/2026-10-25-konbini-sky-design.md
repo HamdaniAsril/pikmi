@@ -1,6 +1,7 @@
 # Konbini Sky: style baru untuk pikmi
 
-Tanggal: 2026-10-25. Status: menunggu persetujuan user.
+Tanggal: 2026-10-25. Status: disetujui user (2026-10-25). Rencana implementasi:
+`docs/superpowers/plans/2026-10-25-konbini-sky.md`.
 
 ## 1. Maksud dan alasan
 
