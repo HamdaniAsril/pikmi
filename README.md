@@ -9,12 +9,35 @@ You pick one and the agent builds with only that style loaded, or you carry on w
 
 ## Install
 
-In Claude Code:
+### Claude Code
 
 ```
 /plugin marketplace add HamdaniAsril/pikmi
 /plugin install pikmi@pikmi
 ```
+
+### OpenCode and other agents
+
+pikmi is a plain Agent Skills folder (`skills/pikmi/SKILL.md`), so any agent that reads `SKILL.md`
+skills can use it. The [skills CLI](https://github.com/vercel-labs/skills) installs it for the agents
+you name:
+
+```
+npx skills add HamdaniAsril/pikmi -g -a opencode
+```
+
+`-g` installs it for your user instead of the current project. Add one `-a` per agent
+(`-a opencode -a codex`), or leave `-a` out and pick from a list.
+
+To install by hand, copy or symlink `skills/pikmi` into the agent's skills folder. For OpenCode that is
+`~/.config/opencode/skills/pikmi` for every project, or `.opencode/skills/pikmi` for one project.
+
+Install pikmi in one place per agent. OpenCode also reads `~/.claude/skills/` and `~/.agents/skills/`,
+and two copies of the same skill name clash. The Claude Code plugin lives under `~/.claude/plugins/`,
+which OpenCode does not read, so an OpenCode install next to the plugin is fine.
+
+Agents without a question tool that shows previews still offer the same choice, with each style's
+palette and fonts card under its option.
 
 ## How it works
 
