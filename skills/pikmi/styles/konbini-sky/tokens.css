@@ -1,0 +1,52 @@
+/* pikmi: konbini-sky */
+/* Konbini Sky. Same values as tokens.json.
+   Fonts: https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@900&family=Public+Sans:wght@500;700;900&display=swap */
+
+:root {
+  --font-sans: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-jp: "Noto Sans JP", "Hiragino Sans", sans-serif;
+
+  --type-label: 13px;
+  --type-caption: 14px;
+  --type-body: 17px;
+  --type-lead: 20px;
+  --type-h3: 24px;
+  --type-h2: 34px;
+  --type-h1: 56px;
+  --type-display: 320px;
+
+  --radius-control: 0px;
+  --radius-card: 0px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+  --space-section: 96px;
+
+  --on-sky: #FFFFFF;
+
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-top) 28%, var(--sky-mid) 68%, var(--horizon) 100%);
+  --tracking-display: -0.05em;
+  --leading-display: 0.82;
+  --rule-strong: 2px solid var(--ink);
+
+  /* light: daylight */
+  --page: #F7F7F4;
+  --panel: #FFFFFF;
+  --card: #FFFFFF;
+  --rule: rgba(29, 91, 216, 0.28);
+  --text: #1E2B4A;
+  --text-muted: #4A5876;
+  --accent: #1D5BD8;
+  --on-accent: #FFFFFF;
+  --link: #1D5BD8;
+  --danger: #C0352B;
+  --ink: #1D5BD8;
+  --sky-top: #5CB9E8;
+  --sky-mid: #96D3F0;
+  --horizon: #E3F2FA;
+  --orange: #EE6A2B;
+  --focus-on-sky: #1E2B4A;
+}

@@ -481,6 +481,56 @@
         "vscode",
         "vs code"
       ]
+    },
+    {
+      "id": "konbini-sky",
+      "name": "Konbini Sky",
+      "summary": "Bright daytime sky over white paper, giant white grotesk type, cobalt captions and one pixel-art street scene on the horizon; bolder and sunnier than Japanese Minimal.",
+      "keywords": {
+        "en": [
+          "konbini",
+          "convenience store",
+          "japan",
+          "japan travel",
+          "city poster",
+          "travel poster",
+          "tokyo",
+          "sky blue",
+          "swiss poster",
+          "pixel art",
+          "train station",
+          "street scene",
+          "city guide",
+          "everyday life"
+        ],
+        "id": [
+          "jepang modern",
+          "poster kota",
+          "wisata jepang",
+          "minimarket",
+          "warung",
+          "langit biru",
+          "cerah",
+          "stasiun",
+          "pemandangan jalan",
+          "panduan kota",
+          "kayak poster jepang",
+          "pixel"
+        ]
+      },
+      "media": [
+        "ui"
+      ],
+      "themes": [
+        "light"
+      ],
+      "preview": "styles/konbini-sky/preview.html",
+      "brand_terms": [
+        "7-eleven",
+        "seven-eleven",
+        "lawson",
+        "familymart"
+      ]
     }
   ]
 }

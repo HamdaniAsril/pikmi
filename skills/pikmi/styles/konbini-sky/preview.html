@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Konbini Sky · pikmi preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@900&family=Public+Sans:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* components (same as STYLE.md) */
+  body { font: 500 var(--type-body)/1.6 var(--font-sans); color: var(--text); background: var(--page); }
+
+  .sky { background: var(--sky); color: var(--on-sky); container-type: inline-size; }
+  .giant { margin: 0; color: var(--on-sky); white-space: nowrap; letter-spacing: var(--tracking-display);
+    font: 900 min(var(--type-display), calc(144cqw / var(--chars, 6)))/var(--leading-display) var(--font-sans); }
+  .trio { display: flex; justify-content: space-between; gap: var(--space-md); color: var(--ink);
+    font: 700 var(--type-caption)/1.2 var(--font-sans); }
+  .bigword { margin: 0; color: var(--ink); font: 900 clamp(64px, 14vw, 180px)/1 var(--font-sans); }
+  .bigword:lang(ja) { font-family: var(--font-jp); }
+  .numbered { border-top: var(--rule-strong); padding-top: var(--space-md); }
+  .numbered .num { display: block; color: var(--ink); font: 900 var(--type-h2)/1 var(--font-sans); }
+  .row { display: grid; grid-template-columns: 3ch 1fr auto; gap: var(--space-md); align-items: baseline;
+    padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .pageno { color: var(--ink); font: 700 var(--type-label)/1 var(--font-sans); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--space-lg);
+    border: 1.5px solid var(--accent); border-radius: var(--radius-control); background: var(--accent);
+    color: var(--on-accent); font: 700 16px/1 var(--font-sans); cursor: pointer; transition: filter 300ms ease;
+    text-decoration: none; }
+  .btn:hover, .btn.is-hover { filter: brightness(0.88); }
+  .btn.line { background: transparent; border-color: var(--ink); color: var(--ink); }
+  .btn.line:hover, .sky .btn.line:hover, .btn.line.is-hover { filter: none; text-decoration: underline; text-underline-offset: 4px; }
+  .sky .btn.line { border-color: var(--on-sky); color: var(--on-sky); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; filter: none; }
+
+  .lbl { display: block; margin-bottom: var(--space-xs); color: var(--ink); font: 700 var(--type-caption)/1.2 var(--font-sans); }
+  .field { width: 100%; min-height: 48px; padding: 0 var(--space-md); border: 1.5px solid var(--ink);
+    border-radius: var(--radius-control); background: var(--card); color: var(--text); font: 500 var(--type-body)/1 var(--font-sans);
+    box-sizing: border-box; }
+  .field[aria-invalid="true"] { border-color: var(--danger); }
+  .err { margin: var(--space-xs) 0 0; color: var(--danger); font: 700 var(--type-caption)/1.3 var(--font-sans); }
+
+  :focus-visible, .is-focus { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .sky :focus-visible, .sky .is-focus { outline-color: var(--focus-on-sky); }
+
+  .scene { display: block; width: 100%; height: auto; shape-rendering: crispEdges; }
+
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+
+  /* page layout */
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; }
+  a { color: var(--link); }
+  .gutter { padding-inline: 48px; }
+  .wrap { max-width: 1184px; margin-inline: auto; }
+
+  .hero { padding-top: 24px; }
+  .hero nav { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md);
+    font: 700 15px/1 var(--font-sans); }
+  .hero nav .mark { font-weight: 900; letter-spacing: 0.02em; }
+  .hero nav .links { display: flex; align-items: center; gap: var(--space-lg); }
+  .hero nav .links a { color: var(--on-sky); text-decoration: none; }
+  .hero nav .links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .hero .giant { margin: 72px 0 20px -0.04em; }
+  .hero .subrow { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-xl); }
+  .hero .sub { margin: 0; font: 700 24px/1.2 var(--font-sans); }
+  .hero .lede { margin: 0; max-width: 34ch; font: 700 15px/1.45 var(--font-sans); text-align: right; }
+  .hero .scene { margin: 40px -48px 0; width: calc(100% + 96px); }
+
+  .paper { padding-block: 20px var(--space-section); }
+  .feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl); margin-top: 72px; }
+  .feats h3 { margin: 10px 0 6px; color: var(--ink); font: 800 var(--type-h3)/1.2 var(--font-sans); }
+  .feats p { margin: 0; color: var(--text); }
+  .callout { display: grid; grid-template-columns: auto 1fr; gap: var(--space-xl); align-items: end; margin-top: var(--space-section); }
+  .callout p { margin: 0 0 var(--space-lg); max-width: 26ch; color: var(--ink); font: 700 28px/1.3 var(--font-sans); }
+  .btns { display: flex; flex-wrap: wrap; gap: var(--space-md); }
+  .foot { display: flex; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-section);
+    padding-top: var(--space-md); border-top: 1px solid var(--rule); color: var(--ink); font: 700 var(--type-label)/1.2 var(--font-sans); }
+
+  .sec { padding-block: var(--space-section); border-top: var(--rule-strong); }
+  .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md); }
+  .sec-head h2 { margin: 0; color: var(--text); font: 800 var(--type-h2)/1.15 var(--font-sans); }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xl); margin-top: var(--space-xl); }
+  .panel-label { margin: 0 0 var(--space-md); color: var(--text-muted); font: 700 var(--type-caption)/1.2 var(--font-sans); }
+  .skystrip { padding: var(--space-lg) var(--space-lg) 112px; }
+  .skystrip p { margin: 0 0 var(--space-md); font: 700 15px/1.4 var(--font-sans); }
+  .rows .row span:first-child, .rows .row b { color: var(--ink); font-weight: 900; }
+  .rows .row strong { display: block; color: var(--text); font-weight: 700; }
+  .rows .row small { display: block; color: var(--text-muted); font-size: var(--type-caption); }
+  .rows .row em { color: var(--ink); font: 700 var(--type-caption)/1 var(--font-sans); font-style: normal; }
+  .stack { display: grid; gap: var(--space-lg); }
+
+  @media (max-width: 720px) {
+    .gutter { padding-inline: 16px; }
+    .hero nav .links a { display: none; }
+    .hero .giant { margin-top: 48px; }
+    .hero .subrow { flex-direction: column; align-items: flex-start; gap: var(--space-md); }
+    .hero .lede { text-align: left; }
+    .hero .scene { margin-inline: -16px; width: calc(100% + 32px); }
+    .feats, .grid, .callout { grid-template-columns: 1fr; }
+    .trio { font-size: var(--type-label); }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="scene-konbini-day" viewBox="0 0 120 48">
+      <rect x="0" y="43" width="120" height="5" style="fill: var(--page)"/>
+      <path d="M0 9 Q50 15 97 9 T120 11" stroke="#7FA6CC" stroke-width=".45" fill="none"/>
+      <path d="M0 13 Q50 19 97 12.5 T120 15" stroke="#7FA6CC" stroke-width=".45" fill="none"/>
+      <path d="M28 0 Q62 7 97 8" stroke="#7FA6CC" stroke-width=".45" fill="none"/>
+      <rect x="0" y="22" width="8" height="21" fill="#BFD9EF"/>
+      <rect x="2" y="25" width="4" height="3" fill="#9CBEDF"/>
+      <rect x="66" y="19" width="25" height="24" fill="#B6D3EC"/>
+      <rect x="69" y="22" width="4" height="3" fill="#94B8DC"/><rect x="76" y="22" width="4" height="3" fill="#94B8DC"/><rect x="83" y="22" width="4" height="3" fill="#94B8DC"/>
+      <rect x="100" y="27" width="20" height="16" fill="#BFD9EF"/>
+      <rect x="103" y="30" width="4" height="3" fill="#9CBEDF"/><rect x="110" y="30" width="6" height="3" fill="#9CBEDF"/>
+      <rect x="96" y="5" width="2" height="38" fill="#86A9CE"/>
+      <rect x="91" y="8" width="12" height="1" fill="#86A9CE"/>
+      <rect x="92" y="12" width="10" height="1" fill="#86A9CE"/>
+      <rect x="99" y="17" width="3" height="4" fill="#86A9CE"/>
+      <rect x="12" y="24" width="68" height="2" fill="#FFFFFF"/>
+      <rect x="12" y="26" width="68" height="1" fill="#D4DCE6"/>
+      <rect x="13" y="27" width="66" height="15" fill="#F4F4F0"/>
+      <rect x="13" y="28" width="66" height="2" fill="#EE6A2B"/>
+      <rect x="13" y="30" width="66" height="1" fill="#F6A04A"/>
+      <rect x="36" y="27" width="20" height="4" fill="#E0531F"/>
+      <rect x="39" y="28" width="1" height="2" fill="#fff"/><rect x="41" y="28" width="2" height="2" fill="#fff"/><rect x="44" y="28" width="1" height="2" fill="#fff"/><rect x="46" y="28" width="3" height="2" fill="#fff"/><rect x="50" y="28" width="1" height="2" fill="#fff"/><rect x="52" y="28" width="1" height="2" fill="#fff"/>
+      <rect x="15" y="32" width="62" height="8" fill="#2A3A57"/>
+      <rect x="17" y="34" width="5" height="1" fill="#F2C14E"/><rect x="27" y="35" width="4" height="1" fill="#E8EEF6"/><rect x="53" y="34" width="4" height="1" fill="#E8EEF6"/><rect x="62" y="34" width="3" height="1" fill="#F2C14E"/><rect x="70" y="35" width="5" height="1" fill="#E8EEF6"/>
+      <rect x="24" y="32" width="1" height="8" fill="#F4F4F0"/><rect x="33" y="32" width="1" height="8" fill="#F4F4F0"/><rect x="59" y="32" width="1" height="8" fill="#F4F4F0"/><rect x="68" y="32" width="1" height="8" fill="#F4F4F0"/>
+      <rect x="42" y="32" width="8" height="10" fill="#3B4F74"/>
+      <rect x="45" y="33" width="1" height="8" fill="#2A3A57"/><rect x="46" y="33" width="1" height="8" fill="#5A7096"/>
+      <rect x="13" y="40" width="66" height="1" fill="#EE6A2B"/>
+      <rect x="12" y="42" width="68" height="1" fill="#2A3A57"/>
+      <rect x="52" y="21" width="6" height="3" fill="#E9EEF3"/><rect x="53" y="22" width="2" height="1" fill="#2A3A57"/>
+      <rect x="60" y="21" width="6" height="3" fill="#E9EEF3"/><rect x="61" y="22" width="2" height="1" fill="#2A3A57"/>
+      <rect x="16" y="36" width="3" height="6" fill="#FFFFFF"/><rect x="16" y="37" width="3" height="1" fill="#EE6A2B"/>
+      <rect x="19" y="36" width="3" height="6" fill="#E3E9F0"/><rect x="19" y="37" width="3" height="1" fill="#1D5BD8"/>
+      <rect x="56" y="40" width="1" height="1" fill="#EE6A2B"/><rect x="55" y="41" width="3" height="2" fill="#EE6A2B"/>
+      <rect x="60" y="36" width="7" height="6" fill="#E8ECF2"/>
+      <rect x="61" y="37" width="4" height="2" fill="#7092BD"/>
+      <rect x="67" y="38" width="13" height="1" fill="#E8ECF2"/>
+      <rect x="67" y="39" width="13" height="3" fill="#D5DCE6"/>
+      <rect x="62" y="42" width="3" height="2" fill="#1E2B4A"/><rect x="75" y="42" width="3" height="2" fill="#1E2B4A"/>
+      <rect x="10" y="43" width="74" height="1" fill="#DCE6F0"/>
+    </symbol>
+    <symbol id="scene-station-day" viewBox="0 0 120 40">
+      <rect x="0" y="35" width="120" height="5" style="fill: var(--page)"/>
+      <path d="M0 5 Q55 11 120 5" stroke="#7FA6CC" stroke-width=".45" fill="none"/>
+      <path d="M0 9 Q55 15 120 9" stroke="#7FA6CC" stroke-width=".45" fill="none"/>
+      <rect x="18" y="3" width="1" height="29" fill="#86A9CE"/><rect x="18" y="6" width="8" height="1" fill="#86A9CE"/>
+      <rect x="104" y="3" width="1" height="29" fill="#86A9CE"/><rect x="97" y="6" width="8" height="1" fill="#86A9CE"/>
+      <rect x="84" y="21" width="17" height="11" fill="#EDE7DA"/><rect x="82" y="18" width="21" height="3" fill="#2A3A57"/>
+      <rect x="87" y="24" width="4" height="3" fill="#6E8FB8"/><rect x="94" y="24" width="4" height="3" fill="#6E8FB8"/>
+      <rect x="106" y="19" width="14" height="13" fill="#E4EAF1"/><rect x="105" y="16" width="15" height="3" fill="#2A3A57"/>
+      <rect x="109" y="22" width="4" height="3" fill="#6E8FB8"/><rect x="115" y="22" width="3" height="3" fill="#6E8FB8"/>
+      <rect x="79" y="23" width="3" height="2" fill="#5E8C6A"/><rect x="78" y="25" width="5" height="4" fill="#5E8C6A"/>
+      <rect x="76" y="29" width="44" height="3" fill="#C5CCD6"/>
+      <rect x="0" y="29" width="36" height="3" fill="#C9D3DE"/><rect x="0" y="29" width="36" height="1" fill="#F2C14E"/>
+      <rect x="4" y="15" width="28" height="2" fill="#2A3A57"/>
+      <rect x="7" y="17" width="1" height="12" fill="#2A3A57"/><rect x="28" y="17" width="1" height="12" fill="#2A3A57"/>
+      <rect x="12" y="19" width="12" height="4" fill="#FFFFFF"/><rect x="12" y="22" width="12" height="1" fill="#1D5BD8"/>
+      <rect x="14" y="20" width="2" height="1" fill="#2A3A57"/><rect x="17" y="20" width="3" height="1" fill="#2A3A57"/><rect x="21" y="20" width="2" height="1" fill="#2A3A57"/>
+      <rect x="10" y="26" width="7" height="1" fill="#2A3A57"/><rect x="10" y="27" width="1" height="2" fill="#2A3A57"/><rect x="16" y="27" width="1" height="2" fill="#2A3A57"/>
+      <rect x="54" y="12" width="7" height="1" fill="#2A3A57"/><rect x="57" y="13" width="1" height="4" fill="#2A3A57"/><rect x="55" y="17" width="5" height="2" fill="#2A3A57"/>
+      <rect x="39" y="19" width="38" height="1" fill="#D9DEE6"/>
+      <rect x="38" y="20" width="40" height="11" fill="#F4F1E8"/>
+      <rect x="41" y="22" width="4" height="3" fill="#2A3A57"/><rect x="47" y="22" width="4" height="3" fill="#2A3A57"/><rect x="53" y="22" width="4" height="3" fill="#2A3A57"/><rect x="65" y="22" width="4" height="3" fill="#2A3A57"/><rect x="71" y="22" width="4" height="3" fill="#2A3A57"/>
+      <rect x="76" y="22" width="2" height="3" fill="#2A3A57"/>
+      <rect x="38" y="26" width="40" height="1" fill="#EE6A2B"/>
+      <rect x="38" y="27" width="40" height="4" fill="#1D5BD8"/>
+      <rect x="59" y="22" width="4" height="8" fill="#3B4F74"/><rect x="61" y="22" width="1" height="8" fill="#2A3A57"/>
+      <rect x="43" y="28" width="5" height="1" fill="#F4F1E8"/>
+      <rect x="39" y="31" width="38" height="1" fill="#2A3A57"/>
+      <rect x="42" y="32" width="3" height="1" fill="#1E2B4A"/><rect x="71" y="32" width="3" height="1" fill="#1E2B4A"/>
+      <rect x="0" y="33" width="120" height="1" fill="#2A3A57"/>
+      <rect x="2" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="10" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="18" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="26" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="34" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="42" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="50" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="58" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="66" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="74" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="82" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="90" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="98" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="106" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="114" y="34" width="3" height="1" fill="#9AA6B5"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="ui">
+  <header class="hero sky gutter">
+    <nav aria-label="Main">
+      <span class="mark">EKIMAE</span>
+      <span class="links"><a href="#ui">Routes</a><a href="#components">Shops</a><a href="#ui">Journal</a><a class="btn line" href="#ui">Get the app</a></span>
+    </nav>
+    <h1 class="giant" style="--chars: 6">EKIMAE</h1>
+    <div class="subrow">
+      <p class="sub">A walking guide<br>around the station</p>
+      <p class="lede">Cafés, bookshops and kissaten you can reach within ten minutes of the exit.</p>
+    </div>
+    <svg class="scene scene-day" viewBox="0 0 240 48" role="img" aria-label="A corner store with a small truck parked outside, and a station platform with a train, under overhead wires">
+      <use href="#scene-konbini-day" x="0" y="0" width="120" height="48"/>
+      <use href="#scene-station-day" x="120" y="8" width="120" height="40"/>
+    </svg>
+  </header>
+
+  <main class="paper gutter">
+    <div class="wrap">
+      <div class="trio"><span>near the station</span><span>on foot</span><span>open late</span></div>
+
+      <div class="feats">
+        <div class="numbered"><span class="num">01</span><h3>Routes by exit</h3><p>Pick the exit you came out of and see what is closest from there, not from the middle of a map.</p></div>
+        <div class="numbered"><span class="num">02</span><h3>Honest opening hours</h3><p>A café that closes at six does not show up when you arrive at nine in the evening.</p></div>
+        <div class="numbered"><span class="num">03</span><h3>Notes from neighbors</h3><p>Short notes from people who walk past every day, with no star ratings.</p></div>
+      </div>
+
+      <div class="callout">
+        <p class="bigword" lang="ja">駅前</p>
+        <div>
+          <p>Step off the train, open the app, start walking.</p>
+          <div class="btns"><a class="btn" href="#ui">Get the app</a><a class="btn line" href="#ui">See a sample route</a></div>
+        </div>
+      </div>
+
+      <div class="foot"><span>Ekimae · walking guides</span><span>Tokyo · Osaka · Sapporo</span><span class="pageno">01</span></div>
+    </div>
+  </main>
+</div>
+
+<section id="components" class="sec gutter" aria-labelledby="h-parts">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="h-parts">The parts</h2><span class="pageno">02</span></div>
+    <div class="grid">
+      <div class="stack">
+        <div>
+          <p class="panel-label">Buttons on paper: default, hover, focus, disabled</p>
+          <div class="btns">
+            <button class="btn" type="button">Start walking</button>
+            <button class="btn is-hover" type="button">Start walking</button>
+            <button class="btn line is-focus" type="button">See a sample route</button>
+            <button class="btn" type="button" disabled>Sold out</button>
+          </div>
+        </div>
+        <div>
+          <p class="panel-label">On the sky: line button, focus in navy</p>
+          <div class="sky skystrip">
+            <p>Next train in four minutes</p>
+            <div class="btns"><button class="btn line" type="button">Platform map</button><button class="btn line is-focus" type="button">Timetable</button></div>
+          </div>
+        </div>
+        <div>
+          <p class="panel-label">Fields: labels stay visible, errors sit below</p>
+          <div class="stack">
+            <div><label class="lbl" for="station">Station</label><input class="field" id="station" placeholder="Shimokitazawa" autocomplete="off"></div>
+            <div><label class="lbl" for="exit">Exit</label><input class="field" id="exit" value="North 7" aria-invalid="true" aria-describedby="exit-err"><p class="err" id="exit-err">This station has no exit called North 7. Pick one from the list.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div>
+          <p class="panel-label">The trio, right under the horizon</p>
+          <div class="trio"><span>near the station</span><span>on foot</span><span>open late</span></div>
+        </div>
+        <div>
+          <p class="panel-label">Rows: number, name, value</p>
+          <div class="rows">
+            <div class="row"><span>01</span><span><strong>Kissaten Hoshi</strong><small>drip coffee · open now</small></span><em>3 min</em></div>
+            <div class="row"><span>02</span><span><strong>Aoi used books</strong><small>secondhand books · open now</small></span><em>6 min</em></div>
+            <div class="row"><span>03</span><span><strong>Kita ramen</strong><small>closes at 22:00</small></span><em>9 min</em></div>
+          </div>
+        </div>
+        <div>
+          <p class="panel-label">A numbered block</p>
+          <div class="numbered"><span class="num">04</span><h3 style="margin:10px 0 6px;color:var(--ink);font:800 var(--type-h3)/1.2 var(--font-sans)">Last train home</h3><p style="margin:0">The guide marks the last train for every exit, so a late dinner never strands you.</p></div>
+        </div>
+        <div>
+          <p class="panel-label">The big word: Japanese for Japanese content, the content's language elsewhere</p>
+          <div class="btns" style="gap:var(--space-xl);align-items:flex-end">
+            <p class="bigword" lang="ja" style="font-size:96px">徒<br>歩</p>
+            <p class="bigword" style="font-size:72px">KOPI<br>PAGI</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
