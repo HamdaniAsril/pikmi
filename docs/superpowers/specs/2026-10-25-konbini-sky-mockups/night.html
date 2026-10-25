@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Konbini Sky night</title>
+<!-- Approved brainstorming mockup (2026-10-25). Reference only: copy values and pixel scenes, not the sample text. -->
+<style>
+  body { margin:0; padding:32px; background:#ECEDEF; color:#1d1d1f; font-family:system-ui,sans-serif; }
+  h2 { margin:0 0 .25rem; } .subtitle { color:#666; margin:0 0 1.5rem; }
+  .label { font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; color:#666; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1rem; }
+  .card { background:#fff; border:1px solid #ddd; border-radius:12px; }
+  .card-body { padding:1rem; } .card-body h3 { margin:0 0 .25rem; } .card-body p { margin:0; color:#555; font-size:.85rem; }
+</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&family=Inter+Tight:wght@800;900&family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet">
+
+<style>
+  .nset { --orange:#FF7A35; }
+  .nfull  { --paper:#0E1526; --ink:#7EA6FF; --body:#DCE4F2; --rule:rgba(126,166,255,.25); --tabbg:#121B31; --ground:#0E1526; --spill:#22345A; }
+  .npaper { --paper:#F7F7F4; --ink:#1D5BD8; --body:#1E2B4A; --rule:rgba(29,91,216,.28); --tabbg:#FFFFFF; --ground:#F7F7F4; --spill:#E2E8F1; }
+  .nightsky { background:linear-gradient(180deg,#0B1733 0%,#0B1733 28%,#1B3263 68%,#2F4C80 100%); }
+  .nset svg.px { display:block; shape-rendering:crispEdges; }
+  .nset .cards { grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); }
+  .nset .card { overflow:hidden; }
+  .nset .stack { display:grid; gap:1rem; padding:1rem; background:var(--bg-tertiary,#e5e5e7); }
+
+  .phone { width:min(300px,100%); margin:0 auto; padding:8px; border-radius:40px; background:#05080F; box-shadow:0 8px 30px rgba(0,0,0,.25); }
+  .scr { container-type:inline-size; border-radius:32px; overflow:hidden; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; display:flex; flex-direction:column; height:600px; }
+  .scr .sky { padding:4cqw 6cqw 0; color:#fff; }
+  .scr .sbar { display:flex; justify-content:space-between; font:700 3.6cqw/1 'Inter',sans-serif; }
+  .scr .hello { font:700 4cqw/1 'Inter',sans-serif; margin:8cqw 0 2.5cqw; }
+  .scr .titlerow { display:flex; justify-content:space-between; align-items:flex-start; }
+  .scr h1 { margin:0 0 0 -.6cqw; font:900 17cqw/.8 'Inter Tight','Inter',sans-serif; letter-spacing:-.055em; }
+  .scr .vk { font:900 6.6cqw/1.02 'Noto Sans JP',sans-serif; }
+  .scr .wx { font:700 3.7cqw/1 'Inter',sans-serif; margin-top:2.6cqw; }
+  .scr .scene { width:calc(100% + 12cqw); margin:3cqw -6cqw 0; }
+  .scr .paper { padding:3cqw 6cqw 0; flex:1; display:flex; flex-direction:column; }
+  .scr .trio { display:flex; justify-content:space-between; font:700 3.5cqw/1 'Inter',sans-serif; }
+  .scr h3 { font:800 4.6cqw/1.1 'Inter',sans-serif; margin:7cqw 0 2cqw; color:var(--ink); }
+  .scr .row { display:grid; grid-template-columns:8cqw 1fr auto; gap:2cqw; align-items:baseline; padding:3cqw 0; border-bottom:1px solid var(--rule); }
+  .scr .row .n { font:900 4cqw/1 'Inter Tight','Inter',sans-serif; }
+  .scr .row b { display:block; font:700 4cqw/1.2 'Inter',sans-serif; color:var(--body); }
+  .scr .row small { display:block; font:500 3.3cqw/1.3 'Inter',sans-serif; color:var(--body); opacity:.75; }
+  .scr .row .t { font:700 3.6cqw/1 'Inter',sans-serif; }
+  .scr .row .t.hot { color:var(--orange); }
+  .scr .go { margin-top:5cqw; background:#1D5BD8; color:#fff; text-align:center; font:700 4cqw/1 'Inter',sans-serif; padding:4.4cqw 0; }
+  .scr .tabs { margin-top:auto; display:flex; justify-content:space-around; border-top:1px solid var(--rule); padding:3cqw 0 6cqw; background:var(--tabbg); margin-inline:-6cqw; }
+  .scr .tab { display:flex; flex-direction:column; align-items:center; gap:1.4cqw; font:700 2.9cqw/1 'Inter',sans-serif; color:var(--body); opacity:.55; }
+  .scr .tab.on { color:var(--ink); opacity:1; }
+  .scr .tab svg { width:6.4cqw; height:6.4cqw; }
+
+  .sl { container-type:inline-size; position:relative; aspect-ratio:16/9; overflow:hidden; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; border-radius:6px; }
+  .sl .sky { position:absolute; left:0; right:0; top:0; height:66%; }
+  .sl h1 { position:absolute; left:5cqw; top:4.2cqw; margin:0; font:900 13cqw/.8 'Inter Tight','Inter',sans-serif; letter-spacing:-.055em; color:#fff; }
+  .sl .kicker { position:absolute; left:5.3cqw; top:16cqw; font:700 2.3cqw/1.25 'Inter',sans-serif; color:#fff; margin:0; }
+  .sl .scene { position:absolute; right:-2cqw; width:62cqw; bottom:calc(34% - 2.6cqw); }
+  .sl .paper { position:absolute; left:0; right:0; bottom:0; height:34%; padding:3cqw 5cqw 0; }
+  .sl .trio { display:flex; justify-content:space-between; font:700 1.8cqw/1 'Inter',sans-serif; }
+  .sl .bottom { position:absolute; left:5cqw; right:5cqw; bottom:3cqw; display:flex; justify-content:space-between; align-items:flex-end; font:700 1.6cqw/1.3 'Inter',sans-serif; }
+  .sl .bottom .k { font:900 6cqw/1 'Noto Sans JP',sans-serif; }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="konbini-n" viewBox="0 0 120 48">
+      <rect x="0" y="43" width="120" height="5" style="fill:var(--ground)"/>
+      <rect x="8" y="43" width="78" height="2" style="fill:var(--spill)"/>
+      <rect x="6" y="3" width="1" height="1" fill="#CFE0FF"/><rect x="22" y="7" width="1" height="1" fill="#CFE0FF"/><rect x="41" y="2" width="1" height="1" fill="#CFE0FF"/><rect x="58" y="10" width="1" height="1" fill="#8FA8D6"/><rect x="77" y="4" width="1" height="1" fill="#CFE0FF"/><rect x="88" y="13" width="1" height="1" fill="#8FA8D6"/><rect x="108" y="6" width="1" height="1" fill="#CFE0FF"/><rect x="115" y="2" width="1" height="1" fill="#8FA8D6"/>
+      <path d="M0 9 Q50 15 97 9 T120 11" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <path d="M0 13 Q50 19 97 12.5 T120 15" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <path d="M28 0 Q62 7 97 8" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <rect x="0" y="22" width="8" height="21" fill="#1E3158"/><rect x="2" y="25" width="4" height="3" fill="#F2C96B"/>
+      <rect x="66" y="19" width="25" height="24" fill="#1B2D52"/>
+      <rect x="69" y="22" width="4" height="3" fill="#F2C96B"/><rect x="76" y="22" width="4" height="3" fill="#2A406C"/><rect x="83" y="22" width="4" height="3" fill="#F2C96B"/>
+      <rect x="100" y="27" width="20" height="16" fill="#1E3158"/>
+      <rect x="103" y="30" width="4" height="3" fill="#2A406C"/><rect x="110" y="30" width="6" height="3" fill="#F2C96B"/>
+      <rect x="96" y="5" width="2" height="38" fill="#34507F"/><rect x="91" y="8" width="12" height="1" fill="#34507F"/><rect x="92" y="12" width="10" height="1" fill="#34507F"/><rect x="99" y="17" width="3" height="4" fill="#34507F"/>
+      <rect x="12" y="24" width="68" height="2" fill="#EEF2F7"/>
+      <rect x="12" y="26" width="68" height="1" fill="#B9C4D6"/>
+      <rect x="13" y="27" width="66" height="15" fill="#E4E9F0"/>
+      <rect x="13" y="28" width="66" height="2" fill="#FF7A35"/>
+      <rect x="13" y="30" width="66" height="1" fill="#FFB061"/>
+      <rect x="36" y="27" width="20" height="4" fill="#F0602A"/>
+      <rect x="39" y="28" width="1" height="2" fill="#fff"/><rect x="41" y="28" width="2" height="2" fill="#fff"/><rect x="44" y="28" width="1" height="2" fill="#fff"/><rect x="46" y="28" width="3" height="2" fill="#fff"/><rect x="50" y="28" width="1" height="2" fill="#fff"/><rect x="52" y="28" width="1" height="2" fill="#fff"/>
+      <rect x="15" y="32" width="62" height="8" fill="#F4F8FF"/>
+      <rect x="15" y="35" width="62" height="1" fill="#C3D0E6"/><rect x="15" y="38" width="62" height="1" fill="#C3D0E6"/>
+      <rect x="17" y="34" width="2" height="1" fill="#FF7A35"/><rect x="20" y="34" width="2" height="1" fill="#1D5BD8"/><rect x="27" y="37" width="3" height="1" fill="#F2C14E"/><rect x="36" y="34" width="2" height="1" fill="#1D5BD8"/><rect x="53" y="37" width="2" height="1" fill="#FF7A35"/><rect x="63" y="34" width="3" height="1" fill="#F2C14E"/><rect x="71" y="37" width="2" height="1" fill="#1D5BD8"/>
+      <rect x="24" y="32" width="1" height="8" fill="#E4E9F0"/><rect x="33" y="32" width="1" height="8" fill="#E4E9F0"/><rect x="59" y="32" width="1" height="8" fill="#E4E9F0"/><rect x="68" y="32" width="1" height="8" fill="#E4E9F0"/>
+      <rect x="42" y="32" width="8" height="10" fill="#DCE7F7"/><rect x="45" y="33" width="2" height="8" fill="#9FB2CF"/>
+      <rect x="13" y="40" width="66" height="1" fill="#FF7A35"/>
+      <rect x="12" y="42" width="68" height="1" fill="#1A2540"/>
+      <rect x="52" y="21" width="6" height="3" fill="#9FB0C8"/><rect x="53" y="22" width="2" height="1" fill="#1A2540"/>
+      <rect x="60" y="21" width="6" height="3" fill="#9FB0C8"/><rect x="61" y="22" width="2" height="1" fill="#1A2540"/>
+      <rect x="16" y="36" width="3" height="6" fill="#FFFFFF"/><rect x="16" y="37" width="3" height="1" fill="#FF7A35"/>
+      <rect x="19" y="36" width="3" height="6" fill="#DCE8FF"/><rect x="19" y="37" width="3" height="1" fill="#1D5BD8"/>
+      <rect x="56" y="40" width="1" height="1" fill="#FF7A35"/><rect x="55" y="41" width="3" height="2" fill="#FF7A35"/>
+      <rect x="60" y="36" width="7" height="6" fill="#C9D2E0"/><rect x="61" y="37" width="4" height="2" fill="#2A3C63"/>
+      <rect x="67" y="38" width="13" height="1" fill="#C9D2E0"/><rect x="67" y="39" width="13" height="3" fill="#AEB9CB"/>
+      <rect x="60" y="40" width="1" height="1" fill="#FFF2B0"/>
+      <rect x="62" y="42" width="3" height="2" fill="#0B1226"/><rect x="75" y="42" width="3" height="2" fill="#0B1226"/>
+    </symbol>
+
+    <symbol id="train-n" viewBox="0 0 120 40">
+      <rect x="0" y="35" width="120" height="5" style="fill:var(--ground)"/>
+      <rect x="36" y="35" width="44" height="2" style="fill:var(--spill)"/>
+      <rect x="9" y="2" width="1" height="1" fill="#CFE0FF"/><rect x="33" y="6" width="1" height="1" fill="#8FA8D6"/><rect x="47" y="2" width="1" height="1" fill="#CFE0FF"/><rect x="70" y="5" width="1" height="1" fill="#CFE0FF"/><rect x="91" y="2" width="1" height="1" fill="#8FA8D6"/><rect x="113" y="9" width="1" height="1" fill="#CFE0FF"/>
+      <path d="M0 5 Q55 11 120 5" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <path d="M0 9 Q55 15 120 9" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <rect x="18" y="3" width="1" height="29" fill="#34507F"/><rect x="18" y="6" width="8" height="1" fill="#34507F"/>
+      <rect x="104" y="3" width="1" height="29" fill="#34507F"/><rect x="97" y="6" width="8" height="1" fill="#34507F"/>
+      <rect x="84" y="21" width="17" height="11" fill="#22365E"/><rect x="82" y="18" width="21" height="3" fill="#111B33"/>
+      <rect x="87" y="24" width="4" height="3" fill="#F2C96B"/><rect x="94" y="24" width="4" height="3" fill="#2A406C"/>
+      <rect x="106" y="19" width="14" height="13" fill="#1E3158"/><rect x="105" y="16" width="15" height="3" fill="#111B33"/>
+      <rect x="109" y="22" width="4" height="3" fill="#F2C96B"/><rect x="115" y="22" width="3" height="3" fill="#F2C96B"/>
+      <rect x="79" y="23" width="3" height="2" fill="#1E3A3A"/><rect x="78" y="25" width="5" height="4" fill="#1E3A3A"/>
+      <rect x="76" y="29" width="44" height="3" fill="#1C2B4C"/>
+      <rect x="0" y="29" width="36" height="3" fill="#2B3E66"/><rect x="0" y="29" width="36" height="1" fill="#F2C14E"/>
+      <rect x="4" y="15" width="28" height="2" fill="#111B33"/>
+      <rect x="16" y="17" width="4" height="1" fill="#FFF2B0"/>
+      <rect x="7" y="17" width="1" height="12" fill="#111B33"/><rect x="28" y="17" width="1" height="12" fill="#111B33"/>
+      <rect x="12" y="19" width="12" height="4" fill="#F4F8FF"/><rect x="12" y="22" width="12" height="1" fill="#1D5BD8"/>
+      <rect x="14" y="20" width="2" height="1" fill="#1A2540"/><rect x="17" y="20" width="3" height="1" fill="#1A2540"/><rect x="21" y="20" width="2" height="1" fill="#1A2540"/>
+      <rect x="10" y="26" width="7" height="1" fill="#111B33"/><rect x="10" y="27" width="1" height="2" fill="#111B33"/><rect x="16" y="27" width="1" height="2" fill="#111B33"/>
+      <rect x="54" y="12" width="7" height="1" fill="#111B33"/><rect x="57" y="13" width="1" height="4" fill="#111B33"/><rect x="55" y="17" width="5" height="2" fill="#111B33"/>
+      <rect x="39" y="19" width="38" height="1" fill="#B9C4D6"/>
+      <rect x="38" y="20" width="40" height="11" fill="#E8ECF2"/>
+      <rect x="41" y="22" width="4" height="3" fill="#FFF3CF"/><rect x="47" y="22" width="4" height="3" fill="#FFF3CF"/><rect x="53" y="22" width="4" height="3" fill="#FFF3CF"/><rect x="65" y="22" width="4" height="3" fill="#FFF3CF"/><rect x="71" y="22" width="4" height="3" fill="#FFF3CF"/>
+      <rect x="76" y="22" width="2" height="3" fill="#FFF3CF"/>
+      <rect x="38" y="26" width="40" height="1" fill="#FF7A35"/>
+      <rect x="38" y="27" width="40" height="4" fill="#1D5BD8"/>
+      <rect x="59" y="22" width="4" height="8" fill="#CBD8EC"/><rect x="61" y="22" width="1" height="8" fill="#9FB2CF"/>
+      <rect x="77" y="28" width="1" height="1" fill="#FFF2B0"/>
+      <rect x="39" y="31" width="38" height="1" fill="#111B33"/>
+      <rect x="42" y="32" width="3" height="1" fill="#0B1226"/><rect x="71" y="32" width="3" height="1" fill="#0B1226"/>
+      <rect x="0" y="33" width="120" height="1" fill="#0B1226"/>
+      <rect x="2" y="34" width="3" height="1" fill="#33476E"/><rect x="10" y="34" width="3" height="1" fill="#33476E"/><rect x="18" y="34" width="3" height="1" fill="#33476E"/><rect x="26" y="34" width="3" height="1" fill="#33476E"/><rect x="34" y="34" width="3" height="1" fill="#33476E"/><rect x="42" y="34" width="3" height="1" fill="#33476E"/><rect x="50" y="34" width="3" height="1" fill="#33476E"/><rect x="58" y="34" width="3" height="1" fill="#33476E"/><rect x="66" y="34" width="3" height="1" fill="#33476E"/><rect x="74" y="34" width="3" height="1" fill="#33476E"/><rect x="82" y="34" width="3" height="1" fill="#33476E"/><rect x="90" y="34" width="3" height="1" fill="#33476E"/><rect x="98" y="34" width="3" height="1" fill="#33476E"/><rect x="106" y="34" width="3" height="1" fill="#33476E"/><rect x="114" y="34" width="3" height="1" fill="#33476E"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="nset">
+  <h2>Versi malam</h2>
+  <p class="subtitle">Langitnya sama-sama malam, dengan bangunan dan kereta yang menyala. Bedanya di bagian bawah: ikut gelap, atau tetap kertas putih. Klik yang kamu suka.</p>
+
+  <div class="cards">
+    <div class="card" data-choice="night-full">
+      <div class="stack nfull">
+        <div class="phone">
+          <div class="scr">
+            <div class="sky nightsky">
+              <div class="sbar"><span>22:14</span><span>●●● ▮</span></div>
+              <div class="hello">Selamat malam, Rani</div>
+              <div class="titlerow"><h1>SHIBUYA</h1><span class="vk">渋<br>谷</span></div>
+              <div class="wx">9°C · cerah · pintu timur</div>
+              <svg class="px scene" viewBox="0 0 120 40"><use href="#train-n"/></svg>
+            </div>
+            <div class="paper">
+              <div class="trio"><span>2 rute</span><span>7 kedai</span><span>buka 24 jam</span></div>
+              <h3>Masih buka di dekatmu</h3>
+              <div class="row"><span class="n">01</span><span><b>Konbini pintu timur</b><small>buka 24 jam</small></span><span class="t">2 mnt</span></div>
+              <div class="row"><span class="n">02</span><span><b>Ramen Kita</b><small>tutup 23.00</small></span><span class="t hot">46 mnt lagi</span></div>
+              <div class="row"><span class="n">03</span><span><b>Bar Tsuki</b><small>buka sampai 02.00</small></span><span class="t">8 mnt</span></div>
+              <div class="go">Mulai jalan</div>
+              <div class="tabs">
+                <span class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M3 11 12 4l9 7v9H3z"/></svg>Beranda</span>
+                <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Peta</span>
+                <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Simpan</span>
+                <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Akun</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sl">
+          <div class="sky nightsky"></div>
+          <h1>EKIMAE</h1>
+          <p class="kicker">Laporan kuartal ketiga<br>Oktober 2026</p>
+          <svg class="px scene" viewBox="0 0 120 48"><use href="#konbini-n"/></svg>
+          <div class="paper"><div class="trio"><span>pengunjung</span><span>rute baru</span><span>kota berikutnya</span></div></div>
+          <div class="bottom"><span class="k">報告</span><span>01</span></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>A · Malam penuh</h3>
+        <p>Kertas berubah jadi tinta malam <code>#0E1526</code>. Kobalt diterangkan jadi <code>#7EA6FF</code>, teks panjang jadi biru pucat. Ini tema gelap sungguhan.</p>
+      </div>
+    </div>
+
+    <div class="card" data-choice="night-paper">
+      <div class="stack npaper">
+        <div class="phone">
+          <div class="scr">
+            <div class="sky nightsky">
+              <div class="sbar"><span>22:14</span><span>●●● ▮</span></div>
+              <div class="hello">Selamat malam, Rani</div>
+              <div class="titlerow"><h1>SHIBUYA</h1><span class="vk">渋<br>谷</span></div>
+              <div class="wx">9°C · cerah · pintu timur</div>
+              <svg class="px scene" viewBox="0 0 120 40"><use href="#train-n"/></svg>
+            </div>
+            <div class="paper">
+              <div class="trio"><span>2 rute</span><span>7 kedai</span><span>buka 24 jam</span></div>
+              <h3>Masih buka di dekatmu</h3>
+              <div class="row"><span class="n">01</span><span><b>Konbini pintu timur</b><small>buka 24 jam</small></span><span class="t">2 mnt</span></div>
+              <div class="row"><span class="n">02</span><span><b>Ramen Kita</b><small>tutup 23.00</small></span><span class="t hot">46 mnt lagi</span></div>
+              <div class="row"><span class="n">03</span><span><b>Bar Tsuki</b><small>buka sampai 02.00</small></span><span class="t">8 mnt</span></div>
+              <div class="go">Mulai jalan</div>
+              <div class="tabs">
+                <span class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M3 11 12 4l9 7v9H3z"/></svg>Beranda</span>
+                <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Peta</span>
+                <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Simpan</span>
+                <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Akun</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sl">
+          <div class="sky nightsky"></div>
+          <h1>EKIMAE</h1>
+          <p class="kicker">Laporan kuartal ketiga<br>Oktober 2026</p>
+          <svg class="px scene" viewBox="0 0 120 48"><use href="#konbini-n"/></svg>
+          <div class="paper"><div class="trio"><span>pengunjung</span><span>rute baru</span><span>kota berikutnya</span></div></div>
+          <div class="bottom"><span class="k">報告</span><span>01</span></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>B · Langit malam, kertas putih</h3>
+        <p>Hanya langitnya yang malam. Bagian bawah tetap kertas putih dengan teks kobalt, seperti poster cetak yang bertema malam.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
