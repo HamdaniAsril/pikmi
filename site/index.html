@@ -157,15 +157,30 @@
 
   <section class="section wrap" id="install" aria-labelledby="h-install">
     <h2 id="h-install">02 · install</h2>
-    <p class="section-lede">In Claude Code, add the marketplace and install the plugin. Then ask for a design the way you would describe it to a person.</p>
-    <div class="cmds">
-      <div class="screen cmd">
-        <code>/plugin marketplace add HamdaniAsril/pikmi</code>
-        <button class="key copy hit" type="button" data-copy="/plugin marketplace add HamdaniAsril/pikmi"><span class="k-label">copy</span><span class="k-num">01</span></button>
+    <p class="section-lede">Install it for your agent, then ask for a design the way you would describe it to a person.</p>
+    <div class="installs">
+      <div class="install-group">
+        <h3 class="label">Claude Code</h3>
+        <div class="cmds">
+          <div class="screen cmd">
+            <code>/plugin marketplace add HamdaniAsril/pikmi</code>
+            <button class="key copy hit" type="button" data-copy="/plugin marketplace add HamdaniAsril/pikmi"><span class="k-label">copy</span><span class="k-num">01</span></button>
+          </div>
+          <div class="screen cmd">
+            <code>/plugin install pikmi@pikmi</code>
+            <button class="key copy hit" type="button" data-copy="/plugin install pikmi@pikmi"><span class="k-label">copy</span><span class="k-num">02</span></button>
+          </div>
+        </div>
       </div>
-      <div class="screen cmd">
-        <code>/plugin install pikmi@pikmi</code>
-        <button class="key copy hit" type="button" data-copy="/plugin install pikmi@pikmi"><span class="k-label">copy</span><span class="k-num">02</span></button>
+      <div class="install-group">
+        <h3 class="label">OpenCode, Codex and other agents</h3>
+        <div class="cmds">
+          <div class="screen cmd">
+            <code>npx skills add HamdaniAsril/pikmi -g</code>
+            <button class="key copy hit" type="button" data-copy="npx skills add HamdaniAsril/pikmi -g"><span class="k-label">copy</span><span class="k-num">03</span></button>
+          </div>
+        </div>
+        <p class="install-note">The <a href="https://github.com/vercel-labs/skills">skills CLI</a> asks which agents to install it for. Add <code>-a opencode</code> to skip the question.</p>
       </div>
     </div>
   </section>
