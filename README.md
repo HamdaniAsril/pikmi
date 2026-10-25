@@ -85,3 +85,7 @@ scripts/check.py         the repo checker
 evals/prompts.md         router evals
 docs/superpowers/        design spec and implementation plan
 ```
+
+## License
+
+[MIT](LICENSE)
