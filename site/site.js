@@ -2,7 +2,6 @@
 
 const SKILL = '../skills/pikmi/';
 const $ = (selector) => document.querySelector(selector);
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 const MEDIA_NAMES = { ui: 'web', slides: 'slides', social: 'social', app: 'app' };
 const LANGUAGE_NAMES = { en: 'english', id: 'indonesian' };
@@ -75,16 +74,6 @@ function el(tag, props = {}, children = []) {
   return node;
 }
 
-function arrowIcon() {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('viewBox', '0 0 10 10');
-  svg.setAttribute('width', '8');
-  svg.setAttribute('height', '8');
-  svg.setAttribute('aria-hidden', 'true');
-  svg.innerHTML = '<path d="M2 8l6-6m-4.5 0h4.5v4.5"/>';
-  return svg;
-}
-
 // search and theme filter
 function matches(style) {
   if (state.filter !== 'all' && !style.themes.includes(state.filter)) return false;
@@ -146,7 +135,7 @@ function select(index) {
   $('#readout-num').textContent = style.number;
   $('#readout-of').textContent = `/${String(state.styles.length).padStart(2, '0')}`;
   $('#readout-name').textContent = style.name;
-  $('#readout-themes').textContent = style.themes.join(' · ');
+  $('#readout-summary').textContent = style.summary;
   const open = $('#open-preview');
   open.href = style.href;
   open.querySelector('.sr')?.remove();
@@ -161,11 +150,6 @@ function select(index) {
 function randomFrom(indexes) {
   const pool = indexes.length > 1 ? indexes.filter((i) => i !== state.current) : indexes;
   return pool[Math.floor(Math.random() * pool.length)];
-}
-
-function showOnPanel(index) {
-  select(index);
-  $('#picker').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
 }
 
 // scroll the list itself, not the page, so a row picked elsewhere stays visible
@@ -237,47 +221,6 @@ function renderSpecs() {
   $('#spec-langs-list').textContent = langs.map((l) => LANGUAGE_NAMES[l] ?? l).join(' · ');
 }
 
-function renderCards() {
-  const cards = state.styles.map((style, i) => {
-    const numberKey = el('button', { type: 'button', className: 'key num-key hit', textContent: style.number });
-    numberKey.setAttribute('aria-label', `Show ${style.name} on the panel`);
-    numberKey.addEventListener('click', () => showOnPanel(i));
-
-    const themes = ['light', 'dark'].map((t) => {
-      const on = style.themes.includes(t);
-      return el('span', { className: on ? 'theme' : 'theme off' }, [
-        el('span', { className: on ? 'led on' : 'led' }),
-        el('span', { textContent: t }),
-        el('span', { className: 'sr', textContent: on ? ' (included)' : ' (not included)' }),
-      ]);
-    });
-
-    return el('li', { className: 'panel scard' }, [
-      el('div', { className: 'scard-top' }, [numberKey, swatches(style)]),
-      el('h3', { textContent: style.name }),
-      el('p', { textContent: style.summary }),
-      el('div', { className: 'scard-foot' }, [
-        el('span', { className: 'themes' }, themes),
-        el('a', { className: 'scard-link', href: style.href, target: '_blank', rel: 'noopener', textContent: 'open preview' }, [
-          el('span', { className: 'sr', textContent: ` of ${style.name}` }),
-          arrowIcon(),
-        ]),
-      ]),
-    ]);
-  });
-
-  const shuffle = el('button', { type: 'button', className: 'shuffle', textContent: 'shuffle →' });
-  shuffle.setAttribute('aria-label', 'Show a random style on the panel');
-  shuffle.addEventListener('click', () => showOnPanel(randomFrom(state.styles.map((s, i) => i))));
-  const randomCard = el('li', { className: 'panel scard random-card' }, [
-    el('p', { className: 'on-screen-label', textContent: 'can’t decide?' }),
-    el('h3', { textContent: 'pick one at random' }),
-    shuffle,
-  ]);
-
-  $('#style-cards').replaceChildren(...cards, randomCard);
-}
-
 // how it works: drawn bars, and catalog numbers on the "pick one of three" screen
 const WAVE = [4, 10, 18, 8, 26, 14, 6, 20, 30, 12, 22, 8, 16, 4, 12, 24, 10, 6, 18, 8, 14, 28, 10, 4, 16, 8];
 $('#wave').replaceChildren(...WAVE.map((h, i) => {
@@ -322,10 +265,6 @@ function fail(error) {
   showMessage('no signal', 'The style catalog could not be read. Serve this page over http from the repository root.');
   $('#result-count').textContent = '';
   $('#device-keys').replaceChildren(el('p', { className: 'grid-msg', textContent: 'The styles could not load.' }));
-  $('#style-cards').replaceChildren(el('li', {
-    className: 'list-msg',
-    textContent: 'The style list could not load. Open this page through a web server from the repository root.',
-  }));
 }
 
 readCatalog().then((styles) => {
@@ -335,13 +274,11 @@ readCatalog().then((styles) => {
     $('#readout-name').textContent = 'no styles yet';
     showMessage('empty', 'The catalog has no styles yet.');
     $('#device-keys').replaceChildren(el('p', { className: 'grid-msg', textContent: 'No styles in the catalog yet.' }));
-    $('#style-cards').replaceChildren(el('li', { className: 'list-msg', textContent: 'No styles in the catalog yet.' }));
     return;
   }
   renderCounts();
   renderSpecs();
   renderKeys();
-  renderCards();
   renderStory();
   // open on a random style other than the one this page wears
   const others = styles.map((s, i) => i).filter((i) => styles[i].id !== 'instrument-panel');
