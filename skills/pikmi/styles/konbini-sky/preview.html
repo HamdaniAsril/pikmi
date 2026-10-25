@@ -46,6 +46,9 @@
   .sky :focus-visible, .sky .is-focus { outline-color: var(--focus-on-sky); }
 
   .scene { display: block; width: 100%; height: auto; shape-rendering: crispEdges; }
+  .scene-night { display: none; }
+  [data-theme="dark"] .scene-day { display: none; }
+  [data-theme="dark"] .scene-night { display: block; }
 
   @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
 
@@ -289,6 +292,116 @@
       <rect x="103" y="36" width="5" height="5" fill="#5E8C6A"/><rect x="104" y="34" width="3" height="2" fill="#5E8C6A"/><rect x="105" y="41" width="1" height="2" fill="#6B5540"/>
       <rect x="8" y="43" width="98" height="1" fill="#DCE6F0"/>
     </symbol>
+    <symbol id="scene-konbini-night" viewBox="0 0 120 48">
+      <rect x="0" y="43" width="120" height="5" style="fill:var(--page)"/>
+      <rect x="8" y="43" width="78" height="2" fill="#22345A"/>
+      <rect x="6" y="3" width="1" height="1" fill="#CFE0FF"/><rect x="22" y="7" width="1" height="1" fill="#CFE0FF"/><rect x="41" y="2" width="1" height="1" fill="#CFE0FF"/><rect x="58" y="10" width="1" height="1" fill="#8FA8D6"/><rect x="77" y="4" width="1" height="1" fill="#CFE0FF"/><rect x="88" y="13" width="1" height="1" fill="#8FA8D6"/><rect x="108" y="6" width="1" height="1" fill="#CFE0FF"/><rect x="115" y="2" width="1" height="1" fill="#8FA8D6"/>
+      <path d="M0 9 Q50 15 97 9 T120 11" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <path d="M0 13 Q50 19 97 12.5 T120 15" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <path d="M28 0 Q62 7 97 8" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <rect x="0" y="22" width="8" height="21" fill="#1E3158"/><rect x="2" y="25" width="4" height="3" fill="#F2C96B"/>
+      <rect x="66" y="19" width="25" height="24" fill="#1B2D52"/>
+      <rect x="69" y="22" width="4" height="3" fill="#F2C96B"/><rect x="76" y="22" width="4" height="3" fill="#2A406C"/><rect x="83" y="22" width="4" height="3" fill="#F2C96B"/>
+      <rect x="100" y="27" width="20" height="16" fill="#1E3158"/>
+      <rect x="103" y="30" width="4" height="3" fill="#2A406C"/><rect x="110" y="30" width="6" height="3" fill="#F2C96B"/>
+      <rect x="96" y="5" width="2" height="38" fill="#34507F"/><rect x="91" y="8" width="12" height="1" fill="#34507F"/><rect x="92" y="12" width="10" height="1" fill="#34507F"/><rect x="99" y="17" width="3" height="4" fill="#34507F"/>
+      <rect x="12" y="24" width="68" height="2" fill="#EEF2F7"/>
+      <rect x="12" y="26" width="68" height="1" fill="#B9C4D6"/>
+      <rect x="13" y="27" width="66" height="15" fill="#E4E9F0"/>
+      <rect x="13" y="28" width="66" height="2" fill="#FF7A35"/>
+      <rect x="13" y="30" width="66" height="1" fill="#FFB061"/>
+      <rect x="36" y="27" width="20" height="4" fill="#F0602A"/>
+      <rect x="39" y="28" width="1" height="2" fill="#fff"/><rect x="41" y="28" width="2" height="2" fill="#fff"/><rect x="44" y="28" width="1" height="2" fill="#fff"/><rect x="46" y="28" width="3" height="2" fill="#fff"/><rect x="50" y="28" width="1" height="2" fill="#fff"/><rect x="52" y="28" width="1" height="2" fill="#fff"/>
+      <rect x="15" y="32" width="62" height="8" fill="#F4F8FF"/>
+      <rect x="15" y="35" width="62" height="1" fill="#C3D0E6"/><rect x="15" y="38" width="62" height="1" fill="#C3D0E6"/>
+      <rect x="17" y="34" width="2" height="1" fill="#FF7A35"/><rect x="20" y="34" width="2" height="1" fill="#1D5BD8"/><rect x="27" y="37" width="3" height="1" fill="#F2C14E"/><rect x="36" y="34" width="2" height="1" fill="#1D5BD8"/><rect x="53" y="37" width="2" height="1" fill="#FF7A35"/><rect x="63" y="34" width="3" height="1" fill="#F2C14E"/><rect x="71" y="37" width="2" height="1" fill="#1D5BD8"/>
+      <rect x="24" y="32" width="1" height="8" fill="#E4E9F0"/><rect x="33" y="32" width="1" height="8" fill="#E4E9F0"/><rect x="59" y="32" width="1" height="8" fill="#E4E9F0"/><rect x="68" y="32" width="1" height="8" fill="#E4E9F0"/>
+      <rect x="42" y="32" width="8" height="10" fill="#DCE7F7"/><rect x="45" y="33" width="2" height="8" fill="#9FB2CF"/>
+      <rect x="13" y="40" width="66" height="1" fill="#FF7A35"/>
+      <rect x="12" y="42" width="68" height="1" fill="#1A2540"/>
+      <rect x="52" y="21" width="6" height="3" fill="#9FB0C8"/><rect x="53" y="22" width="2" height="1" fill="#1A2540"/>
+      <rect x="60" y="21" width="6" height="3" fill="#9FB0C8"/><rect x="61" y="22" width="2" height="1" fill="#1A2540"/>
+      <rect x="16" y="36" width="3" height="6" fill="#FFFFFF"/><rect x="16" y="37" width="3" height="1" fill="#FF7A35"/>
+      <rect x="19" y="36" width="3" height="6" fill="#DCE8FF"/><rect x="19" y="37" width="3" height="1" fill="#1D5BD8"/>
+      <rect x="56" y="40" width="1" height="1" fill="#FF7A35"/><rect x="55" y="41" width="3" height="2" fill="#FF7A35"/>
+      <rect x="60" y="36" width="7" height="6" fill="#C9D2E0"/><rect x="61" y="37" width="4" height="2" fill="#2A3C63"/>
+      <rect x="67" y="38" width="13" height="1" fill="#C9D2E0"/><rect x="67" y="39" width="13" height="3" fill="#AEB9CB"/>
+      <rect x="60" y="40" width="1" height="1" fill="#FFF2B0"/>
+      <rect x="62" y="42" width="3" height="2" fill="#0B1226"/><rect x="75" y="42" width="3" height="2" fill="#0B1226"/>
+    </symbol>
+    <symbol id="scene-station-night" viewBox="0 0 120 40">
+      <rect x="0" y="35" width="120" height="5" style="fill:var(--page)"/>
+      <rect x="36" y="35" width="44" height="2" fill="#22345A"/>
+      <rect x="9" y="2" width="1" height="1" fill="#CFE0FF"/><rect x="33" y="6" width="1" height="1" fill="#8FA8D6"/><rect x="47" y="2" width="1" height="1" fill="#CFE0FF"/><rect x="70" y="5" width="1" height="1" fill="#CFE0FF"/><rect x="91" y="2" width="1" height="1" fill="#8FA8D6"/><rect x="113" y="9" width="1" height="1" fill="#CFE0FF"/>
+      <path d="M0 5 Q55 11 120 5" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <path d="M0 9 Q55 15 120 9" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <rect x="18" y="3" width="1" height="29" fill="#34507F"/><rect x="18" y="6" width="8" height="1" fill="#34507F"/>
+      <rect x="104" y="3" width="1" height="29" fill="#34507F"/><rect x="97" y="6" width="8" height="1" fill="#34507F"/>
+      <rect x="84" y="21" width="17" height="11" fill="#22365E"/><rect x="82" y="18" width="21" height="3" fill="#111B33"/>
+      <rect x="87" y="24" width="4" height="3" fill="#F2C96B"/><rect x="94" y="24" width="4" height="3" fill="#2A406C"/>
+      <rect x="106" y="19" width="14" height="13" fill="#1E3158"/><rect x="105" y="16" width="15" height="3" fill="#111B33"/>
+      <rect x="109" y="22" width="4" height="3" fill="#F2C96B"/><rect x="115" y="22" width="3" height="3" fill="#F2C96B"/>
+      <rect x="79" y="23" width="3" height="2" fill="#1E3A3A"/><rect x="78" y="25" width="5" height="4" fill="#1E3A3A"/>
+      <rect x="76" y="29" width="44" height="3" fill="#1C2B4C"/>
+      <rect x="0" y="29" width="36" height="3" fill="#2B3E66"/><rect x="0" y="29" width="36" height="1" fill="#F2C14E"/>
+      <rect x="4" y="15" width="28" height="2" fill="#111B33"/>
+      <rect x="16" y="17" width="4" height="1" fill="#FFF2B0"/>
+      <rect x="7" y="17" width="1" height="12" fill="#111B33"/><rect x="28" y="17" width="1" height="12" fill="#111B33"/>
+      <rect x="12" y="19" width="12" height="4" fill="#F4F8FF"/><rect x="12" y="22" width="12" height="1" fill="#1D5BD8"/>
+      <rect x="14" y="20" width="2" height="1" fill="#1A2540"/><rect x="17" y="20" width="3" height="1" fill="#1A2540"/><rect x="21" y="20" width="2" height="1" fill="#1A2540"/>
+      <rect x="10" y="26" width="7" height="1" fill="#111B33"/><rect x="10" y="27" width="1" height="2" fill="#111B33"/><rect x="16" y="27" width="1" height="2" fill="#111B33"/>
+      <rect x="54" y="12" width="7" height="1" fill="#111B33"/><rect x="57" y="13" width="1" height="4" fill="#111B33"/><rect x="55" y="17" width="5" height="2" fill="#111B33"/>
+      <rect x="39" y="19" width="38" height="1" fill="#B9C4D6"/>
+      <rect x="38" y="20" width="40" height="11" fill="#E8ECF2"/>
+      <rect x="41" y="22" width="4" height="3" fill="#FFF3CF"/><rect x="47" y="22" width="4" height="3" fill="#FFF3CF"/><rect x="53" y="22" width="4" height="3" fill="#FFF3CF"/><rect x="65" y="22" width="4" height="3" fill="#FFF3CF"/><rect x="71" y="22" width="4" height="3" fill="#FFF3CF"/>
+      <rect x="76" y="22" width="2" height="3" fill="#FFF3CF"/>
+      <rect x="38" y="26" width="40" height="1" fill="#FF7A35"/>
+      <rect x="38" y="27" width="40" height="4" fill="#1D5BD8"/>
+      <rect x="59" y="22" width="4" height="8" fill="#CBD8EC"/><rect x="61" y="22" width="1" height="8" fill="#9FB2CF"/>
+      <rect x="77" y="28" width="1" height="1" fill="#FFF2B0"/>
+      <rect x="39" y="31" width="38" height="1" fill="#111B33"/>
+      <rect x="42" y="32" width="3" height="1" fill="#0B1226"/><rect x="71" y="32" width="3" height="1" fill="#0B1226"/>
+      <rect x="0" y="33" width="120" height="1" fill="#0B1226"/>
+      <rect x="2" y="34" width="3" height="1" fill="#33476E"/><rect x="10" y="34" width="3" height="1" fill="#33476E"/><rect x="18" y="34" width="3" height="1" fill="#33476E"/><rect x="26" y="34" width="3" height="1" fill="#33476E"/><rect x="34" y="34" width="3" height="1" fill="#33476E"/><rect x="42" y="34" width="3" height="1" fill="#33476E"/><rect x="50" y="34" width="3" height="1" fill="#33476E"/><rect x="58" y="34" width="3" height="1" fill="#33476E"/><rect x="66" y="34" width="3" height="1" fill="#33476E"/><rect x="74" y="34" width="3" height="1" fill="#33476E"/><rect x="82" y="34" width="3" height="1" fill="#33476E"/><rect x="90" y="34" width="3" height="1" fill="#33476E"/><rect x="98" y="34" width="3" height="1" fill="#33476E"/><rect x="106" y="34" width="3" height="1" fill="#33476E"/><rect x="114" y="34" width="3" height="1" fill="#33476E"/>
+    </symbol>
+    <symbol id="scene-ruko-night" viewBox="0 0 120 48">
+      <rect x="0" y="43" width="120" height="5" style="fill: var(--page)"/>
+      <rect x="36" y="43" width="38" height="2" fill="#22345A"/>
+      <rect x="5" y="3" width="1" height="1" fill="#CFE0FF"/><rect x="24" y="8" width="1" height="1" fill="#8FA8D6"/><rect x="47" y="2" width="1" height="1" fill="#CFE0FF"/><rect x="68" y="6" width="1" height="1" fill="#CFE0FF"/><rect x="83" y="11" width="1" height="1" fill="#8FA8D6"/><rect x="110" y="4" width="1" height="1" fill="#CFE0FF"/><rect x="117" y="12" width="1" height="1" fill="#8FA8D6"/>
+      <path d="M0 8 Q45 14 92 8 T120 10" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <path d="M0 12 Q45 18 92 12 T120 14" stroke="#3E5888" stroke-width=".45" fill="none"/>
+      <rect x="0" y="20" width="10" height="23" fill="#1E3158"/><rect x="2" y="23" width="5" height="3" fill="#F2C96B"/>
+      <rect x="102" y="18" width="18" height="25" fill="#1B2D52"/><rect x="105" y="21" width="4" height="3" fill="#2A406C"/><rect x="112" y="21" width="4" height="3" fill="#F2C96B"/><rect x="105" y="27" width="4" height="3" fill="#F2C96B"/>
+      <rect x="10" y="16" width="90" height="2" fill="#111B33"/>
+      <rect x="10" y="18" width="30" height="25" fill="#2E3E62"/>
+      <rect x="40" y="18" width="30" height="25" fill="#33446A"/>
+      <rect x="70" y="18" width="30" height="25" fill="#2B3A5C"/>
+      <rect x="40" y="16" width="1" height="27" fill="#1A2540"/><rect x="70" y="16" width="1" height="27" fill="#1A2540"/>
+      <rect x="14" y="21" width="9" height="5" fill="#F2C96B"/><rect x="27" y="21" width="9" height="5" fill="#22345A"/>
+      <rect x="44" y="21" width="9" height="5" fill="#22345A"/><rect x="57" y="21" width="9" height="5" fill="#F2C96B"/>
+      <rect x="74" y="21" width="9" height="5" fill="#F2C96B"/><rect x="87" y="21" width="9" height="5" fill="#22345A"/>
+      <rect x="16" y="21" width="1" height="5" fill="#111B33"/><rect x="19" y="21" width="1" height="5" fill="#111B33"/><rect x="29" y="21" width="1" height="5" fill="#111B33"/><rect x="32" y="21" width="1" height="5" fill="#111B33"/>
+      <rect x="46" y="21" width="1" height="5" fill="#111B33"/><rect x="49" y="21" width="1" height="5" fill="#111B33"/><rect x="59" y="21" width="1" height="5" fill="#111B33"/><rect x="62" y="21" width="1" height="5" fill="#111B33"/>
+      <rect x="76" y="21" width="1" height="5" fill="#111B33"/><rect x="79" y="21" width="1" height="5" fill="#111B33"/><rect x="89" y="21" width="1" height="5" fill="#111B33"/><rect x="92" y="21" width="1" height="5" fill="#111B33"/>
+      <rect x="10" y="29" width="90" height="1" fill="#1A2540"/>
+      <rect x="13" y="32" width="24" height="11" fill="#4A5876"/>
+      <rect x="13" y="34" width="24" height="1" fill="#3A4766"/><rect x="13" y="36" width="24" height="1" fill="#3A4766"/><rect x="13" y="38" width="24" height="1" fill="#3A4766"/><rect x="13" y="40" width="24" height="1" fill="#3A4766"/>
+      <rect x="73" y="32" width="24" height="5" fill="#4A5876"/><rect x="73" y="34" width="24" height="1" fill="#3A4766"/>
+      <rect x="73" y="37" width="24" height="6" fill="#FFF3CF"/><rect x="76" y="39" width="3" height="1" fill="#F2C14E"/><rect x="88" y="40" width="4" height="1" fill="#C9D1DC"/>
+      <rect x="40" y="30" width="30" height="4" fill="#1D5BD8"/>
+      <rect x="44" y="31" width="1" height="2" fill="#fff"/><rect x="46" y="31" width="2" height="2" fill="#fff"/><rect x="49" y="31" width="1" height="2" fill="#fff"/><rect x="51" y="31" width="3" height="2" fill="#fff"/><rect x="55" y="31" width="1" height="2" fill="#fff"/><rect x="57" y="31" width="2" height="2" fill="#fff"/><rect x="60" y="31" width="1" height="2" fill="#fff"/><rect x="62" y="31" width="3" height="2" fill="#fff"/>
+      <rect x="40" y="34" width="30" height="1" fill="#FF7A35"/>
+      <rect x="42" y="35" width="26" height="8" fill="#F4F8FF"/>
+      <rect x="42" y="38" width="26" height="1" fill="#C3D0E6"/><rect x="42" y="41" width="26" height="1" fill="#C3D0E6"/>
+      <rect x="44" y="37" width="2" height="1" fill="#FF7A35"/><rect x="47" y="37" width="2" height="1" fill="#1D5BD8"/><rect x="61" y="37" width="3" height="1" fill="#F2C14E"/><rect x="44" y="40" width="3" height="1" fill="#F2C14E"/><rect x="62" y="40" width="2" height="1" fill="#FF7A35"/>
+      <rect x="52" y="35" width="6" height="8" fill="#DCE7F7"/><rect x="55" y="35" width="1" height="8" fill="#9FB2CF"/>
+      <rect x="20" y="37" width="1" height="2" fill="#0B1226"/><rect x="21" y="39" width="6" height="2" fill="#0B1226"/><rect x="24" y="38" width="3" height="1" fill="#0B1226"/><rect x="20" y="39" width="1" height="1" fill="#FFF2B0"/>
+      <rect x="20" y="41" width="2" height="2" fill="#0B1226"/><rect x="26" y="41" width="2" height="2" fill="#0B1226"/>
+      <rect x="77" y="37" width="1" height="2" fill="#0B1226"/><rect x="78" y="39" width="6" height="2" fill="#9FB0C8"/><rect x="81" y="38" width="3" height="1" fill="#0B1226"/><rect x="77" y="39" width="1" height="1" fill="#FFF2B0"/>
+      <rect x="77" y="41" width="2" height="2" fill="#0B1226"/><rect x="83" y="41" width="2" height="2" fill="#0B1226"/>
+      <rect x="92" y="4" width="2" height="39" fill="#34507F"/><rect x="88" y="7" width="10" height="1" fill="#34507F"/><rect x="94" y="14" width="3" height="4" fill="#34507F"/>
+      <rect x="103" y="36" width="5" height="5" fill="#1E3A3A"/><rect x="104" y="34" width="3" height="2" fill="#1E3A3A"/><rect x="105" y="41" width="1" height="2" fill="#111B33"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -296,7 +409,7 @@
   <header class="hero sky gutter">
     <nav aria-label="Main">
       <span class="mark">EKIMAE</span>
-      <span class="links"><a href="#ui">Routes</a><a href="#components">Shops</a><a href="#ui">Journal</a><a class="btn line" href="#ui">Get the app</a></span>
+      <span class="links"><a href="#ui">Routes</a><a href="#components">Shops</a><a href="#ui">Journal</a><button class="btn line" type="button" role="switch" aria-checked="false" id="theme-switch">Night</button><a class="btn line" href="#ui">Get the app</a></span>
     </nav>
     <h1 class="giant" style="--chars: 6">EKIMAE</h1>
     <div class="subrow">
@@ -306,6 +419,10 @@
     <svg class="scene scene-day" viewBox="0 0 240 48" role="img" aria-label="A corner store with a small truck parked outside, and a station platform with a train, under overhead wires">
       <use href="#scene-konbini-day" x="0" y="0" width="120" height="48"/>
       <use href="#scene-station-day" x="120" y="8" width="120" height="40"/>
+    </svg>
+    <svg class="scene scene-night" viewBox="0 0 240 48" role="img" aria-label="The corner store and the station at night, windows lit, under overhead wires and stars">
+      <use href="#scene-konbini-night" x="0" y="0" width="120" height="48"/>
+      <use href="#scene-station-night" x="120" y="8" width="120" height="40"/>
     </svg>
   </header>
 
@@ -401,6 +518,7 @@
             <div class="slide title" role="img" aria-label="Title slide: EKIMAE, third quarter report, with a corner store on the horizon">
               <div class="sky"><p class="giant" style="--chars: 6">EKIMAE</p><p class="kicker">Third quarter report<br>October 2026</p></div>
               <svg class="scene scene-day" viewBox="0 0 120 48" aria-hidden="true"><use href="#scene-konbini-day"/></svg>
+              <svg class="scene scene-night" viewBox="0 0 120 48" aria-hidden="true"><use href="#scene-konbini-night"/></svg>
               <div class="trio"><span>new routes</span><span>new exits</span><span>next cities</span></div>
               <div class="corner"><span class="bigword" lang="ja">報告</span><span class="pageno">01</span></div>
             </div>
@@ -420,6 +538,7 @@
           <div class="post" role="img" aria-label="Post: Bandung, West Java, a row of shophouses with a minimarket and two parked motorbikes">
             <div class="sky"><p class="giant" style="--chars: 7">BANDUNG</p><p class="sub">West Java</p></div>
             <svg class="scene scene-day" viewBox="0 0 120 48" aria-hidden="true"><use href="#scene-ruko-day"/></svg>
+            <svg class="scene scene-night" viewBox="0 0 120 48" aria-hidden="true"><use href="#scene-ruko-night"/></svg>
             <div class="trio"><span>open at six</span><span>by the station</span><span>kopi tubruk</span></div>
             <p class="bigword">KOPI<br>PAGI</p>
             <p class="note">The minimarket at the end of the street is always open, with hot coffee by the door.</p>
@@ -438,6 +557,7 @@
               <div class="titlerow"><p class="giant" style="--chars: 7">SHIBUYA</p><p class="bigword vk" lang="ja">渋<br>谷</p></div>
               <div class="info">14°C · clear · east exit</div>
               <svg class="scene scene-day" viewBox="0 0 120 40" aria-hidden="true"><use href="#scene-station-day"/></svg>
+              <svg class="scene scene-night" viewBox="0 0 120 40" aria-hidden="true"><use href="#scene-station-night"/></svg>
             </div>
             <div class="body">
               <div class="trio"><span>3 routes</span><span>12 shops</span><span>open 24 h</span></div>
@@ -460,5 +580,15 @@
     </div>
   </div>
 </section>
+
+<script>
+  // theme switch: daylight by default, a lit-up night on demand
+  const html = document.documentElement, themeSwitch = document.getElementById('theme-switch');
+  themeSwitch.addEventListener('click', () => {
+    const dark = html.dataset.theme !== 'dark';
+    if (dark) html.dataset.theme = 'dark'; else delete html.dataset.theme;
+    themeSwitch.setAttribute('aria-checked', String(dark));
+  });
+</script>
 </body>
 </html>

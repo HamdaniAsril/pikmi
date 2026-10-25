@@ -50,3 +50,20 @@
   --orange: #EE6A2B;
   --focus-on-sky: #1E2B4A;
 }
+
+[data-theme="dark"] {
+  --page: #0E1526;
+  --panel: #121B31;
+  --card: #16213B;
+  --rule: rgba(126, 166, 255, 0.25);
+  --text: #DCE4F2;
+  --text-muted: #9EADC8;
+  --link: #7EA6FF;
+  --danger: #FF8F85;
+  --ink: #7EA6FF;
+  --sky-top: #0B1733;
+  --sky-mid: #1B3263;
+  --horizon: #2F4C80;
+  --orange: #FF7A35;
+  --focus-on-sky: #FFFFFF;
+}

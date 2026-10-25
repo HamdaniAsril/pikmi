@@ -13,7 +13,7 @@ Fits city and travel guides, food and local shops, transit and maps, magazines a
 event pages. Avoid it for dense dashboards, luxury products, enterprise and finance, and content that
 needs a serious or grieving tone.
 
-Light only for now.
+Two themes: daylight by default, a lit-up night for evening use.
 
 Dial: ENERGY 2 / RHYTHM 2 / MOTION 1
 
@@ -24,6 +24,11 @@ Dial: ENERGY 2 / RHYTHM 2 / MOTION 1
 - **Color.** Paper `#F7F7F4` and white cards. Cobalt `--ink` `#1D5BD8` for captions, numbers, rules, the
   big word and buttons; navy `--text` `#1E2B4A` for paragraphs. Orange `#EE6A2B` lives in the scene plus
   at most one highlight per page, and never carries text on paper. Text on the sky is always white.
+- **Night.** The sky turns deep night blue (`#0B1733` to `#2F4C80`), the paper becomes night ink `#0E1526`,
+  `--ink` brightens to `#7EA6FF` and paragraphs turn pale blue. Buttons keep the cobalt fill. The scene
+  lights up: bright windows, a brighter orange stripe, platform lamps, single-pixel stars and light
+  spilling onto the ground in front of the building. Distant buildings go dark navy with a few warm
+  windows. Every scene has a night twin; never leave a day scene under a night sky.
 - **Type.** Public Sans 900 for one giant word per page on the sky, tracked tight (-0.05em) at 0.82 line
   height, filling about 90% of the width on one line. Public Sans 700 for captions and UI, 500 for body.
   Noto Sans JP 900 for Japanese words.
@@ -59,6 +64,8 @@ Dial: ENERGY 2 / RHYTHM 2 / MOTION 1
 - **Depth:** no shadows; depth comes from the sky fading behind the scene. The sky is the only gradient and
   the scene is the only patterned surface on a page, because together they are the identity.
 - **Motion:** a poster does not move; at most a slow fade when content changes.
+- **Theme:** a corner store lit up at night is as much a part of the street as the daytime sky, so the
+  night theme keeps the same zones and lights the scene instead of inventing a new look.
 - **Contrast:** white on the top of the day sky is 2.20:1, below WCAG AA, and lower where the sky fades.
   This is a deliberate choice for the look, so small white text stays bold and essential information
   stays off the sky.
@@ -201,6 +208,21 @@ container. Most words then fill 78 to 92% of the width; words full of wide lette
 | `--ink` | `--page` | light | 5.53 | Focus ring on paper. |
 | `--focus-on-sky` | `--sky-top` | light | 6.37 | Focus ring on the sky, navy because white would be 2.20. |
 | `--ink` | `--card` | light | 5.93 | Field border, a 1.5px cobalt line. |
+| `--text` | `--page` | dark | 14.23 | Body text at night. |
+| `--text-muted` | `--page` | dark | 8.03 | Secondary text. |
+| `--ink` | `--page` | dark | 7.61 | Captions, numbers, the big word. |
+| `--ink` | `--card` | dark | 6.68 | Ink on night cards. |
+| `--ink` | `--panel` | dark | 7.16 | Ink on the tab bar. |
+| `--on-accent` | `--accent` | dark | 5.93 | Button text. |
+| `--link` | `--page` | dark | 7.61 | Links. |
+| `--danger` | `--page` | dark | 8.25 | Error text. |
+| `--on-sky` | `--sky-top` | dark | 17.73 | White on the night sky. |
+| `--on-sky` | `--horizon` | dark | 8.51 | White near the horizon. |
+| `--orange` | `--page` | dark | 7.01 | Orange highlight at night. |
+| `--accent` | `--page` | dark | 3.07 | Button fill against the night page (non-text). |
+| `--ink` | `--page` | dark | 7.61 | Focus ring on the night page. |
+| `--focus-on-sky` | `--sky-top` | dark | 17.73 | Focus ring on the night sky, white. |
+| `--ink` | `--panel` | dark | 7.16 | Field border at night. |
 
 ## Pitfalls
 
@@ -226,3 +248,4 @@ container. Most words then fill 78 to 92% of the width; words full of wide lette
 - [ ] Square corners, no shadows, no gradient besides the sky.
 - [ ] Buttons and fields are at least 48px tall; focus shows a 2px outline (navy on the sky).
 - [ ] Motion is a fade of 500ms or less, off under reduced motion.
+- [ ] Both themes are complete; night scenes replace day scenes.

@@ -485,7 +485,7 @@
     {
       "id": "konbini-sky",
       "name": "Konbini Sky",
-      "summary": "Bright daytime sky over white paper, giant white grotesk type, cobalt captions and one pixel-art street scene on the horizon; bolder and sunnier than Japanese Minimal.",
+      "summary": "Bright daytime sky over white paper, giant white grotesk type, cobalt captions and one pixel-art street scene on the horizon; bolder and sunnier than Japanese Minimal, with a lit-up night theme.",
       "keywords": {
         "en": [
           "konbini",
@@ -525,7 +525,8 @@
         "app"
       ],
       "themes": [
-        "light"
+        "light",
+        "dark"
       ],
       "preview": "styles/konbini-sky/preview.html",
       "brand_terms": [
