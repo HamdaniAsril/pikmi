@@ -12,14 +12,15 @@
   /* components (same as STYLE.md) */
   body { font: 500 var(--type-body)/1.6 var(--font-sans); color: var(--text); background: var(--page); }
 
-  .sky { background: var(--sky); color: var(--on-sky); container-type: inline-size; }
+  .sky { background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-top) 28%, var(--sky-mid) 68%, var(--horizon) 100%);
+    color: var(--on-sky); container-type: inline-size; }
   .giant { margin: 0; color: var(--on-sky); white-space: nowrap; letter-spacing: var(--tracking-display);
     font: 900 min(var(--type-display), calc(128cqw / var(--chars, 6)))/var(--leading-display) var(--font-sans); }
   .trio { display: flex; justify-content: space-between; gap: var(--space-md); color: var(--ink);
     font: 700 var(--type-caption)/1.2 var(--font-sans); }
   .bigword { margin: 0; color: var(--ink); font: 900 clamp(64px, 14vw, 180px)/1 var(--font-sans); }
   .bigword:lang(ja) { font-family: var(--font-jp); }
-  .numbered { border-top: var(--rule-strong); padding-top: var(--space-md); }
+  .numbered { border-top: 2px solid var(--ink); padding-top: var(--space-md); }
   .numbered .num { display: block; color: var(--ink); font: 900 var(--type-h2)/1 var(--font-sans); }
   .row { display: grid; grid-template-columns: 3ch 1fr auto; gap: var(--space-md); align-items: baseline;
     padding: 14px 0; border-bottom: 1px solid var(--rule); }
@@ -82,7 +83,7 @@
   .foot { display: flex; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-section);
     padding-top: var(--space-md); border-top: 1px solid var(--rule); color: var(--ink); font: 700 var(--type-label)/1.2 var(--font-sans); }
 
-  .sec { padding-block: var(--space-section); border-top: var(--rule-strong); }
+  .sec { padding-block: var(--space-section); border-top: 2px solid var(--ink); }
   .sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md); }
   .sec-head h2 { margin: 0; color: var(--text); font: 800 var(--type-h2)/1.15 var(--font-sans); }
   .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xl); margin-top: var(--space-xl); }
@@ -110,7 +111,7 @@
   .slide .trio, .post .trio { position: absolute; }
 
   .slide.title .sky { height: 66%; padding: 4.2cqw 5cqw 0; }
-  .slide.title .giant { font-size: 13cqw; }
+  .slide.title .giant { font-size: min(13cqw, calc(96cqw / var(--chars, 6))); }
   .slide.title .kicker { margin: 2cqw 0 0; font: 700 2.3cqw/1.25 var(--font-sans); }
   .slide.title .scene { right: -2cqw; width: 62cqw; bottom: calc(34% - 2.6cqw); }
   .slide.title .trio { left: 5cqw; right: 5cqw; top: calc(66% + 2.6cqw); font-size: 1.8cqw; }
@@ -146,7 +147,7 @@
   .phone .status { display: flex; justify-content: space-between; font: 700 4.8cqw/1 var(--font-sans); }
   .phone .hello { margin: 8cqw 0 2.5cqw; font: 700 4.8cqw/1 var(--font-sans); }
   .phone .titlerow { display: flex; justify-content: space-between; align-items: flex-start; }
-  .phone .giant { font-size: 16cqw; }
+  .phone .giant { min-width: 0; font-size: min(16cqw, calc(112cqw / var(--chars, 7))); }
   .phone .vk { margin: 0; color: var(--on-sky); font-size: 6.6cqw; line-height: 1.02; }
   .phone .info { margin-top: 2.6cqw; font: 700 4.8cqw/1 var(--font-sans); }
   .phone .scene { margin: 3cqw -6cqw 0; width: calc(100% + 12cqw); }
@@ -161,9 +162,9 @@
   .phone .go { margin-top: 5cqw; width: 100%; font-size: 4cqw; }
   .phone .tabs { margin: auto -6cqw 0; display: flex; justify-content: space-around; padding: 3cqw 0 6cqw;
     border-top: 1px solid var(--rule); background: var(--card); }
-  .phone .tab { display: flex; flex-direction: column; align-items: center; gap: 1.4cqw; color: var(--text); opacity: 0.55;
+  .phone .tab { display: flex; flex-direction: column; align-items: center; gap: 1.4cqw; color: var(--text-muted);
     font: 700 2.9cqw/1 var(--font-sans); }
-  .phone .tab.on { color: var(--ink); opacity: 1; }
+  .phone .tab.on { color: var(--ink); }
   .phone .tab svg { width: 6.4cqw; height: 6.4cqw; }
 
   @media (max-width: 720px) {
@@ -466,7 +467,7 @@
         <div>
           <p class="panel-label">On the sky: line button, focus in navy</p>
           <div class="sky skystrip">
-            <p>Next train in four minutes</p>
+            <p>Platform 2 · Yamanote line</p>
             <div class="btns"><button class="btn line" type="button">Platform map</button><button class="btn line is-focus" type="button">Timetable</button></div>
           </div>
         </div>

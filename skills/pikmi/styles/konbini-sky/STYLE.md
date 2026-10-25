@@ -19,7 +19,7 @@ Dial: ENERGY 2 / RHYTHM 2 / MOTION 1
 
 ## Visual vocabulary
 
-- **Two zones.** Sky on top, paper below, split by the horizon. The sky uses `--sky`: `--sky-top` held to
+- **Two zones.** Sky on top, paper below, split by the horizon. The sky is a gradient: `--sky-top` held to
   28% of its height, then `--sky-mid` at 68% and `--horizon` at the bottom. It is the only gradient.
 - **Color.** Paper `#F7F7F4` and white cards. Cobalt `--ink` `#1D5BD8` for captions, numbers, rules, the
   big word and buttons; navy `--text` `#1E2B4A` for paragraphs. Orange `#EE6A2B` lives in the scene plus
@@ -77,12 +77,11 @@ Dial: ENERGY 2 / RHYTHM 2 / MOTION 1
 | `--page` | paper, the lower zone and the scene's ground |
 | `--panel`, `--card` | white tab bars and cards on the paper |
 | `--rule` | hairlines between rows |
-| `--rule-strong` | the 2px cobalt rule above numbered blocks |
 | `--text`, `--text-muted` | navy paragraphs and secondary text |
 | `--ink` | cobalt captions, numbers, the big word, line buttons, focus ring on paper |
 | `--accent`, `--on-accent` | button fill and its white text |
 | `--link`, `--danger` | links and errors |
-| `--sky`, `--sky-top`, `--sky-mid`, `--horizon` | the sky gradient and its stops |
+| `--sky-top`, `--sky-mid`, `--horizon` | the stops of the sky gradient |
 | `--on-sky` | all text on the sky |
 | `--focus-on-sky` | focus ring on the sky |
 | `--orange` | the scene and one highlight per page |
@@ -94,14 +93,15 @@ Dial: ENERGY 2 / RHYTHM 2 / MOTION 1
 ```css
 body { font: 500 var(--type-body)/1.6 var(--font-sans); color: var(--text); background: var(--page); }
 
-.sky { background: var(--sky); color: var(--on-sky); container-type: inline-size; }
+.sky { background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-top) 28%, var(--sky-mid) 68%, var(--horizon) 100%);
+  color: var(--on-sky); container-type: inline-size; }
 .giant { margin: 0; color: var(--on-sky); white-space: nowrap; letter-spacing: var(--tracking-display);
   font: 900 min(var(--type-display), calc(128cqw / var(--chars, 6)))/var(--leading-display) var(--font-sans); }
 .trio { display: flex; justify-content: space-between; gap: var(--space-md); color: var(--ink);
   font: 700 var(--type-caption)/1.2 var(--font-sans); }
 .bigword { margin: 0; color: var(--ink); font: 900 clamp(64px, 14vw, 180px)/1 var(--font-sans); }
 .bigword:lang(ja) { font-family: var(--font-jp); }
-.numbered { border-top: var(--rule-strong); padding-top: var(--space-md); }
+.numbered { border-top: 2px solid var(--ink); padding-top: var(--space-md); }
 .numbered .num { display: block; color: var(--ink); font: 900 var(--type-h2)/1 var(--font-sans); }
 .row { display: grid; grid-template-columns: 3ch 1fr auto; gap: var(--space-md); align-items: baseline;
   padding: 14px 0; border-bottom: 1px solid var(--rule); }
@@ -134,6 +134,9 @@ Give every giant word `style="--chars: N"`, where N is its number of letters, an
 container. Most words then fill 78 to 92% of the width; words full of wide letters (M, W, O) reach about
 97%. If a word still runs past the edge, raise `--chars` by one.
 
+The gradient and the 2px rule read the theme tokens where they are used, so the night theme works on
+`<html>` or on a single canvas (`data-theme="dark"` on one post or slide).
+
 ## Recipes
 
 ### UI
@@ -150,8 +153,8 @@ container. Most words then fill 78 to 92% of the width; words full of wide lette
 
 ### Slides
 
-- **Title slide.** Sky over the top 66%, paper below. The giant word top left with a short white kicker
-  under it, the scene about 62% wide on the right, standing on the horizon. The trio on the paper, the big
+- **Title slide.** Sky over the top 66%, paper below. The giant word top left, sized
+  `min(13cqw, calc(96cqw / var(--chars)))`, with a short white kicker under it, the scene about 62% wide on the right, standing on the horizon. The trio on the paper, the big
   word bottom left, the page number bottom right.
 - **Data slide.** A 24% sky band at the top with a white headline. One big cobalt number with a caption,
   cobalt bars with a single orange bar for the value that matters, a vertical big word on the right edge
@@ -173,17 +176,19 @@ container. Most words then fill 78 to 92% of the width; words full of wide lette
 
 - **Header.** The sky as a header: status bar, a short white greeting, the place name as the giant word
   with its big word set vertically in white beside it, one white info line, and the scene at the bottom of
-  the header.
+  the header. Size the name with `min(16cqw, calc(112cqw / var(--chars)))` and `min-width: 0`, so a long
+  name still leaves room for the vertical word.
 - **Body.** On the paper: the trio, a section title in cobalt, numbered rows (number, name with a muted
   detail, a cobalt value), and one full-width solid button.
-- **Tab bar.** `--card` with a hairline on top; the active item in `--ink`, the others in `--text` at 55%.
+- **Tab bar.** `--card` with a hairline on top; the active item in `--ink`, the others in `--text-muted`
+  at full opacity.
 - Times, prices and errors sit in the body, never only in the header.
 
 ## Outside CSS
 
 | CSS effect | Replacement |
 | --- | --- |
-| `--sky` gradient | a linear gradient with stops at 0, 28, 68 and 100%, the top color held to 28% |
+| The sky gradient | a linear gradient with stops at 0, 28, 68 and 100%, the top color held to 28% |
 | `cqw` and `--chars` | size the giant word from the frame width: about 1.28 × width ÷ letters, capped at the display size |
 | `cqw` inside slides and posts | fixed canvases (slides 1920 × 1080, posts 1080 × 1350) with sizes in pixels, for example a 6-letter giant word at about 250px on a slide |
 | SVG pixel scene | vector rectangles on the same grid, or a PNG at a whole-number scale with nearest-neighbor resampling |
@@ -208,6 +213,7 @@ container. Most words then fill 78 to 92% of the width; words full of wide lette
 | `--ink` | `--page` | light | 5.53 | Focus ring on paper. |
 | `--focus-on-sky` | `--sky-top` | light | 6.37 | Focus ring on the sky, navy because white would be 2.20. |
 | `--ink` | `--card` | light | 5.93 | Field border, a 1.5px cobalt line. |
+| `--text-muted` | `--card` | light | 7.12 | Inactive tab labels, at full opacity. |
 | `--text` | `--page` | dark | 14.23 | Body text at night. |
 | `--text-muted` | `--page` | dark | 8.03 | Secondary text. |
 | `--ink` | `--page` | dark | 7.61 | Captions, numbers, the big word. |
@@ -223,6 +229,7 @@ container. Most words then fill 78 to 92% of the width; words full of wide lette
 | `--ink` | `--page` | dark | 7.61 | Focus ring on the night page. |
 | `--focus-on-sky` | `--sky-top` | dark | 17.73 | Focus ring on the night sky, white. |
 | `--ink` | `--panel` | dark | 7.16 | Field border at night. |
+| `--text-muted` | `--card` | dark | 7.05 | Inactive tab labels at night. |
 
 ## Pitfalls
 
