@@ -89,7 +89,7 @@ body { font: 500 var(--type-body)/1.6 var(--font-sans); color: var(--text); back
 
 .sky { background: var(--sky); color: var(--on-sky); container-type: inline-size; }
 .giant { margin: 0; color: var(--on-sky); white-space: nowrap; letter-spacing: var(--tracking-display);
-  font: 900 min(var(--type-display), calc(144cqw / var(--chars, 6)))/var(--leading-display) var(--font-sans); }
+  font: 900 min(var(--type-display), calc(128cqw / var(--chars, 6)))/var(--leading-display) var(--font-sans); }
 .trio { display: flex; justify-content: space-between; gap: var(--space-md); color: var(--ink);
   font: 700 var(--type-caption)/1.2 var(--font-sans); }
 .bigword { margin: 0; color: var(--ink); font: 900 clamp(64px, 14vw, 180px)/1 var(--font-sans); }
@@ -124,7 +124,8 @@ body { font: 500 var(--type-body)/1.6 var(--font-sans); color: var(--text); back
 ```
 
 Give every giant word `style="--chars: N"`, where N is its number of letters, and keep it inside a `.sky`
-container. A six-letter word then fills about 90% of the width.
+container. Most words then fill 78 to 92% of the width; words full of wide letters (M, W, O) reach about
+97%. If a word still runs past the edge, raise `--chars` by one.
 
 ## Recipes
 
@@ -140,12 +141,44 @@ container. A six-letter word then fills about 90% of the width.
 - **Forms.** Always on the paper: labels above 48px fields with 1.5px cobalt lines, errors in `--danger`
   below the field.
 
+### Slides
+
+- **Title slide.** Sky over the top 66%, paper below. The giant word top left with a short white kicker
+  under it, the scene about 62% wide on the right, standing on the horizon. The trio on the paper, the big
+  word bottom left, the page number bottom right.
+- **Data slide.** A 24% sky band at the top with a white headline. One big cobalt number with a caption,
+  cobalt bars with a single orange bar for the value that matters, a vertical big word on the right edge
+  and the page number.
+- **Content slides.** Paper only, with a thin sky band on top; one idea per slide, numbered blocks for
+  lists of three.
+- Cuts or 400ms fades between slides; the scene never animates.
+
+### Social
+
+- **Post, 1080 × 1350.** Sky over the top 60% with the giant word and a bold subtitle, the scene on the
+  horizon, then on the paper the trio, the big word, one short sentence bottom right and the page number.
+- Keep the composition your own: move the big word and the sentence, change the scene. The post should
+  read as this style, not as a copy of any one poster.
+- **Story, 1080 × 1920.** The same zones stacked taller, with all text outside the top 250px and bottom
+  340px.
+
+### App
+
+- **Header.** The sky as a header: status bar, a short white greeting, the place name as the giant word
+  with its big word set vertically in white beside it, one white info line, and the scene at the bottom of
+  the header.
+- **Body.** On the paper: the trio, a section title in cobalt, numbered rows (number, name with a muted
+  detail, a cobalt value), and one full-width solid button.
+- **Tab bar.** `--card` with a hairline on top; the active item in `--ink`, the others in `--text` at 55%.
+- Times, prices and errors sit in the body, never only in the header.
+
 ## Outside CSS
 
 | CSS effect | Replacement |
 | --- | --- |
 | `--sky` gradient | a linear gradient with stops at 0, 28, 68 and 100%, the top color held to 28% |
-| `cqw` and `--chars` | size the giant word from the frame width: about 1.44 × width ÷ letters, capped at the display size |
+| `cqw` and `--chars` | size the giant word from the frame width: about 1.28 × width ÷ letters, capped at the display size |
+| `cqw` inside slides and posts | fixed canvases (slides 1920 × 1080, posts 1080 × 1350) with sizes in pixels, for example a 6-letter giant word at about 250px on a slide |
 | SVG pixel scene | vector rectangles on the same grid, or a PNG at a whole-number scale with nearest-neighbor resampling |
 | `shape-rendering: crispEdges` | antialiasing off for the scene layer |
 | Vertical kanji | one glyph per line, not a vertical text mode |

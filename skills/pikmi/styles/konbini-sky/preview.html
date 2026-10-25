@@ -14,7 +14,7 @@
 
   .sky { background: var(--sky); color: var(--on-sky); container-type: inline-size; }
   .giant { margin: 0; color: var(--on-sky); white-space: nowrap; letter-spacing: var(--tracking-display);
-    font: 900 min(var(--type-display), calc(144cqw / var(--chars, 6)))/var(--leading-display) var(--font-sans); }
+    font: 900 min(var(--type-display), calc(128cqw / var(--chars, 6)))/var(--leading-display) var(--font-sans); }
   .trio { display: flex; justify-content: space-between; gap: var(--space-md); color: var(--ink);
     font: 700 var(--type-caption)/1.2 var(--font-sans); }
   .bigword { margin: 0; color: var(--ink); font: 900 clamp(64px, 14vw, 180px)/1 var(--font-sans); }
@@ -92,7 +92,79 @@
   .rows .row em { color: var(--ink); font: 700 var(--type-caption)/1 var(--font-sans); font-style: normal; }
   .stack { display: grid; gap: var(--space-lg); }
 
+  /* other media: scaled canvases, sizes in cqw of the canvas */
+  .media { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--space-xl); margin-top: var(--space-xl); align-items: start; }
+  .media figure { margin: 0; }
+  .media figcaption { margin-top: var(--space-sm); color: var(--text-muted); font: 700 var(--type-caption)/1.3 var(--font-sans); }
+  .media .col { display: grid; gap: var(--space-xl); }
+
+  .slide, .post { container-type: inline-size; position: relative; overflow: hidden; background: var(--page); color: var(--ink);
+    outline: 1px solid var(--rule); }
+  .slide { aspect-ratio: 16 / 9; }
+  .post { aspect-ratio: 4 / 5; }
+  .slide .sky, .post .sky { position: absolute; left: 0; right: 0; top: 0; }
+  .slide .scene, .post .scene { position: absolute; }
+  .slide .trio, .post .trio { position: absolute; }
+
+  .slide.title .sky { height: 66%; padding: 4.2cqw 5cqw 0; }
+  .slide.title .giant { font-size: 13cqw; }
+  .slide.title .kicker { margin: 2cqw 0 0; font: 700 2.3cqw/1.25 var(--font-sans); }
+  .slide.title .scene { right: -2cqw; width: 62cqw; bottom: calc(34% - 2.6cqw); }
+  .slide.title .trio { left: 5cqw; right: 5cqw; top: calc(66% + 2.6cqw); font-size: 1.8cqw; }
+  .slide .corner { position: absolute; left: 5cqw; right: 5cqw; bottom: 3cqw; display: flex; justify-content: space-between; align-items: flex-end; }
+  .slide .corner .bigword { font-size: 6cqw; }
+  .slide .corner .pageno, .post .pageno { font-size: 1.6cqw; }
+
+  .slide.data .sky { height: 24%; padding: 3.2cqw 5cqw 0; }
+  .slide.data h3 { margin: 0; font: 800 3.3cqw/1.1 var(--font-sans); }
+  .slide.data .big { position: absolute; left: 5cqw; top: 32%; }
+  .slide.data .big b { display: block; color: var(--ink); font: 900 14cqw/0.85 var(--font-sans); letter-spacing: -0.04em; }
+  .slide.data .big span { display: block; margin-top: 1.6cqw; max-width: 24cqw; font: 700 1.9cqw/1.3 var(--font-sans); }
+  .slide.data .chart { position: absolute; right: 13cqw; bottom: 8.6cqw; height: 30cqw; display: flex; gap: 1.6cqw; align-items: flex-end; }
+  .slide.data .chart i { display: block; width: 4.8cqw; background: var(--ink); }
+  .slide.data .chart i.hi { background: var(--orange); }
+  .slide.data .labels { position: absolute; right: 13cqw; bottom: 5.2cqw; display: flex; gap: 1.6cqw; font: 700 1.3cqw/1 var(--font-sans); }
+  .slide.data .labels span { width: 4.8cqw; text-align: center; }
+  .slide.data .vk { position: absolute; right: 4cqw; top: 32%; font-size: 5.4cqw; line-height: 1.05; }
+  .slide.data .pageno { position: absolute; right: 5cqw; bottom: 3cqw; font-size: 1.6cqw; }
+
+  .post .sky { height: 60%; padding: 6cqw 6cqw 0; }
+  .post .sub { margin: 2.6cqw 0 0; font: 700 4.4cqw/1.2 var(--font-sans); }
+  .post .scene { left: 0; width: 100%; bottom: calc(40% - 4.2cqw); }
+  .post .trio { left: 6cqw; right: 6cqw; top: calc(60% + 4cqw); font-size: 3cqw; }
+  .post .bigword { position: absolute; left: 6cqw; bottom: 6cqw; font-size: 13cqw; line-height: 0.95; }
+  .post .note { position: absolute; right: 6cqw; bottom: 11cqw; max-width: 38cqw; margin: 0; color: var(--ink); font: 700 3.2cqw/1.3 var(--font-sans); }
+  .post .pageno { position: absolute; right: 6cqw; bottom: 6cqw; font-size: 2.8cqw; }
+
+  .phone { width: min(320px, 100%); aspect-ratio: 9 / 19.5; margin-inline: auto; padding: 8px; border-radius: 40px; background: #05080F; }
+  .phone .screen { container-type: inline-size; height: 100%; display: flex; flex-direction: column; overflow: hidden;
+    border-radius: 32px; background: var(--page); color: var(--ink); }
+  .phone .sky { padding: 4cqw 6cqw 0; }
+  .phone .status { display: flex; justify-content: space-between; font: 700 4.8cqw/1 var(--font-sans); }
+  .phone .hello { margin: 8cqw 0 2.5cqw; font: 700 4.8cqw/1 var(--font-sans); }
+  .phone .titlerow { display: flex; justify-content: space-between; align-items: flex-start; }
+  .phone .giant { font-size: 16cqw; }
+  .phone .vk { margin: 0; color: var(--on-sky); font-size: 6.6cqw; line-height: 1.02; }
+  .phone .info { margin-top: 2.6cqw; font: 700 4.8cqw/1 var(--font-sans); }
+  .phone .scene { margin: 3cqw -6cqw 0; width: calc(100% + 12cqw); }
+  .phone .body { flex: 1; display: flex; flex-direction: column; padding: 3cqw 6cqw 0; }
+  .phone .trio { font-size: 3.8cqw; }
+  .phone h3 { margin: 7cqw 0 2cqw; color: var(--ink); font: 800 4.8cqw/1.1 var(--font-sans); }
+  .phone .row { grid-template-columns: 8cqw 1fr auto; gap: 2cqw; padding: 3cqw 0; }
+  .phone .row b { color: var(--ink); font: 900 4cqw/1 var(--font-sans); }
+  .phone .row strong { display: block; color: var(--text); font: 700 4cqw/1.2 var(--font-sans); }
+  .phone .row small { display: block; color: var(--text-muted); font: 500 3.3cqw/1.3 var(--font-sans); }
+  .phone .row em { color: var(--ink); font: 700 3.6cqw/1 var(--font-sans); font-style: normal; }
+  .phone .go { margin-top: 5cqw; width: 100%; font-size: 4cqw; }
+  .phone .tabs { margin: auto -6cqw 0; display: flex; justify-content: space-around; padding: 3cqw 0 6cqw;
+    border-top: 1px solid var(--rule); background: var(--card); }
+  .phone .tab { display: flex; flex-direction: column; align-items: center; gap: 1.4cqw; color: var(--text); opacity: 0.55;
+    font: 700 2.9cqw/1 var(--font-sans); }
+  .phone .tab.on { color: var(--ink); opacity: 1; }
+  .phone .tab svg { width: 6.4cqw; height: 6.4cqw; }
+
   @media (max-width: 720px) {
+    .media { grid-template-columns: 1fr; }
     .gutter { padding-inline: 16px; }
     .hero nav .links a { display: none; }
     .hero .giant { margin-top: 48px; }
@@ -179,6 +251,43 @@
       <rect x="42" y="32" width="3" height="1" fill="#1E2B4A"/><rect x="71" y="32" width="3" height="1" fill="#1E2B4A"/>
       <rect x="0" y="33" width="120" height="1" fill="#2A3A57"/>
       <rect x="2" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="10" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="18" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="26" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="34" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="42" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="50" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="58" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="66" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="74" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="82" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="90" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="98" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="106" y="34" width="3" height="1" fill="#9AA6B5"/><rect x="114" y="34" width="3" height="1" fill="#9AA6B5"/>
+    </symbol>
+    <symbol id="scene-ruko-day" viewBox="0 0 120 48">
+      <rect x="0" y="43" width="120" height="5" style="fill: var(--page)"/>
+      <path d="M0 8 Q45 14 92 8 T120 10" stroke="#7FA6CC" stroke-width=".45" fill="none"/>
+      <path d="M0 12 Q45 18 92 12 T120 14" stroke="#7FA6CC" stroke-width=".45" fill="none"/>
+      <rect x="0" y="20" width="10" height="23" fill="#BFD9EF"/><rect x="2" y="23" width="5" height="3" fill="#9CBEDF"/>
+      <rect x="102" y="18" width="18" height="25" fill="#B6D3EC"/><rect x="105" y="21" width="4" height="3" fill="#94B8DC"/><rect x="112" y="21" width="4" height="3" fill="#94B8DC"/><rect x="105" y="27" width="4" height="3" fill="#94B8DC"/>
+      <rect x="10" y="16" width="90" height="2" fill="#D4DCE6"/>
+      <rect x="10" y="18" width="30" height="25" fill="#EDE7DA"/>
+      <rect x="40" y="18" width="30" height="25" fill="#F4F4F0"/>
+      <rect x="70" y="18" width="30" height="25" fill="#E4EAF1"/>
+      <rect x="40" y="16" width="1" height="27" fill="#C5CCD6"/><rect x="70" y="16" width="1" height="27" fill="#C5CCD6"/>
+      <rect x="14" y="21" width="9" height="5" fill="#7092BD"/><rect x="27" y="21" width="9" height="5" fill="#7092BD"/>
+      <rect x="44" y="21" width="9" height="5" fill="#7092BD"/><rect x="57" y="21" width="9" height="5" fill="#7092BD"/>
+      <rect x="74" y="21" width="9" height="5" fill="#7092BD"/><rect x="87" y="21" width="9" height="5" fill="#7092BD"/>
+      <rect x="16" y="21" width="1" height="5" fill="#2A3A57"/><rect x="19" y="21" width="1" height="5" fill="#2A3A57"/><rect x="29" y="21" width="1" height="5" fill="#2A3A57"/><rect x="32" y="21" width="1" height="5" fill="#2A3A57"/>
+      <rect x="46" y="21" width="1" height="5" fill="#2A3A57"/><rect x="49" y="21" width="1" height="5" fill="#2A3A57"/><rect x="59" y="21" width="1" height="5" fill="#2A3A57"/><rect x="62" y="21" width="1" height="5" fill="#2A3A57"/>
+      <rect x="76" y="21" width="1" height="5" fill="#2A3A57"/><rect x="79" y="21" width="1" height="5" fill="#2A3A57"/><rect x="89" y="21" width="1" height="5" fill="#2A3A57"/><rect x="92" y="21" width="1" height="5" fill="#2A3A57"/>
+      <rect x="10" y="29" width="90" height="1" fill="#B9C4D6"/>
+      <rect x="13" y="32" width="24" height="11" fill="#C9D1DC"/>
+      <rect x="13" y="34" width="24" height="1" fill="#AEB8C6"/><rect x="13" y="36" width="24" height="1" fill="#AEB8C6"/><rect x="13" y="38" width="24" height="1" fill="#AEB8C6"/><rect x="13" y="40" width="24" height="1" fill="#AEB8C6"/>
+      <rect x="73" y="32" width="24" height="5" fill="#C9D1DC"/><rect x="73" y="34" width="24" height="1" fill="#AEB8C6"/>
+      <rect x="73" y="37" width="24" height="6" fill="#2A3A57"/><rect x="76" y="39" width="3" height="1" fill="#F2C14E"/><rect x="88" y="40" width="4" height="1" fill="#E8EEF6"/>
+      <rect x="40" y="30" width="30" height="4" fill="#1D5BD8"/>
+      <rect x="44" y="31" width="1" height="2" fill="#fff"/><rect x="46" y="31" width="2" height="2" fill="#fff"/><rect x="49" y="31" width="1" height="2" fill="#fff"/><rect x="51" y="31" width="3" height="2" fill="#fff"/><rect x="55" y="31" width="1" height="2" fill="#fff"/><rect x="57" y="31" width="2" height="2" fill="#fff"/><rect x="60" y="31" width="1" height="2" fill="#fff"/><rect x="62" y="31" width="3" height="2" fill="#fff"/>
+      <rect x="40" y="34" width="30" height="1" fill="#EE6A2B"/>
+      <rect x="42" y="35" width="26" height="8" fill="#E8F1FB"/>
+      <rect x="42" y="38" width="26" height="1" fill="#B9C8DD"/><rect x="42" y="41" width="26" height="1" fill="#B9C8DD"/>
+      <rect x="44" y="37" width="2" height="1" fill="#EE6A2B"/><rect x="47" y="37" width="2" height="1" fill="#1D5BD8"/><rect x="61" y="37" width="3" height="1" fill="#F2C14E"/><rect x="44" y="40" width="3" height="1" fill="#F2C14E"/><rect x="62" y="40" width="2" height="1" fill="#EE6A2B"/>
+      <rect x="52" y="35" width="6" height="8" fill="#CFE0F2"/><rect x="55" y="35" width="1" height="8" fill="#9FB2CF"/>
+      <rect x="20" y="37" width="1" height="2" fill="#1E2B4A"/><rect x="21" y="39" width="6" height="2" fill="#2A3A57"/><rect x="24" y="38" width="3" height="1" fill="#1E2B4A"/><rect x="20" y="39" width="1" height="1" fill="#F2C14E"/>
+      <rect x="20" y="41" width="2" height="2" fill="#1E2B4A"/><rect x="26" y="41" width="2" height="2" fill="#1E2B4A"/>
+      <rect x="77" y="37" width="1" height="2" fill="#1E2B4A"/><rect x="78" y="39" width="6" height="2" fill="#DCE2EA"/><rect x="81" y="38" width="3" height="1" fill="#1E2B4A"/><rect x="77" y="39" width="1" height="1" fill="#F2C14E"/>
+      <rect x="77" y="41" width="2" height="2" fill="#1E2B4A"/><rect x="83" y="41" width="2" height="2" fill="#1E2B4A"/>
+      <rect x="92" y="4" width="2" height="39" fill="#86A9CE"/><rect x="88" y="7" width="10" height="1" fill="#86A9CE"/><rect x="94" y="14" width="3" height="4" fill="#86A9CE"/>
+      <rect x="103" y="36" width="5" height="5" fill="#5E8C6A"/><rect x="104" y="34" width="3" height="2" fill="#5E8C6A"/><rect x="105" y="41" width="1" height="2" fill="#6B5540"/>
+      <rect x="8" y="43" width="98" height="1" fill="#DCE6F0"/>
     </symbol>
   </defs>
 </svg>
@@ -278,6 +387,76 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec gutter" aria-labelledby="h-media">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="h-media">The same sky in other media</h2><span class="pageno">03</span></div>
+    <div class="media">
+      <div class="col">
+        <figure id="slides">
+          <div class="slides stack">
+            <div class="slide title" role="img" aria-label="Title slide: EKIMAE, third quarter report, with a corner store on the horizon">
+              <div class="sky"><p class="giant" style="--chars: 6">EKIMAE</p><p class="kicker">Third quarter report<br>October 2026</p></div>
+              <svg class="scene scene-day" viewBox="0 0 120 48" aria-hidden="true"><use href="#scene-konbini-day"/></svg>
+              <div class="trio"><span>new routes</span><span>new exits</span><span>next cities</span></div>
+              <div class="corner"><span class="bigword" lang="ja">報告</span><span class="pageno">01</span></div>
+            </div>
+            <div class="slide data" role="img" aria-label="Data slide: ten minutes on foot from any exit, bars for six places, the market furthest at ten minutes">
+              <div class="sky"><h3>Ten minutes from any exit</h3></div>
+              <div class="big"><b>10</b><span>minutes on foot, at most, to every place in the guide</span></div>
+              <div class="chart"><i style="height:30%"></i><i style="height:60%"></i><i style="height:90%"></i><i style="height:40%"></i><i style="height:80%"></i><i class="hi" style="height:100%"></i></div>
+              <div class="labels"><span>Café</span><span>Books</span><span>Ramen</span><span>Bath</span><span>Park</span><span>Market</span></div>
+              <p class="bigword vk" lang="ja">徒<br>歩</p>
+              <span class="pageno">07</span>
+            </div>
+          </div>
+          <figcaption>Slides, 16:9: a title slide and a data slide</figcaption>
+        </figure>
+
+        <figure id="social">
+          <div class="post" role="img" aria-label="Post: Bandung, West Java, a row of shophouses with a minimarket and two parked motorbikes">
+            <div class="sky"><p class="giant" style="--chars: 7">BANDUNG</p><p class="sub">West Java</p></div>
+            <svg class="scene scene-day" viewBox="0 0 120 48" aria-hidden="true"><use href="#scene-ruko-day"/></svg>
+            <div class="trio"><span>open at six</span><span>by the station</span><span>kopi tubruk</span></div>
+            <p class="bigword">KOPI<br>PAGI</p>
+            <p class="note">The minimarket at the end of the street is always open, with hot coffee by the door.</p>
+            <span class="pageno">04</span>
+          </div>
+          <figcaption>Post, 4:5: local content gets a local street and a big word in its own language</figcaption>
+        </figure>
+      </div>
+
+      <figure id="app">
+        <div class="phone">
+          <div class="screen">
+            <div class="sky">
+              <div class="status"><span>9:41</span><span>5G</span></div>
+              <div class="hello">Good morning, Rani</div>
+              <div class="titlerow"><p class="giant" style="--chars: 7">SHIBUYA</p><p class="bigword vk" lang="ja">渋<br>谷</p></div>
+              <div class="info">14°C · clear · east exit</div>
+              <svg class="scene scene-day" viewBox="0 0 120 40" aria-hidden="true"><use href="#scene-station-day"/></svg>
+            </div>
+            <div class="body">
+              <div class="trio"><span>3 routes</span><span>12 shops</span><span>open 24 h</span></div>
+              <h3>Closest to the east exit</h3>
+              <div class="row"><b>01</b><span><strong>Kissaten Hoshi</strong><small>drip coffee · open</small></span><em>3 min</em></div>
+              <div class="row"><b>02</b><span><strong>Aoi used books</strong><small>secondhand · open</small></span><em>6 min</em></div>
+              <div class="row"><b>03</b><span><strong>Kita ramen</strong><small>closes 22:00</small></span><em>9 min</em></div>
+              <button class="btn go" type="button">Start walking</button>
+              <nav class="tabs" aria-label="App">
+                <span class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true"><path d="M3 11 12 4l9 7v9H3z"/></svg>Home</span>
+                <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Map</span>
+                <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Saved</span>
+                <span class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Account</span>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <figcaption>App: the sky becomes the header</figcaption>
+      </figure>
     </div>
   </div>
 </section>

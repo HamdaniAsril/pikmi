@@ -519,7 +519,10 @@
         ]
       },
       "media": [
-        "ui"
+        "ui",
+        "slides",
+        "social",
+        "app"
       ],
       "themes": [
         "light"
