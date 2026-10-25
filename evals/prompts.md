@@ -63,7 +63,7 @@ only the offered styles' `tokens.json`. Two gaps found in that run were fixed: t
 assumed a `display` font, and declining in a marked project left the old marker behind. E29 and the new
 E32 were rerun with one fresh agent after the fix and pass.
 
-2026-10-24, after seven styles were renamed away from their StyleKit names: `anti-design` →
+2026-10-24, after seven styles were renamed away from their old genre names: `anti-design` →
 `primary-riot`, `corporate-clean` → `ledger-blue`, `cyberpunk-neon` → `night-circuit`,
 `islamic-geometric` → `lapis-lattice`, `ukiyo-e-print` → `indigo-woodblock`, `mecha` → `armor-plate`,
 `watercolor` → `soft-wash`. All 28 rows were rerun with Claude Sonnet as the router, four fresh agents of

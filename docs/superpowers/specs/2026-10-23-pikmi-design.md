@@ -12,7 +12,7 @@ style yang cocok. **User yang memilih.** Kalau user bingung atau bilang "tersera
 satu style beserta alasannya.
 
 Satu style harus bisa dipakai di empat medium: **UI web, slides, social media, dan app**. Ini pembeda utama
-dari proyek sejenis (StyleKit dan lookbook hanya mengurus UI web).
+dari proyek sejenis, yang umumnya hanya mengurus UI web.
 
 Nama `pikmi` dibaca "pick me": setiap style seolah berseru "pick me!". Lapis sarkasnya adalah slang
 *pick-me*. Tagline: **"Not like other UIs."**
@@ -35,7 +35,7 @@ Nama `pikmi` dibaca "pick me": setiap style seolah berseru "pick me!". Lapis sar
 - Agent langsung memakai satu style tanpa menawarkan pilihan, padahal user tidak menyebut nama style dan
   proyeknya belum punya penanda pikmi.
 - pikmi menawarkan style baru untuk proyek yang sudah punya tampilan, padahal user tidak minta ganti tampilan.
-- Teks hard prompt StyleKit tersalin mentah ke dalam style pikmi.
+- Teks hard prompt referensi tersalin mentah ke dalam style pikmi.
 - Nama, logo, atau produk brand muncul di desain yang dihasilkan.
 - Style yang hanya berupa daftar class Tailwind dan tidak bisa dipakai di slides atau app.
 - Hasil yang tetap terlihat seperti tampilan bawaan AI yang seragam.
@@ -52,7 +52,7 @@ Nama `pikmi` dibaca "pick me": setiap style seolah berseru "pick me!". Lapis sar
 - Font hanya dari Google Fonts (gratis, bisa dimuat di web, slides, dan aplikasi desain).
 - Setiap pasangan warna teks/latar yang disebut di STYLE.md punya angka kontras WCAG yang sudah dihitung, seperti
   di teenage-engineering sekarang.
-- **Folder `hard prompt/` (isi dari StyleKit) hanya referensi.** Keputusan user: tidak perlu file lisensi.
+- **Folder `hard prompt/` (materi dari luar) hanya referensi.** Keputusan user: tidak perlu file lisensi.
   Konsekuensinya: semua teks ditulis ulang dengan kata-kata sendiri, tidak ada kalimat, template HTML, atau
   checklist yang disalin, dan folder `hard prompt/` tidak ikut di-commit (masuk `.gitignore`).
 
