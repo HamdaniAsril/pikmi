@@ -137,8 +137,10 @@ function select(index) {
   if (!style || index === state.current) return;
   state.current = index;
 
-  document.querySelectorAll('#device-keys .key[data-index]').forEach((k) => {
-    k.setAttribute('aria-pressed', String(Number(k.dataset.index) === index));
+  document.querySelectorAll('#device-keys .srow[data-index]').forEach((row) => {
+    const on = Number(row.dataset.index) === index;
+    row.setAttribute('aria-pressed', String(on));
+    if (on) keepInList(row);
   });
 
   $('#readout-num').textContent = style.number;
@@ -166,25 +168,44 @@ function showOnPanel(index) {
   $('#picker').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
 }
 
+// scroll the list itself, not the page, so a row picked elsewhere stays visible
+function keepInList(row) {
+  const list = $('#device-keys');
+  const top = row.offsetTop;
+  if (top < list.scrollTop) list.scrollTop = top;
+  else if (top + row.offsetHeight > list.scrollTop + list.clientHeight) list.scrollTop = top + row.offsetHeight - list.clientHeight;
+}
+
+function swatches(style) {
+  const colors = palette(style);
+  const chips = el('span', { className: 'palette' }, colors.map(([role, hex]) => {
+    const chip = el('span', { title: `${hex.toUpperCase()} ${role}` });
+    chip.style.background = hex;
+    return chip;
+  }));
+  chips.setAttribute('role', 'img');
+  chips.setAttribute('aria-label', 'Palette: ' + colors.map(([role, hex]) => `${role} ${hex}`).join(', '));
+  return chips;
+}
+
 function renderKeys() {
   const shown = visibleStyles();
-  const keys = shown.map(({ style, index }) => {
-    const key = el('button', { type: 'button', className: 'key skey' }, [
-      el('span', { className: 'skey-top' }, [
-        el('span', { textContent: style.number }),
-        el('span', { textContent: style.themes.join(' · ') }),
-      ]),
-      el('span', { className: 'skey-name', textContent: style.name }),
+  const rows = shown.map(({ style, index }) => {
+    const row = el('button', { type: 'button', className: 'srow' }, [
+      el('span', { className: 'srow-num', textContent: style.number }),
+      el('span', { className: 'srow-name', textContent: style.name }),
+      el('span', { className: 'srow-meta' }, [swatches(style), el('span', { textContent: style.themes.join(' · ') })]),
     ]);
-    key.dataset.index = index;
-    key.setAttribute('aria-pressed', String(index === state.current));
-    key.addEventListener('click', () => select(index));
-    return key;
+    row.dataset.index = index;
+    row.setAttribute('aria-pressed', String(index === state.current));
+    row.addEventListener('click', () => select(index));
+    return row;
   });
 
-  const random = el('button', { type: 'button', className: 'key alt skey' }, [
-    el('span', { className: 'skey-top', textContent: '??' }),
-    el('span', { className: 'skey-name', textContent: 'random' }),
+  const random = el('button', { type: 'button', className: 'srow random' }, [
+    el('span', { className: 'srow-num', textContent: '??' }),
+    el('span', { className: 'srow-name', textContent: 'random' }),
+    el('span', { className: 'srow-meta', textContent: 'surprise me' }),
   ]);
   random.setAttribute('aria-label', shown.length ? 'Random style from this list' : 'Random style');
   random.addEventListener('click', () => {
@@ -193,7 +214,7 @@ function renderKeys() {
   });
 
   const message = shown.length ? [] : [el('p', { className: 'grid-msg', textContent: `No style matches “${state.query.trim()}”. Try another mood, or press random.` })];
-  $('#device-keys').replaceChildren(...keys, ...message, random);
+  $('#device-keys').replaceChildren(...rows, ...message, random);
   $('#result-count').textContent = `${shown.length} ${shown.length === 1 ? 'style' : 'styles'}`;
 }
 
@@ -218,15 +239,6 @@ function renderSpecs() {
 
 function renderCards() {
   const cards = state.styles.map((style, i) => {
-    const colors = palette(style);
-    const swatches = el('span', { className: 'palette' }, colors.map(([role, hex]) => {
-      const chip = el('span', { title: `${hex.toUpperCase()} ${role}` });
-      chip.style.background = hex;
-      return chip;
-    }));
-    swatches.setAttribute('role', 'img');
-    swatches.setAttribute('aria-label', 'Palette: ' + colors.map(([role, hex]) => `${role} ${hex}`).join(', '));
-
     const numberKey = el('button', { type: 'button', className: 'key num-key hit', textContent: style.number });
     numberKey.setAttribute('aria-label', `Show ${style.name} on the panel`);
     numberKey.addEventListener('click', () => showOnPanel(i));
@@ -241,7 +253,7 @@ function renderCards() {
     });
 
     return el('li', { className: 'panel scard' }, [
-      el('div', { className: 'scard-top' }, [numberKey, swatches]),
+      el('div', { className: 'scard-top' }, [numberKey, swatches(style)]),
       el('h3', { textContent: style.name }),
       el('p', { textContent: style.summary }),
       el('div', { className: 'scard-foot' }, [

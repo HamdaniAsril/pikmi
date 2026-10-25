@@ -128,12 +128,22 @@ svg { flex: none; }
 .pill[aria-pressed="true"] .count { color: var(--rule); }
 .result { margin-left: auto; }
 
-.key-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.skey { gap: 2px; min-height: 56px; padding: 10px 12px; }
-.skey-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font: 500 11px/1.3 var(--font-sans); letter-spacing: 1px; text-transform: uppercase; color: var(--key-label); }
-.skey-name { font: 300 15px/1.4 var(--font-sans); text-transform: lowercase; }
-.key.alt .skey-top { color: var(--key-alt-label); }
-.grid-msg { grid-column: 1 / -1; margin: 0; padding: 16px 4px; color: var(--text-muted); }
+.style-list { position: relative; display: grid; align-content: start; gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: var(--radius-control); overflow: hidden auto; }
+.srow { display: grid; grid-template-columns: 2.5ch minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 44px; padding: 8px 14px;
+  border: 0; background: var(--card); color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.srow:hover { background: var(--panel); }
+.srow:focus-visible { outline-offset: -3px; }
+.srow-num { font: 500 11px/1 var(--font-sans); letter-spacing: 1px; color: var(--text-muted); }
+.srow-name { overflow: hidden; font: 300 15px/1.3 var(--font-sans); text-transform: lowercase; text-overflow: ellipsis; white-space: nowrap; }
+.srow-meta { display: inline-flex; align-items: center; gap: 10px; font: 500 10px/1 var(--font-sans); letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); }
+.srow .palette { display: none; }
+.srow .palette span { width: 12px; height: 12px; }
+.srow[aria-pressed="true"] { background: var(--key-active); }
+.srow[aria-pressed="true"] * { color: var(--key-active-ink); }
+.srow.random { background: var(--key-alt); color: var(--key-alt-number); }
+.srow.random .srow-num, .srow.random .srow-meta { color: var(--key-alt-label); }
+.srow.random:focus-visible { outline-color: var(--key-alt-number); }
+.grid-msg { margin: 0; padding: 16px 14px; background: var(--card); color: var(--text-muted); }
 
 .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-panel); overflow: hidden; }
 .stat { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 20px 16px; box-shadow: -1px -1px 0 var(--rule); }
@@ -229,7 +239,7 @@ svg { flex: none; }
   .device { padding: 32px 16px 28px; }
   .viewport { aspect-ratio: 16 / 10; }
   .search { flex: 0 1 320px; }
-  .key-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .srow .palette { display: inline-flex; }
   .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .stat { flex-direction: row; align-items: center; gap: 14px; }
   .style-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -238,16 +248,26 @@ svg { flex: none; }
 @media (min-width: 1024px) {
   .nav-links { display: flex; }
   .hero { padding-block: 74px 56px; }
-  .device { padding: 36px 20px 28px; }
+  /* preview on the left, the style list on the right; the list never makes the row taller than the screen */
+  .device { grid-template-columns: minmax(0, 1fr) 300px; align-items: stretch; padding: 36px 20px 28px; }
+  .device-top { grid-column: 1 / -1; }
   .device .sticker { top: -46px; right: -2px; }
-  .viewport { aspect-ratio: 1088 / 445; }
-  .key-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .viewport { aspect-ratio: 4 / 3; }
+  .browser { grid-template-rows: auto minmax(0, 1fr); contain: size; }
+  .browser .search { flex: 1 1 100%; }
+  .style-list { align-self: start; max-height: 100%; }
+  .srow .palette { display: none; }
   .stat { padding: 20px 24px; }
   .flow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .step + .step::before { left: -40px; right: auto; top: 0; bottom: 0; width: 40px; height: auto;
     mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 12'%3E%3Cpath d='M1 6h14m-5-5l5 5-5 5' fill='none' stroke='black' stroke-width='1.8'/%3E%3C/svg%3E");
     mask-size: 16px 12px; }
   .style-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1280px) {
+  .device { grid-template-columns: minmax(0, 1fr) 340px; }
+  .srow .palette { display: inline-flex; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
