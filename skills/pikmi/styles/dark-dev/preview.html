@@ -303,7 +303,7 @@ client.deploy(service=<span class="k">"billing-service"</span>, ref=<span class=
   </section>
 
   <section id="features" class="wrap" aria-labelledby="h-features">
-    <div class="sec-head">
+    <div id="components" class="sec-head">
       <h2 id="h-features">What happens on every push</h2>
       <p>Three things kelar does without being asked, and where to see each one.</p>
     </div>
@@ -330,7 +330,7 @@ client.deploy(service=<span class="k">"billing-service"</span>, ref=<span class=
   </section>
 
   <section id="console" class="wrap" aria-labelledby="h-console">
-    <div class="sec-head">
+    <div id="ui" class="sec-head">
       <h2 id="h-console">Every deploy on one screen</h2>
       <p>What is live, what is building and why the last build failed. Try the filter, deploy main, or open the failed log.</p>
     </div>
@@ -479,7 +479,7 @@ client.deploy(service=<span class="k">"billing-service"</span>, ref=<span class=
       <p>The same release for the team demo, the feed and the on-call phone.</p>
     </div>
     <div class="kit">
-      <figure class="slide-fig">
+      <figure id="slides" class="slide-fig">
         <div class="frame"><div class="slide">
           <h3>Retries now back off on their own</h3>
 <pre class="code">import os
@@ -494,7 +494,7 @@ client = Client(token=os.environ[<span class="k">"KELAR_TOKEN"</span>])
         </div></div>
         <figcaption>Demo slide · 1920 x 1080</figcaption>
       </figure>
-      <figure>
+      <figure id="social">
         <div class="frame"><div class="post"><div class="card">
           <span class="ver">v2.4.0</span>
           <h3>Preview deploys for every branch</h3>
@@ -504,7 +504,7 @@ client = Client(token=os.environ[<span class="k">"KELAR_TOKEN"</span>])
         </div></div></div>
         <figcaption>Release post · 1080 x 1350</figcaption>
       </figure>
-      <figure class="phone-fig">
+      <figure id="app" class="phone-fig">
         <div class="frame"><div class="phone">
           <div class="ph-top"><span class="mono">billing-service</span><span>main</span></div>
           <div class="ph-view" data-view="deploys">
