@@ -69,6 +69,7 @@ it. Web projects built with a pikmi style carry a marker (`/* pikmi: <id> */`) a
 | [Soft Wash](skills/pikmi/styles/soft-wash/preview.html) | Soft washes of peach, teal and rose bleeding into warm paper, blue-grey ink, italic serif headings and slow, painterly motion. | light |
 | [Nocturne Glass](skills/pikmi/styles/nocturne-glass/preview.html) | A deep ink night scene with soft moonlit light wells, solid night-steel surfaces and one or two pieces of colorless frosted glass, lit by a single champagne accent. | dark |
 | [Dark Dev](skills/pikmi/styles/dark-dev/preview.html) | Calm slate dark mode for developer tools: low-contrast layers, borders that light up on hover, one blue for actions and mono only for code. | dark |
+| [Konbini Sky](skills/pikmi/styles/konbini-sky/preview.html) | Bright daytime sky over white paper, giant white grotesk type, cobalt captions and one pixel-art street scene on the horizon; bolder and sunnier than Japanese Minimal, with a lit-up night theme. | light, dark |
 
 Open any preview in a browser through a local server (for example `python3 -m http.server` from
 `skills/pikmi`), so each page can load its `tokens.css`.
